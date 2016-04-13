@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MenschAergerDichNicht</string>
+    <string name="title_activity_start">StartActivity</string>
+    <string name="title_activity_create_game">CreateGameActivity</string>
+
+</resources>

@@ -14,7 +14,7 @@ public class CreateGameActivity extends Activity {
     }
 
     public void StartGame(View v){
-        Intent i = new Intent(this,AndroidLauncher.class);
+        Intent i = new Intent(this,ServerActivity.class);
         startActivity(i);
     }
 

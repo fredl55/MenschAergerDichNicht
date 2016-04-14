@@ -85,11 +85,11 @@
             android:text="StartGame"
             android:id="@+id/btnStartGame"
             android:textSize="25dp"
-            android:layout_marginTop="136dp"
-            android:layout_below="@+id/textView"
+            android:onClick="StartGame"
+            android:layout_marginBottom="134dp"
+            android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:onClick="StartGame" />
+            android:layout_alignParentStart="true" />
     </RelativeLayout>
 
 </RelativeLayout>

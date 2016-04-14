@@ -14,6 +14,8 @@ public class StartActivity extends Activity {
     }
 
     public void OnClickJoinGame(View v){
+        Intent i = new Intent(this,ClientActivity.class);
+        startActivity(i);
     }
 
     public void OnClickCreateGame(View v){

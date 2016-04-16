@@ -30,6 +30,7 @@ public class ClientActivity extends Activity implements DataDisplay{
         if(!client.isConnected()){
             if(ip!=null && ip.equals("")==false){
                 client.setIP(ip);
+                client.setMessage("init");
                 client.start();
             }
             else {
@@ -39,5 +40,11 @@ public class ClientActivity extends Activity implements DataDisplay{
             ((TextView)findViewById(R.id.txtMessage)).setText("Client is already connected");
         }
 
+    }
+
+    public void SentMessage(View v){
+        if(client.isConnected()){
+            client.setMessage("Hallo");
+        }
     }
 }

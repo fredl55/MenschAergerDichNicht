@@ -8,6 +8,8 @@ import com.gruppe4.interfaces.DataDisplay;
 import com.gruppe4.menschaergerdichnicht.ServerActivity;
 
 import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
@@ -20,7 +22,7 @@ import java.net.Socket;
  */
 public class MyClient {
     Thread myClientThread;
-    Socket clientSocket;
+    String message=null;
     DataDisplay myData;
     Handler mHandler = new Handler(){
         @Override
@@ -52,18 +54,23 @@ public class MyClient {
                     InetAddress serverAddr = InetAddress.getByName(IP);
                     Log.d("ClientActivity", "C: Connecting...");
                     Socket socket = new Socket(serverAddr, ServerActivity.SERVERPORT);
+                    ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+                    ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+                    SendMessageToServer(out,in);
+                    out.flush();
+
                     connected = true;
                     while (connected) {
                         try {
-                            Log.d("ClientActivity", "C: Sending command.");
-                            PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
-                            // WHERE YOU ISSUE THE COMMANDS
-                            out.println("Hey Server!");
-                            Log.d("ClientActivity", "C: Sent.");
+                            SendMessageToServer(out,in);
+
+
                         } catch (Exception e) {
                             Log.e("ClientActivity", "S: Error", e);
                         }
                     }
+                    in.close();
+                    out.close();
                     socket.close();
                     Log.d("ClientActivity", "C: Closed.");
 
@@ -76,11 +83,33 @@ public class MyClient {
         myClientThread.start();
     }
 
+    private void HandleServerMessage(ObjectInputStream in) throws IOException, ClassNotFoundException {
+
+        Object msg=null;
+        if((msg=in.readObject())!=null){
+            Log.d("ClientActivity", msg.toString());
+        }
+    }
+
+    private void SendMessageToServer(ObjectOutputStream out,ObjectInputStream in) throws IOException, ClassNotFoundException {
+        if(message != null){
+            out.writeObject(message);
+            out.flush();
+            Log.d("Client", "Message was sent");
+            message = null;
+            HandleServerMessage(in);
+        }
+    }
+
     public void setIP(String IP) {
         this.IP = IP;
     }
 
     public boolean isConnected(){
         return connected;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

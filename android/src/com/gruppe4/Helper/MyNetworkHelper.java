@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.gruppe4.menschaergerdichnicht.ServerActivity;
 
+import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -18,7 +19,7 @@ import java.util.Enumeration;
 public class MyNetworkHelper {
     public static String getLocalIpAddress() {
         try {
-            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+            /*for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
                 NetworkInterface intf = en.nextElement();
                 for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
                     InetAddress inetAddress = enumIpAddr.nextElement();
@@ -28,10 +29,26 @@ public class MyNetworkHelper {
                         return ip;
                     }
                 }
+            }*/
+            for (Enumeration<NetworkInterface> en = NetworkInterface
+                    .getNetworkInterfaces(); en.hasMoreElements();) {
+                NetworkInterface intf = (NetworkInterface) en.nextElement();
+                for (Enumeration<InetAddress> enumIpAddr = intf
+                        .getInetAddresses(); enumIpAddr.hasMoreElements();) {
+                    InetAddress inetAddress = enumIpAddr.nextElement();
+                    if (!inetAddress.isLoopbackAddress() && inetAddress instanceof Inet4Address) {
+                        String ipaddress = inetAddress .getHostAddress().toString();
+                        return ipaddress;
+                    }
+                }
             }
         } catch (SocketException ex) {
             Log.e("NetworkHelper", ex.toString());
         }
         return null;
+    }
+
+    public static String getIP(){
+       return  "";
     }
 }

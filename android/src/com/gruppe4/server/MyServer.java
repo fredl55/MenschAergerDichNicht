@@ -11,6 +11,8 @@ import com.gruppe4.menschaergerdichnicht.ServerActivity;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -89,10 +91,21 @@ public class MyServer {
                             setServerMessage("Connected");
 
                             try {
-                                BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-                                String line = null;
+                                //BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+                                ObjectOutputStream out = new ObjectOutputStream(client.getOutputStream());
+                                //out.writeObject("Init OK");
+                                out.flush();
+                                ObjectInputStream in = new ObjectInputStream(client.getInputStream());
+                                /*String line = null;
                                 while ((line = in.readLine()) != null) {
                                     Log.d("ServerActivity", line);
+                                }*/
+                                Object o = null;
+                                while((o=in.readObject())!=null){
+                                    Log.d("Server",o.toString());
+                                    if(o.toString().equals("Hallo")){
+                                        out.writeObject("hallo ist schön");
+                                    }
                                 }
                                 break;
                             } catch (Exception e) {

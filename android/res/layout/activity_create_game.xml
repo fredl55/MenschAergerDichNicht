@@ -30,24 +30,11 @@
             android:layout_marginTop="59dp"
             android:textSize="25dp" />
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
-            android:ems="10"
-            android:id="@+id/editText"
-            android:layout_alignBottom="@+id/lblPlayersCount"
-            android:layout_toRightOf="@+id/textView"
-            android:layout_toEndOf="@+id/textView" />
-
         <RadioGroup
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignTop="@+id/textView"
-            android:layout_alignRight="@+id/editText"
-            android:layout_alignEnd="@+id/editText"
             android:layout_toRightOf="@+id/textView"
-            android:layout_toEndOf="@+id/textView"
             android:id="@+id/radioGroup"
             android:layout_alignBottom="@+id/btnStartGame">
 
@@ -74,8 +61,8 @@
             android:id="@+id/textView"
             android:textIsSelectable="false"
             android:textSize="25dp"
-            android:layout_marginTop="60dp"
-            android:layout_below="@+id/editText"
+            android:layout_marginTop="28dp"
+            android:layout_below="@+id/lblPlayersCount"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
@@ -86,10 +73,21 @@
             android:id="@+id/btnStartGame"
             android:textSize="25dp"
             android:onClick="StartGame"
-            android:layout_marginBottom="134dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="4"
+            android:id="@+id/txtPlayersCount"
+            android:layout_alignBottom="@+id/lblPlayersCount"
+            android:layout_alignLeft="@+id/radioGroup"
+            android:layout_alignStart="@+id/radioGroup"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
     </RelativeLayout>
 
 </RelativeLayout>

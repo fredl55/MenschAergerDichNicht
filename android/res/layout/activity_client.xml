@@ -13,42 +13,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:id="@+id/txtMessage"
+        android:id="@+id/lblServerMessage"
         android:layout_alignParentTop="true"
         android:layout_marginTop="255dp"
-        android:layout_alignRight="@+id/button"
-        android:layout_alignEnd="@+id/button" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Start"
-        android:id="@+id/button"
-        android:onClick="StartClient"
-        android:layout_below="@+id/txtMessage"
         android:layout_centerHorizontal="true" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/txtIp"
-        android:layout_alignTop="@+id/button"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@+id/button"
-        android:layout_toStartOf="@+id/button"
-        android:text="10.0.0.130" />
-
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Button"
+        android:text="send PlayerName"
         android:id="@+id/button2"
         android:layout_centerVertical="true"
-        android:layout_alignRight="@+id/txtIp"
-        android:layout_alignEnd="@+id/txtIp"
         android:layout_marginRight="20dp"
         android:layout_marginEnd="20dp"
-        android:onClick="SentMessage" />
+        android:onClick="SentMessage"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

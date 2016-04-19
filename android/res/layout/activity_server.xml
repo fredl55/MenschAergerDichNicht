@@ -13,25 +13,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/txtServerMessage"
+        android:id="@+id/lblClientMessage"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Start Server"
-        android:id="@+id/btnStartServer"
-        android:layout_marginTop="138dp"
-        android:layout_below="@+id/txtServerMessage"
-        android:layout_centerHorizontal="true"
-        android:onClick="connect"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/txtIp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
 </RelativeLayout>

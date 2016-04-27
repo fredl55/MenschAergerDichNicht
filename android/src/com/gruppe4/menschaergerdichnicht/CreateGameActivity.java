@@ -11,23 +11,21 @@ import com.gruppe4.Logic.Game;
 import com.gruppe4.Logic.Player;
 
 public class CreateGameActivity extends Activity {
-    private Player player;
+    private Player hostPlayer;
     private int playersCount = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_game);
         Intent i = getIntent();
-        if(i.hasExtra("Player")){
-            player = (Player)i.getSerializableExtra("Player");
-        }
+
     }
 
     public void StartGame(View v){
         if(CheckInputs()){
             Intent i = new Intent(this,ServerActivity.class);
             i.putExtra("PlayersCount",playersCount);
-            i.putExtra("Host",player);
+            i.putExtra("HostPlayer",hostPlayer);
             startActivity(i);
         }
 

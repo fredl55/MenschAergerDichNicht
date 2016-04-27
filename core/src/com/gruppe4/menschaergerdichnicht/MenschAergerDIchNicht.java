@@ -17,18 +17,39 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 public class MenschAergerDIchNicht extends Game {
-	SpriteBatch batch;
+
+	public interface MyGameCallback {
+		 void onSendMessage(String msg);
+	}
+
+	private MyGameCallback myGameCallback;
+	public void setMyGameCallback(MyGameCallback callback) {
+		myGameCallback = callback;
+	}
 
 
 
 	@Override
 	public void create () {
-		setScreen(new MainScreen());
+		setScreen(new MainScreen(this));
 	}
 
 	@Override
 	public void render () {
 		super.render();
+	}
+
+	public void someMethod() {// check the calling class has actually implemented MyGameCallback
+		if (myGameCallback != null) {
+
+			// initiate which ever callback method you need.
+			if (true) {
+				myGameCallback.onSendMessage("Hallo Spieler");
+			}
+
+		} else {
+			//Log.e("MyGame", "To use this class you must implement MyGameCallback!")
+		}
 	}
 
 }

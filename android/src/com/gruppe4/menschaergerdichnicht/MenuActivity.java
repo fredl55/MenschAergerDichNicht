@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.gruppe4.Logic.Player;
 
 public class MenuActivity extends Activity {
-    private Player player;
+    private String playerName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -17,20 +17,20 @@ public class MenuActivity extends Activity {
 
         Intent i = getIntent();
         if(i.hasExtra("PlayerName")){
-            player = new Player(i.getStringExtra("PlayerName"));
-            ((TextView)findViewById(R.id.txtWelcome)).setText(String.format("Welcome %s",player.getName()));
+            playerName = (i.getStringExtra("PlayerName"));
+            ((TextView)findViewById(R.id.txtWelcome)).setText(String.format("Welcome %s",playerName));
         }
     }
 
     public void OnClickJoinGame(View v){
         Intent i = new Intent(this,ClientActivity.class);
-        i.putExtra("Player", player);
+        i.putExtra("Player", playerName);
         startActivity(i);
     }
 
     public void OnClickCreateGame(View v){
         Intent i = new Intent(this,CreateGameActivity.class);
-        i.putExtra("Player",player);
+        i.putExtra("Player",playerName);
         startActivity(i);
     }
 

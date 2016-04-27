@@ -24,8 +24,10 @@ import com.google.android.gms.nearby.connection.AppIdentifier;
 import com.google.android.gms.nearby.connection.AppMetadata;
 import com.google.android.gms.nearby.connection.Connections;
 import com.google.android.gms.nearby.connection.ConnectionsStatusCodes;
+import com.gruppe4.Logic.Game;
 import com.gruppe4.Logic.Player;
 import com.gruppe4.Logic.Serializer;
+import com.gruppe4.menschaergerdichnicht.MenschAergerDIchNicht.MyGameCallback;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -43,7 +45,8 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
         GoogleApiClient.OnConnectionFailedListener,
         Connections.ConnectionRequestListener,
         Connections.MessageListener,
-        Connections.EndpointDiscoveryListener {
+        Connections.EndpointDiscoveryListener,
+        MyGameCallback{
     /**
      * Timeouts (in millis) for startAdvertising and startDiscovery.  At the end of these time
      * intervals the app will silently stop advertising or discovering.
@@ -75,6 +78,7 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
     private AlertDialog mConnectionRequestDialog;
     private TextView mytextView;
     private MyListDialog mMyListDialog;
+    private Game myGame;
 
 
     /** The current state of the application **/
@@ -91,11 +95,21 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
     public void setmIsHost(boolean isHost){
         this.mIsHost = isHost;
     }
+
+    @Override
+    public void onSendMessage(String message) {
+        sendMessage(Serializer.serialize(message));
+    }
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-        initialize(new MenschAergerDIchNicht(), config);
+        MenschAergerDIchNicht myGame = new MenschAergerDIchNicht();
+        myGame.setMyGameCallback(this);
+        initialize(myGame, config);
     }
 
     public void connect(boolean mIsHost){
@@ -138,8 +152,10 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
     public void onMessageReceived(String s, byte[] bytes, boolean b) {
         Object message = Serializer.deserialize(bytes);
         if(message != null){
-            if(message instanceof Player){
+            if(message instanceof Player) {
 
+            }else if(message instanceof String){
+                Log.d("MESSAGE",message.toString());
             }
         }
     }
@@ -225,43 +241,48 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
     }
 
     public void startAdvertising() {
-        if (!isConnectedToNetwork()) {
-            debugLog("startAdvertising: not connected to WiFi network.");
-            return;
+        try{
+            if (!isConnectedToNetwork()) {
+                debugLog("startAdvertising: not connected to WiFi network.");
+                return;
+            }
+
+            // Identify that this device is the host
+            mIsHost = true;
+
+            // Advertising with an AppIdentifer lets other devices on the
+            // network discover this application and prompt the user to
+            // install the application.
+            List<AppIdentifier> appIdentifierList = new ArrayList<>();
+            appIdentifierList.add(new AppIdentifier(getPackageName()));
+            AppMetadata appMetadata = new AppMetadata(appIdentifierList);
+
+            // The advertising timeout is set to run indefinitely
+            // Positive values represent timeout in milliseconds
+            long NO_TIMEOUT = 0L;
+
+            String name = null;
+            Nearby.Connections.startAdvertising(mGoogleApiClient, name, appMetadata, NO_TIMEOUT,
+                    this).setResultCallback(new ResultCallback<Connections.StartAdvertisingResult>() {
+                @Override
+                public void onResult(Connections.StartAdvertisingResult result) {
+                    if (result.getStatus().isSuccess()) {
+                        debugLog("startAdvertising:onResult: SUCCESS");
+                    } else {
+                        debugLog("startAdvertising:onResult: FAILURE ");
+                        int statusCode = result.getStatus().getStatusCode();
+                        if (statusCode == ConnectionsStatusCodes.STATUS_ALREADY_ADVERTISING) {
+                            debugLog("STATUS_ALREADY_ADVERTISING");
+                        } else {
+                        }
+                        // Advertising failed - see statusCode for more details
+                    }
+                }
+            });
+        }catch(Exception e){
+            Log.e("ERROR",e.getMessage());
         }
 
-        // Identify that this device is the host
-        mIsHost = true;
-
-        // Advertising with an AppIdentifer lets other devices on the
-        // network discover this application and prompt the user to
-        // install the application.
-        List<AppIdentifier> appIdentifierList = new ArrayList<>();
-        appIdentifierList.add(new AppIdentifier(getPackageName()));
-        AppMetadata appMetadata = new AppMetadata(appIdentifierList);
-
-        // The advertising timeout is set to run indefinitely
-        // Positive values represent timeout in milliseconds
-        long NO_TIMEOUT = 0L;
-
-        String name = null;
-        Nearby.Connections.startAdvertising(mGoogleApiClient, name, appMetadata, NO_TIMEOUT,
-                this).setResultCallback(new ResultCallback<Connections.StartAdvertisingResult>() {
-            @Override
-            public void onResult(Connections.StartAdvertisingResult result) {
-                if (result.getStatus().isSuccess()) {
-                    debugLog("startAdvertising:onResult: SUCCESS");
-                } else {
-                    debugLog("startAdvertising:onResult: FAILURE ");
-                    int statusCode = result.getStatus().getStatusCode();
-                    if (statusCode == ConnectionsStatusCodes.STATUS_ALREADY_ADVERTISING) {
-                        debugLog("STATUS_ALREADY_ADVERTISING");
-                    } else {
-                    }
-                    // Advertising failed - see statusCode for more details
-                }
-            }
-        });
     }
 
     public void sendMessage(byte[] message) {
@@ -278,33 +299,39 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
     }
 
     public void startDiscovery() {
-        debugLog("startDiscovery");
-        if (!isConnectedToNetwork()) {
-            debugLog("startDiscovery: not connected to WiFi network.");
-            return;
-        }
+        try{
+            debugLog("startDiscovery");
+            if (!isConnectedToNetwork()) {
+                debugLog("startDiscovery: not connected to WiFi network.");
+                return;
+            }
 
-        // Discover nearby apps that are advertising with the required service ID.
-        String serviceId = getString(R.string.client_id);
-        Nearby.Connections.startDiscovery(mGoogleApiClient, serviceId, TIMEOUT_DISCOVER, this)
-                .setResultCallback(new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(Status status) {
-                        if (status.isSuccess()) {
-                            debugLog("startDiscovery:onResult: SUCCESS");
-                        } else {
-                            debugLog("startDiscovery:onResult: FAILURE");
-
-                            // If the user hits 'Discover' multiple times in the timeout window,
-                            // the error will be STATUS_ALREADY_DISCOVERING
-                            int statusCode = status.getStatusCode();
-                            if (statusCode == ConnectionsStatusCodes.STATUS_ALREADY_DISCOVERING) {
-                                debugLog("STATUS_ALREADY_DISCOVERING");
+            // Discover nearby apps that are advertising with the required service ID.
+            String serviceId = getString(R.string.client_id);
+            Nearby.Connections.startDiscovery(mGoogleApiClient, serviceId, TIMEOUT_DISCOVER, this)
+                    .setResultCallback(new ResultCallback<Status>() {
+                        @Override
+                        public void onResult(Status status) {
+                            if (status.isSuccess()) {
+                                debugLog("startDiscovery:onResult: SUCCESS");
                             } else {
+                                debugLog("startDiscovery:onResult: FAILURE");
+
+                                // If the user hits 'Discover' multiple times in the timeout window,
+                                // the error will be STATUS_ALREADY_DISCOVERING
+                                int statusCode = status.getStatusCode();
+                                if (statusCode == ConnectionsStatusCodes.STATUS_ALREADY_DISCOVERING) {
+                                    debugLog("STATUS_ALREADY_DISCOVERING");
+                                } else {
+                                }
                             }
                         }
-                    }
-                });
+                    });
+        } catch(Exception e){
+            Log.e("ERROR",e.getMessage());
+
+        }
+
     }
 
     private static int[] NETWORK_TYPES = {ConnectivityManager.TYPE_WIFI,

@@ -1,14 +1,12 @@
 package com.gruppe4.menschaergerdichnicht;
 
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.annotation.IntDef;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,15 +22,12 @@ import com.google.android.gms.nearby.connection.AppIdentifier;
 import com.google.android.gms.nearby.connection.AppMetadata;
 import com.google.android.gms.nearby.connection.Connections;
 import com.google.android.gms.nearby.connection.ConnectionsStatusCodes;
-import com.gruppe4.Logic.Game;
+import com.gruppe4.Logic.*;
 import com.gruppe4.Logic.Player;
-import com.gruppe4.Logic.Serializer;
-import com.gruppe4.menschaergerdichnicht.MenschAergerDIchNicht.MyGameCallback;
+import com.gruppe4.menschaergerdichnicht.Interface.Message;
+import com.gruppe4.menschaergerdichnicht.Interface.IGameCallBack;
+import com.gruppe4.menschaergerdichnicht.Interface.MessageType;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,47 +41,29 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
         Connections.ConnectionRequestListener,
         Connections.MessageListener,
         Connections.EndpointDiscoveryListener,
-        MyGameCallback{
-    /**
-     * Timeouts (in millis) for startAdvertising and startDiscovery.  At the end of these time
-     * intervals the app will silently stop advertising or discovering.
-     *
-     * To set advertising or discovery to run indefinitely, use 0L where timeouts are required.
-     */
-    private static final long TIMEOUT_ADVERTISE = 1000L * 30L;
-    private static final long TIMEOUT_DISCOVER = 1000L * 30L;
+        IGameCallBack{
 
-    /**
-     * Possible states for this application:
-     *      IDLE - GoogleApiClient not yet connected, can't do anything.
-     *      READY - GoogleApiClient connected, ready to use Nearby Connections API.
-     *      ADVERTISING - advertising for peers to connect.
-     *      DISCOVERING - looking for a peer that is advertising.
-     *      CONNECTED - found a peer.
-     */
-    @Retention(RetentionPolicy.CLASS)
-    @IntDef({STATE_IDLE, STATE_READY, STATE_ADVERTISING, STATE_DISCOVERING, STATE_CONNECTED})
-    public @interface NearbyConnectionState {}
-    private static final int STATE_IDLE = 1023;
-    private static final int STATE_READY = 1024;
-    private static final int STATE_ADVERTISING = 1025;
-    private static final int STATE_DISCOVERING = 1026;
-    private static final int STATE_CONNECTED = 1027;
+    private static final long TIMEOUT_DISCOVER = 1000L * 30L;
     private boolean mIsHost = false;
     private GoogleApiClient mGoogleApiClient;
     private static final String TAG = "MÄDN";
     private AlertDialog mConnectionRequestDialog;
     private TextView mytextView;
     private MyListDialog mMyListDialog;
+    private String myName = null;
     private Game myGame;
+    private static int[] NETWORK_TYPES = {ConnectivityManager.TYPE_WIFI, ConnectivityManager.TYPE_ETHERNET};
 
+    private String mRemoteHostEndpoint;
+    private ArrayList<String> mRemotePeerEndpoints = new ArrayList<String>();
 
-    /** The current state of the application **/
-    @NearbyConnectionState
-    private int mState = STATE_IDLE;
+    public void setMyName(String myName) {
+        this.myName = myName;
+    }
 
-    /** The endpoint ID of the connected peer, used for messaging **/
-    private String mOtherEndpointId;
+    public void setMyGame(Game myGame) {
+        this.myGame = myGame;
+    }
 
     public boolean ismIsHost(){
         return mIsHost;
@@ -97,8 +74,8 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
     }
 
     @Override
-    public void onSendMessage(String message) {
-        sendMessage(Serializer.serialize(message));
+    public void onSendMessage(Message message) {
+        sendMessageToHost(Serializer.serialize(message));
     }
 
 
@@ -150,16 +127,21 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
 
     @Override
     public void onMessageReceived(String s, byte[] bytes, boolean b) {
-        Object message = Serializer.deserialize(bytes);
+        Message message = (Message)Serializer.deserialize(bytes);
         if(message != null){
-            if(message instanceof Player) {
-
-            }else if(message instanceof String){
-                Log.d("MESSAGE",message.toString());
-            }
+            handleMyMessage(message);
         }
     }
 
+    private void handleMyMessage(Message message) {
+        if(message.getInfo().compareTo(MessageType.SimpleStringToPrint)==0 && message.getStringMessage()!=null){
+            printSomeThing(message.getStringMessage());
+        }
+    }
+
+    private void printSomeThing(String x){
+        Toast.makeText(NetworkConnectionActivity.this, x, Toast.LENGTH_SHORT).show();
+    }
     @Override
     public void onDisconnected(String s) {
 
@@ -171,44 +153,50 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
     }
 
     @Override
-    public void onConnectionRequest(final String endpointId, String deviceId, String endpointName,
+    public void onConnectionRequest(final String remoteEndpointId, String deviceId, final String endpointName,
                                     byte[] payload) {
-        debugLog("onConnectionRequest:" + endpointId + ":" + endpointName);
+        if( mIsHost && myGame.getMaxPlayerCount()-1>this.mRemotePeerEndpoints.size()) {
+            debugLog("onConnectionRequest:" + remoteEndpointId + ":" + endpointName);
 
-        sendMessage(Serializer.serialize(new Player(endpointName)));
+            mConnectionRequestDialog = new AlertDialog.Builder(this)
+                    .setTitle("Connection Request")
+                    .setMessage("Do you want to connect to " + endpointName + "?")
+                    .setCancelable(false)
+                    .setPositiveButton("Connect", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            byte[] payload = null;
+                            Nearby.Connections.acceptConnectionRequest(mGoogleApiClient, remoteEndpointId,
+                                    payload, NetworkConnectionActivity.this)
+                                    .setResultCallback(new ResultCallback<Status>() {
+                                        @Override
+                                        public void onResult(Status status) {
+                                            if (status.isSuccess()) {
+                                                debugLog("acceptConnectionRequest: SUCCESS");
 
-        // This device is advertising and has received a connection request. Show a dialog asking
-        // the user if they would like to connect and accept or reject the request accordingly.
-        mConnectionRequestDialog = new AlertDialog.Builder(this)
-                .setTitle("Connection Request")
-                .setMessage("Do you want to connect to " + endpointName + "?")
-                .setCancelable(false)
-                .setPositiveButton("Connect", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        byte[] payload = null;
-                        Nearby.Connections.acceptConnectionRequest(mGoogleApiClient, endpointId,
-                                payload, NetworkConnectionActivity.this)
-                                .setResultCallback(new ResultCallback<Status>() {
-                                    @Override
-                                    public void onResult(Status status) {
-                                        if (status.isSuccess()) {
-                                            debugLog("acceptConnectionRequest: SUCCESS");
-
-                                            mOtherEndpointId = endpointId;
-                                        } else {
-                                            debugLog("acceptConnectionRequest: FAILURE");
+                                                if (!mRemotePeerEndpoints.contains(remoteEndpointId)) {
+                                                    mRemotePeerEndpoints.add(remoteEndpointId);
+                                                    myGame.addPlayer(new Player(endpointName, remoteEndpointId));
+                                                    sendMessageToClient(Serializer.serialize(new Message(MessageType.SimpleStringToPrint, "You joined the game")), remoteEndpointId);
+                                                    sendMessageToOtherClients(Serializer.serialize(new Message(MessageType.SimpleStringToPrint, endpointName + " joined the game")), remoteEndpointId);
+                                                    printSomeThing(endpointName +" joined the game");
+                                                }
+                                            } else {
+                                                debugLog("acceptConnectionRequest: FAILURE");
+                                            }
                                         }
-                                    }
-                                });
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Nearby.Connections.rejectConnectionRequest(mGoogleApiClient, endpointId);
-                    }
-                }).create();
+                                    });
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Nearby.Connections.rejectConnectionRequest(mGoogleApiClient, remoteEndpointId);
+                        }
+                    }).create();
+        }else{
+            Nearby.Connections.rejectConnectionRequest(mGoogleApiClient, remoteEndpointId);
+        }
 
         mConnectionRequestDialog.show();
     }
@@ -219,7 +207,6 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
         // Send a connection request to a remote endpoint. By passing 'null' for the name,
         // the Nearby Connections API will construct a default name based on device model
         // such as 'LGE Nexus 5'.
-        String myName = null;
         byte[] myPayload = null;
         Nearby.Connections.sendConnectionRequest(mGoogleApiClient, myName, endpointId, myPayload,
                 new Connections.ConnectionResponseCallback() {
@@ -231,8 +218,7 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
                             debugLog("onConnectionResponse: " + endpointName + " SUCCESS");
                             Toast.makeText(NetworkConnectionActivity.this, "Connected to " + endpointName,
                                     Toast.LENGTH_SHORT).show();
-
-                            mOtherEndpointId = endpointId;
+                            mRemoteHostEndpoint = endpointId;
                         } else {
                             debugLog("onConnectionResponse: " + endpointName + " FAILURE");
                         }
@@ -261,8 +247,7 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
             // Positive values represent timeout in milliseconds
             long NO_TIMEOUT = 0L;
 
-            String name = null;
-            Nearby.Connections.startAdvertising(mGoogleApiClient, name, appMetadata, NO_TIMEOUT,
+            Nearby.Connections.startAdvertising(mGoogleApiClient, myName, appMetadata, NO_TIMEOUT,
                     this).setResultCallback(new ResultCallback<Connections.StartAdvertisingResult>() {
                 @Override
                 public void onResult(Connections.StartAdvertisingResult result) {
@@ -285,13 +270,30 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
 
     }
 
-    public void sendMessage(byte[] message) {
-        // Sends a reliable message, which is guaranteed to be delivered eventually and to respect
-        // message ordering from sender to receiver. Nearby.Connections.sendUnreliableMessage
-        // should be used for high-frequency messages where guaranteed delivery is not required, such
-        // as showing one player's cursor location to another. Unreliable messages are often
-        // delivered faster than reliable messages.
-        Nearby.Connections.sendReliableMessage(mGoogleApiClient, mOtherEndpointId, message);
+    public void sendMessageToHost(byte[] message){
+        if(!mIsHost){
+            Nearby.Connections.sendReliableMessage( mGoogleApiClient, mRemoteHostEndpoint, message);
+        }
+    }
+
+    public void sendMessageToAllClients(byte[] message){
+        if(mIsHost){
+            Nearby.Connections.sendReliableMessage( mGoogleApiClient,mRemotePeerEndpoints, message);
+        }
+    }
+
+    public void sendMessageToOtherClients(byte[] message, String sendingNotTo){
+        ArrayList help = mRemotePeerEndpoints;
+        help.remove(sendingNotTo);
+        if(mIsHost && help.size()!=0){
+            Nearby.Connections.sendReliableMessage( mGoogleApiClient,help, message);
+        }
+    }
+
+    public void sendMessageToClient(byte[] message,String toClient){
+        if(!mIsHost){
+            Nearby.Connections.sendReliableMessage( mGoogleApiClient,toClient, message);
+        }
     }
 
     private void debugLog(String msg) {
@@ -322,7 +324,6 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
                                 int statusCode = status.getStatusCode();
                                 if (statusCode == ConnectionsStatusCodes.STATUS_ALREADY_DISCOVERING) {
                                     debugLog("STATUS_ALREADY_DISCOVERING");
-                                } else {
                                 }
                             }
                         }
@@ -334,8 +335,7 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
 
     }
 
-    private static int[] NETWORK_TYPES = {ConnectivityManager.TYPE_WIFI,
-            ConnectivityManager.TYPE_ETHERNET};
+
 
     private boolean isConnectedToNetwork() {
         ConnectivityManager connManager =

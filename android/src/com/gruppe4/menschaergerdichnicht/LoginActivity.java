@@ -7,6 +7,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.gruppe4.Logic.*;
+import com.gruppe4.Logic.Player;
+
 public class LoginActivity extends Activity {
 
     @Override
@@ -18,7 +21,8 @@ public class LoginActivity extends Activity {
     public void OnLogin(View v){
         String playerName = ((EditText)(findViewById(R.id.txtPlayerName))).getText().toString();
         Intent i = new Intent(this,MenuActivity.class);
-        i.putExtra("PlayerName",playerName);
+        Player p = new Player(playerName);
+        i.putExtra("Player",p);
         startActivity(i);
     }
 

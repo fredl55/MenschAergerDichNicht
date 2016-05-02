@@ -2,7 +2,6 @@ package com.gruppe4.menschaergerdichnicht;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -13,7 +12,6 @@ import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Vector3;
 import com.gruppe4.menschaergerdichnicht.Processors.MyInputProcessor;
 
 /**
@@ -69,7 +67,7 @@ public class MainScreen implements Screen {
     private void initCamera(float screenWidth, float scrrenHeight) {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, screenWidth, scrrenHeight);
-      //  camera.zoom = 1;
+        camera.zoom = MAXZOOM;
         camera.position.set(mapWidth / 2, mapHeight / 2, 0);
         camera.update();
 

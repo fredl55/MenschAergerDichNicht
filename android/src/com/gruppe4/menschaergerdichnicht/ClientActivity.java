@@ -15,7 +15,10 @@ public class ClientActivity extends NetworkConnectionActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_client);
+        Intent i = getIntent();
+        if(i.hasExtra("Player")){
+            super.setMyName(((Player)i.getSerializableExtra("Player")).getName());
+        }
         super.connect(false);
     }
 }

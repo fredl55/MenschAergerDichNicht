@@ -1,5 +1,7 @@
 package com.gruppe4.Logic;
 
+import android.util.Log;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -17,6 +19,8 @@ public class Serializer {
             o.writeObject(obj);
             return b.toByteArray();
         }catch (IOException e){
+        }catch(Exception e){
+            Log.e("ERROR","While Serializing");
         }
         return null;
     }
@@ -29,6 +33,8 @@ public class Serializer {
         }catch (IOException e){
 
         }catch (ClassNotFoundException d){
+        }catch (Exception e){
+
         }
         return null;
     }

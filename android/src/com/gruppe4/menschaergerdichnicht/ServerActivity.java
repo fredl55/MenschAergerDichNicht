@@ -12,10 +12,15 @@ public class ServerActivity extends NetworkConnectionActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_server);
+        Intent i = getIntent();
+        if(i.hasExtra("MyGame")){
+            myGame = (Game)i.getSerializableExtra("MyGame");
+            super.onCreate(savedInstanceState);
+            super.setMyName(myGame.getHost().getName());
+            super.setMyGame(myGame);
+            super.connect(true);
+        }
 
-        super.connect(true);
 
     }
 

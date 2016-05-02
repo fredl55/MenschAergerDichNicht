@@ -18,14 +18,18 @@ public class CreateGameActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_game);
         Intent i = getIntent();
-
+        if(i.hasExtra("Player")){
+            hostPlayer = (Player)i.getSerializableExtra("Player");
+        }
     }
 
     public void StartGame(View v){
         if(CheckInputs()){
             Intent i = new Intent(this,ServerActivity.class);
-            i.putExtra("PlayersCount",playersCount);
-            i.putExtra("HostPlayer",hostPlayer);
+            Game g = new Game();
+            g.setMaxPlayerCount(playersCount);
+            g.setHost(hostPlayer);
+            i.putExtra("MyGame",g);
             startActivity(i);
         }
 

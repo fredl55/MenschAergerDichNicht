@@ -7,16 +7,15 @@ import java.io.Serializable;
  */
 public class Player implements Serializable{
     private String name;
-    private String deviceName;
+    private String endPointId;
 
     public Player(String name){
         this.name = name;
     }
 
-    public Player(String name,String deviceName){
-
+    public Player(String name,String endPointId){
         this.name = name;
-        this.deviceName = deviceName;
+        this.endPointId = endPointId;
     }
 
     public String getName() {
@@ -27,11 +26,11 @@ public class Player implements Serializable{
         this.name = name;
     }
 
-    public void setDeviceName(String deviceName) {
-        this.deviceName = deviceName;
+    public String getEndPointId() {
+        return endPointId;
     }
 
-    public String getDeviceName() {
-        return deviceName;
+    public void setEndPointId(String endPointId) {
+        this.endPointId = endPointId;
     }
 }

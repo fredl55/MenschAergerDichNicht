@@ -9,28 +9,28 @@ import android.widget.TextView;
 import com.gruppe4.Logic.Player;
 
 public class MenuActivity extends Activity {
-    private String playerName;
+    private Player player;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
         Intent i = getIntent();
-        if(i.hasExtra("PlayerName")){
-            playerName = (i.getStringExtra("PlayerName"));
-            ((TextView)findViewById(R.id.txtWelcome)).setText(String.format("Welcome %s",playerName));
+        if(i.hasExtra("Player")){
+            player = (Player)i.getSerializableExtra("Player");
+            ((TextView)findViewById(R.id.txtWelcome)).setText(String.format("Welcome %s",player.getName()));
         }
     }
 
     public void OnClickJoinGame(View v){
         Intent i = new Intent(this,ClientActivity.class);
-        i.putExtra("Player", playerName);
+        i.putExtra("Player", player);
         startActivity(i);
     }
 
     public void OnClickCreateGame(View v){
         Intent i = new Intent(this,CreateGameActivity.class);
-        i.putExtra("Player",playerName);
+        i.putExtra("Player",player);
         startActivity(i);
     }
 

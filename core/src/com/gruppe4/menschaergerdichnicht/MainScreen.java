@@ -8,11 +8,24 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.MapProperties;
+import com.badlogic.gdx.maps.objects.EllipseMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Ellipse;
+import com.gruppe4.menschaergerdichnicht.Fields.Field;
+import com.gruppe4.menschaergerdichnicht.Fields.FieldType;
+import com.gruppe4.menschaergerdichnicht.Fields.GoalField;
+import com.gruppe4.menschaergerdichnicht.Fields.HomeField;
+import com.gruppe4.menschaergerdichnicht.Fields.StartField;
+import com.gruppe4.menschaergerdichnicht.Logic.PlaygroundModel;
 import com.gruppe4.menschaergerdichnicht.Processors.MyInputProcessor;
+
+
 
 /**
  * Created by manfrededer on 20.04.16.
@@ -50,6 +63,7 @@ public class MainScreen implements Screen {
             float w = Gdx.graphics.getWidth();
             float h = Gdx.graphics.getHeight();
             map = new TmxMapLoader().load("Brett.tmx");
+            loadObjectsInModel(map);
             setMapProperties();
             renderer = new OrthogonalTiledMapRenderer(map);
             initCamera(w,h);
@@ -63,6 +77,30 @@ public class MainScreen implements Screen {
         }
 
     }
+
+    private void loadObjectsInModel(TiledMap map) {
+        MapLayer objectLayer = map.getLayers().get("KegelLayer");
+        if(objectLayer!=null && objectLayer.getObjects().getCount()!=0){
+            MapObjects mapObjects = objectLayer.getObjects();
+            String objectName;
+            for (MapObject object:mapObjects){
+                if(object!=null && object instanceof EllipseMapObject){
+                    Ellipse el = ((EllipseMapObject)object).getEllipse();
+                    objectName = object.getName();
+                    if(objectName.contains("Home")){
+                        PlaygroundModel.homeFields.add(new HomeField(el.x,el.y, objectName));
+                    } else if(objectName.contains("Start")){
+                        PlaygroundModel.startFields.add(new StartField(el.x,el.y,objectName));
+                    } else if(objectName.contains("Ziel")){
+                        PlaygroundModel.goalFields.add(new GoalField(el.x,el.y,objectName));
+                    } else if(objectName.contains("Pos")){
+                        PlaygroundModel.normalFields.add(new Field(el.x,el.y,FieldType.NormalField,objectName));
+                    }
+                }
+            }
+        }
+    }
+
 
     private void initCamera(float screenWidth, float scrrenHeight) {
         camera = new OrthographicCamera();

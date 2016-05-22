@@ -1,6 +1,5 @@
 package com.gruppe4.menschaergerdichnicht.Fields;
 
-import com.sun.javafx.animation.transition.Position2D;
 
 import java.util.ArrayList;
 
@@ -22,7 +21,7 @@ public class Field {
 
     private int getPositionNrFromName(String name) {
         if(!name.isEmpty()){
-            String help = null;
+            String help = "";
             for(int i=0; i <name.length();i++){
                 if(Character.isDigit(name.charAt(i))){
                     help+=name.charAt(i);

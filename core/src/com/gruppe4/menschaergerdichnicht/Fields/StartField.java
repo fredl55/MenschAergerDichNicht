@@ -6,27 +6,27 @@ import java.awt.Color;
  * Created by manfrededer on 03.05.16.
  */
 public class StartField extends Field {
-    private Color color;
+    private String color;
 
     public StartField(float x, float y, String name) {
         super(x, y,FieldType.StartField,name);
         this.color = getColorFromName(name);
     }
 
-    public Color getColor() {
+    public String getColor() {
         return color;
     }
 
-    private Color getColorFromName(String name) {
-        Color c = null;
+    private String getColorFromName(String name) {
+        String c = null;
         if(name.contains("Grün")){
-            c = Color.GREEN;
+            c = "green";
         } else if(name.contains("Blau")){
-            c = Color.BLUE;
+            c = "blue";
         } else if(name.contains("Gelb")){
-            c = Color.YELLOW;
+            c = "yellow";
         } else if(name.contains("Rot")){
-            c = Color.RED;
+            c = "red";
         }
         return c;
     }

@@ -4,6 +4,11 @@ package com.gruppe4.menschaergerdichnicht;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorListener;
+import android.hardware.SensorManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -24,6 +29,7 @@ import com.google.android.gms.nearby.connection.Connections;
 import com.google.android.gms.nearby.connection.ConnectionsStatusCodes;
 import com.gruppe4.Logic.*;
 import com.gruppe4.Logic.Player;
+import com.gruppe4.menschaergerdichnicht.Interface.IGDXCallBack;
 import com.gruppe4.menschaergerdichnicht.Interface.Message;
 import com.gruppe4.menschaergerdichnicht.Interface.IGameCallBack;
 import com.gruppe4.menschaergerdichnicht.Interface.MessageType;
@@ -41,7 +47,8 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
         Connections.ConnectionRequestListener,
         Connections.MessageListener,
         Connections.EndpointDiscoveryListener,
-        IGameCallBack{
+        IGameCallBack,
+        SensorEventListener{
 
     private static final long TIMEOUT_DISCOVER = 1000L * 30L;
     private boolean mIsHost = false;
@@ -52,6 +59,7 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
     private MyListDialog mMyListDialog;
     private String myName = null;
     private Game myGame;
+
     private static int[] NETWORK_TYPES = {ConnectivityManager.TYPE_WIFI, ConnectivityManager.TYPE_ETHERNET};
 
     private String mRemoteHostEndpoint;
@@ -87,6 +95,25 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
         MenschAergerDIchNicht myGame = new MenschAergerDIchNicht();
         myGame.setMyGameCallback(this);
         initialize(myGame, config);
+
+        //init shake variables
+        mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        m_accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mAccel = 0.00f;
+        mAccelCurrent = SensorManager.GRAVITY_EARTH;
+        mAccelLast = SensorManager.GRAVITY_EARTH;
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        //mSensorManager.registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    @Override
+    protected void onPause() {
+       // mSensorManager.unregisterListener(mSensorListener);
+        super.onPause();
     }
 
     public void connect(boolean mIsHost){
@@ -134,9 +161,16 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
     }
 
     private void handleMyMessage(Message message) {
-        if(message.getInfo().compareTo(MessageType.SimpleStringToPrint)==0 && message.getStringMessage()!=null){
-            printSomeThing(message.getStringMessage());
+        if(message.getStringMessage()!=null){
+            if(message.getInfo().compareTo(MessageType.SimpleStringToPrint)==0){
+                printSomeThing(message.getStringMessage().toString());
+            } else if(message.getInfo().compareTo(MessageType.NewPlayer)==0){
+                /*
+                TO-Do
+                 */
+            }
         }
+
     }
 
     private void printSomeThing(String x){
@@ -176,10 +210,11 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
 
                                                 if (!mRemotePeerEndpoints.contains(remoteEndpointId)) {
                                                     mRemotePeerEndpoints.add(remoteEndpointId);
-                                                    myGame.addPlayer(new Player(endpointName, remoteEndpointId));
-                                                    sendMessageToClient(Serializer.serialize(new Message(MessageType.SimpleStringToPrint, "You joined the game")), remoteEndpointId);
+                                                    Player p = new Player(endpointName, remoteEndpointId);
+                                                    myGame.addPlayer(p);
                                                     sendMessageToOtherClients(Serializer.serialize(new Message(MessageType.SimpleStringToPrint, endpointName + " joined the game")), remoteEndpointId);
-                                                    printSomeThing(endpointName +" joined the game");
+                                                    printSomeThing(endpointName + " joined the game");
+                                                    sendMessageToOtherClients(Serializer.serialize(new Message(MessageType.NewPlayer,p)), remoteEndpointId);
                                                 }
                                             } else {
                                                 debugLog("acceptConnectionRequest: FAILURE");
@@ -396,4 +431,56 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
             mMyListDialog.removeItemByValue(endpointId);
         }
     }
+
+    private SensorManager mSensorManager;
+    private float mAccel; // acceleration apart from gravity
+    private float mAccelCurrent; // current acceleration including gravity
+    private float mAccelLast; // last acceleration including gravity
+    private boolean alreadyShaked = false;
+    private Sensor m_accelerometer;
+
+    public void onSensorChanged(SensorEvent se) {
+        float x = se.values[0];
+        float y = se.values[1];
+        float z = se.values[2];
+        mAccelLast = mAccelCurrent;
+        mAccelCurrent = (float) Math.sqrt((double) (x * x + y * y + z * z));
+        float delta = mAccelCurrent - mAccelLast;
+        mAccel = mAccel * 0.9f + delta; // perform low-cut filter
+        if (mAccel > 12 && !alreadyShaked) {
+            alreadyShaked = true;
+            Toast toast = Toast.makeText(getApplicationContext(), "Device has shaken.", Toast.LENGTH_LONG);
+            toast.show();
+            int zufallszahl = (int) ((Math.random() * 6) + 1);
+
+        }
+    }
+
+    /*let it shake */
+    /*private final SensorEventListener mSensorListener = new SensorEventListener() {
+
+        public void onSensorChanged(SensorEvent se) {
+            float x = se.values[0];
+            float y = se.values[1];
+            float z = se.values[2];
+            mAccelLast = mAccelCurrent;
+            mAccelCurrent = (float) Math.sqrt((double) (x*x + y*y + z*z));
+            float delta = mAccelCurrent - mAccelLast;
+            mAccel = mAccel * 0.9f + delta; // perform low-cut filter
+            if (mAccel > 12 && !alreadyShaked) {
+                alreadyShaked = true;
+                Toast toast = Toast.makeText(getApplicationContext(), "Device has shaken.", Toast.LENGTH_LONG);
+                toast.show();
+                int zufallszahl = (int) ((Math.random()*6)+1);
+
+            }
+        }
+
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        }
+    };*/
+
+
+
+
 }

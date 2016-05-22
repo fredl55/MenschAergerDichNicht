@@ -1,14 +1,15 @@
 package com.gruppe4.menschaergerdichnicht;
 
 import com.badlogic.gdx.Game;
+import com.gruppe4.menschaergerdichnicht.Interface.IGDXCallBack;
 import com.gruppe4.menschaergerdichnicht.Interface.IGameCallBack;
 
-public class MenschAergerDIchNicht extends Game {
-
+public class MenschAergerDIchNicht extends Game{
 	private IGameCallBack myGameCallback;
 	public void setMyGameCallback(IGameCallBack callback) {
 		myGameCallback = callback;
 	}
+
 
 
 
@@ -33,5 +34,4 @@ public class MenschAergerDIchNicht extends Game {
 			//Log.e("MyGame", "To use this class you must implement MyGameCallback!")
 		}
 	}
-
 }

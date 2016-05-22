@@ -1,6 +1,7 @@
 package com.gruppe4.menschaergerdichnicht;
 
 import android.content.Intent;
+import android.hardware.Sensor;
 import android.os.Bundle;
 import android.view.View;
 
@@ -20,5 +21,10 @@ public class ClientActivity extends NetworkConnectionActivity {
             super.setMyName(((Player)i.getSerializableExtra("Player")).getName());
         }
         super.connect(false);
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
     }
 }

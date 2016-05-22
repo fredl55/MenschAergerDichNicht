@@ -295,16 +295,16 @@
 </data>
  </layer>
  <objectgroup name="KegelLayer" offsetx="0" offsety="-19.6464">
-  <object id="9" name="BlauStartFeld" x="2349.71" y="1300.59" width="70.7269" height="43.222">
+  <object id="9" name="BlauStartFeld22" x="2349.71" y="1300.59" width="70.7269" height="43.222">
    <ellipse/>
   </object>
-  <object id="11" name="RotStartFeld" x="1296.66" y="2000" width="78.5855" height="31.4342">
+  <object id="11" name="RotStartFeld11" x="1296.66" y="2000" width="78.5855" height="31.4342">
    <ellipse/>
   </object>
-  <object id="15" name="GrünStartFeld" x="3041.26" y="2333.99" width="51.0806" height="39.2927">
+  <object id="15" name="GrünStartFeld31" x="3041.26" y="2333.99" width="51.0806" height="39.2927">
    <ellipse/>
   </object>
-  <object id="16" name="GelbStartFeld" x="2007.86" y="3025.54" width="51.0806" height="35.3635">
+  <object id="16" name="GelbStartFeld1" x="2007.86" y="3025.54" width="51.0806" height="35.3635">
    <ellipse/>
   </object>
   <object id="17" name="GelbHome1" x="1304.52" y="2844.79" width="62.8684" height="39.2927">
@@ -509,12 +509,6 @@
    <ellipse/>
   </object>
   <object id="86" name="RotZiel4" x="2000" y="2168.96" width="51.0806" height="51.0806">
-   <ellipse/>
-  </object>
-  <object id="87" x="3214.15" y="1642.44">
-   <ellipse/>
-  </object>
-  <object id="88" x="3398.82" y="1591.36">
    <ellipse/>
   </object>
  </objectgroup>

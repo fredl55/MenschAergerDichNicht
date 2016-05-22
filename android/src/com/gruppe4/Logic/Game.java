@@ -61,7 +61,7 @@ public class Game implements Serializable{
     private void fillColor(){
         this.notUsedColors = new ArrayList<>();
         notUsedColors.add(0,Color.BLUE);
-        notUsedColors.add(1,Color.RED);
+        notUsedColors.add(1, Color.RED);
         notUsedColors.add(2,Color.GREEN);
         notUsedColors.add(3,Color.YELLOW);
     }
@@ -71,5 +71,17 @@ public class Game implements Serializable{
         int color =  notUsedColors.get(zufallszahl);
         notUsedColors.remove(zufallszahl);
         return color;
+    }
+
+    private String getColorForPlayer(Player p){
+        if(p.getPlayerColor() == 0){
+            return "blue";
+        } else if(p.getPlayerColor() == 1){
+            return "red";
+        }else if(p.getPlayerColor() == 2){
+            return "green";
+        } else {
+            return "yellow";
+        }
     }
 }

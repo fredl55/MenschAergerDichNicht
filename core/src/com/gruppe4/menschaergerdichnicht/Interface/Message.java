@@ -6,20 +6,20 @@ import java.io.Serializable;
  * Created by manfrededer on 02.05.16.
  */
 public class Message implements Serializable{
-    private String stringMessage;
+    private Object myMessage;
     private String type;
 
-    public String getStringMessage() {
-        return stringMessage;
+    public Object getStringMessage() {
+        return myMessage;
     }
 
     public String getInfo() {
         return type;
     }
 
-    public Message(String type, String msg){
+    public Message(String type, Object msg){
         this.type=type;
-        this.stringMessage = msg;
+        this.myMessage = msg;
     }
 
 }

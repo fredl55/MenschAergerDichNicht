@@ -3,10 +3,13 @@ package com.gruppe4.menschaergerdichnicht;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
@@ -34,13 +37,17 @@ public class MainScreen implements Screen {
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
-    private Player player;
+    //private Player player;
+    private Sprite wuerfelSprite;
     private MapProperties mapProperties;
     public static float MAXZOOM = 3.5f;
     public static float MINZOOM = 1f;
     private int mapHeight;
     private int mapWidth;
     private MenschAergerDIchNicht game;
+
+
+
 
     public OrthographicCamera getCamera() {
         return camera;
@@ -64,14 +71,24 @@ public class MainScreen implements Screen {
             float h = Gdx.graphics.getHeight();
             map = new TmxMapLoader().load("Brett.tmx");
             loadObjectsInModel(map);
-            setMapProperties();
             renderer = new OrthogonalTiledMapRenderer(map);
+            setMapProperties();
+
+
             initCamera(w,h);
             InputMultiplexer  m = new InputMultiplexer();
             m.addProcessor(new GestureDetector(new MyInputProcessor(this)));
             Gdx.input.setInputProcessor(m);
             //Create the Player
-            player = new Player(new Sprite(new Texture("fbpr.png")));
+            //player = new Player(new Sprite(new Texture("fbpr.png")));
+            changeWuerfel(1);
+            PlaygroundModel.createPinsForColor("red");
+            PlaygroundModel.createPinsForColor("blue");
+            PlaygroundModel.createPinsForColor("yellow");
+            PlaygroundModel.createPinsForColor("green");
+
+
+
         } catch (Exception e){
             Gdx.app.log("GDX", "show fails because: "+e.getMessage());
         }
@@ -80,6 +97,7 @@ public class MainScreen implements Screen {
 
     private void loadObjectsInModel(TiledMap map) {
         MapLayer objectLayer = map.getLayers().get("KegelLayer");
+
         if(objectLayer!=null && objectLayer.getObjects().getCount()!=0){
             MapObjects mapObjects = objectLayer.getObjects();
             String objectName;
@@ -95,6 +113,7 @@ public class MainScreen implements Screen {
                         PlaygroundModel.goalFields.add(new GoalField(el.x,el.y,objectName));
                     } else if(objectName.contains("Pos")){
                         PlaygroundModel.normalFields.add(new Field(el.x,el.y,FieldType.NormalField,objectName));
+                        object.setVisible(false);
                     }
                 }
             }
@@ -128,16 +147,25 @@ public class MainScreen implements Screen {
     @Override
     public void render(float delta) {
         try{
-            Gdx.gl.glClearColor(0,0,0,1);
+            Gdx.gl.glClearColor(0, 0, 0, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
             camera.update();
             renderer.setView(camera);
             renderer.render();
 
+
             //Draw my Player
             /*renderer.getBatch().begin();
             player.draw(renderer.getBatch());
             renderer.getBatch().end();*/
+
+            renderer.getBatch().begin();
+
+            for(int i =0; i < PlaygroundModel.pins.size();i++){
+                PlaygroundModel.pins.get(i).getMyPin().draw(renderer.getBatch());
+            }
+            wuerfelSprite.draw(renderer.getBatch());
+            renderer.getBatch().end();
         }catch(Exception e){
             Gdx.app.log("GDX", "render fails because: "+e.getMessage());
         }
@@ -175,6 +203,23 @@ public class MainScreen implements Screen {
 
     public void sendTap(){
         game.someMethod();
+    }
+
+    private void changeWuerfel(int wuerfelZahl){
+        if(wuerfelZahl == 1){
+            this.wuerfelSprite = new Sprite(new Texture("1c.gif"));
+        } else if(wuerfelZahl == 2){
+            this.wuerfelSprite = new Sprite(new Texture("2c.gif"));
+        } else if(wuerfelZahl == 3){
+            this.wuerfelSprite = new Sprite(new Texture("3c.gif"));
+        } else if(wuerfelZahl == 4){
+            this.wuerfelSprite = new Sprite(new Texture("4c.gif"));
+        } else if(wuerfelZahl == 5){
+            this.wuerfelSprite = new Sprite(new Texture("5c.gif"));
+        } else {
+            this.wuerfelSprite = new Sprite(new Texture("6c.gif"));
+        }
+        wuerfelSprite.setPosition(mapWidth/2+1000,mapHeight/2-100);
     }
 
 

@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
-import android.hardware.SensorListener;
 import android.hardware.SensorManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -29,9 +28,9 @@ import com.google.android.gms.nearby.connection.Connections;
 import com.google.android.gms.nearby.connection.ConnectionsStatusCodes;
 import com.gruppe4.Logic.*;
 import com.gruppe4.Logic.Player;
-import com.gruppe4.menschaergerdichnicht.Interface.IGDXCallBack;
+import com.gruppe4.menschaergerdichnicht.Interface.ILibGDXCallBack;
 import com.gruppe4.menschaergerdichnicht.Interface.Message;
-import com.gruppe4.menschaergerdichnicht.Interface.IGameCallBack;
+import com.gruppe4.menschaergerdichnicht.Interface.IAndroidCallBack;
 import com.gruppe4.menschaergerdichnicht.Interface.MessageType;
 
 import java.util.ArrayList;
@@ -47,7 +46,7 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
         Connections.ConnectionRequestListener,
         Connections.MessageListener,
         Connections.EndpointDiscoveryListener,
-        IGameCallBack,
+        IAndroidCallBack,
         SensorEventListener{
 
     private static final long TIMEOUT_DISCOVER = 1000L * 30L;
@@ -59,6 +58,7 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
     private MyListDialog mMyListDialog;
     private String myName = null;
     private Game myGame;
+    private ILibGDXCallBack myGameCallBack;
 
     private static int[] NETWORK_TYPES = {ConnectivityManager.TYPE_WIFI, ConnectivityManager.TYPE_ETHERNET};
 
@@ -90,10 +90,12 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
         MenschAergerDIchNicht myGame = new MenschAergerDIchNicht();
         myGame.setMyGameCallback(this);
+        myGameCallBack = myGame;
         initialize(myGame, config);
 
         //init shake variables

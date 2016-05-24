@@ -35,6 +35,7 @@ import com.gruppe4.menschaergerdichnicht.Interface.MessageType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 /**
@@ -46,8 +47,7 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
         Connections.ConnectionRequestListener,
         Connections.MessageListener,
         Connections.EndpointDiscoveryListener,
-        IAndroidCallBack,
-        SensorEventListener{
+        IAndroidCallBack{
 
     private static final long TIMEOUT_DISCOVER = 1000L * 30L;
     private boolean mIsHost = false;
@@ -59,24 +59,20 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
     private String myName = null;
     private Game myGame;
     private ILibGDXCallBack myGameCallBack;
-
     private static int[] NETWORK_TYPES = {ConnectivityManager.TYPE_WIFI, ConnectivityManager.TYPE_ETHERNET};
-
     private String mRemoteHostEndpoint;
     private ArrayList<String> mRemotePeerEndpoints = new ArrayList<String>();
+
 
     public void setMyName(String myName) {
         this.myName = myName;
     }
-
     public void setMyGame(Game myGame) {
         this.myGame = myGame;
     }
-
     public boolean ismIsHost(){
         return mIsHost;
     }
-
     public void setmIsHost(boolean isHost){
         this.mIsHost = isHost;
     }
@@ -98,9 +94,9 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
         myGameCallBack = myGame;
         initialize(myGame, config);
 
-        //init shake variables
-        mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        m_accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        //Init Shaker
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mSensorManager.registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
         mAccel = 0.00f;
         mAccelCurrent = SensorManager.GRAVITY_EARTH;
         mAccelLast = SensorManager.GRAVITY_EARTH;
@@ -109,12 +105,12 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
     @Override
     protected void onResume(){
         super.onResume();
-        //mSensorManager.registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
+        mSensorManager.registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     @Override
     protected void onPause() {
-       // mSensorManager.unregisterListener(mSensorListener);
+        mSensorManager.unregisterListener(mSensorListener);
         super.onPause();
     }
 
@@ -163,13 +159,18 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
     }
 
     private void handleMyMessage(Message message) {
-        if(message.getStringMessage()!=null){
+        if(message.getMessage()!=null){
             if(message.getInfo().compareTo(MessageType.SimpleStringToPrint)==0){
-                printSomeThing(message.getStringMessage().toString());
+                printSomeThing(message.getMessage().toString());
             } else if(message.getInfo().compareTo(MessageType.NewPlayer)==0){
                 /*
                 TO-Do
                  */
+            } else if(message.getInfo().compareTo(MessageType.GameWorld)==0){
+                myGame = (Game)message.getMessage();
+                for(int i=0;i<myGame.getAllPlayer().size();i++){
+                    myGameCallBack.playerAdded(myGame.getAllPlayer().get(i).getPlayerColor());
+                }
             }
         }
 
@@ -214,9 +215,10 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
                                                     mRemotePeerEndpoints.add(remoteEndpointId);
                                                     Player p = new Player(endpointName, remoteEndpointId);
                                                     myGame.addPlayer(p);
+                                                    myGameCallBack.playerAdded(p.getPlayerColor());
                                                     sendMessageToOtherClients(Serializer.serialize(new Message(MessageType.SimpleStringToPrint, endpointName + " joined the game")), remoteEndpointId);
                                                     printSomeThing(endpointName + " joined the game");
-                                                    sendMessageToOtherClients(Serializer.serialize(new Message(MessageType.NewPlayer,p)), remoteEndpointId);
+                                                    sendMessageToAllClients(Serializer.serialize(new Message(MessageType.GameWorld,myGame)));
                                                 }
                                             } else {
                                                 debugLog("acceptConnectionRequest: FAILURE");
@@ -290,6 +292,7 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
                 public void onResult(Connections.StartAdvertisingResult result) {
                     if (result.getStatus().isSuccess()) {
                         debugLog("startAdvertising:onResult: SUCCESS");
+                        myGameCallBack.playerAdded(myGame.getHost().getPlayerColor());
                     } else {
                         debugLog("startAdvertising:onResult: FAILURE ");
                         int statusCode = result.getStatus().getStatusCode();
@@ -320,7 +323,7 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
     }
 
     public void sendMessageToOtherClients(byte[] message, String sendingNotTo){
-        ArrayList help = mRemotePeerEndpoints;
+        ArrayList help = new ArrayList(mRemotePeerEndpoints);
         help.remove(sendingNotTo);
         if(mIsHost && help.size()!=0){
             Nearby.Connections.sendReliableMessage( mGoogleApiClient,help, message);
@@ -438,9 +441,38 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
     private float mAccel; // acceleration apart from gravity
     private float mAccelCurrent; // current acceleration including gravity
     private float mAccelLast; // last acceleration including gravity
-    private boolean alreadyShaked = false;
-    private Sensor m_accelerometer;
+    private boolean alreadyShaken = false;
 
+    private long lastShake = 0;
+    private final SensorEventListener mSensorListener = new SensorEventListener() {
+
+        public void onSensorChanged(SensorEvent se) {
+            float x = se.values[0];
+            float y = se.values[1];
+            float z = se.values[2];
+            mAccelLast = mAccelCurrent;
+            mAccelCurrent = (float) Math.sqrt((double) (x*x + y*y + z*z));
+            float delta = mAccelCurrent - mAccelLast;
+            mAccel = mAccel * 0.9f + delta; // perform low-cut filter
+
+            if (mAccel > 12 && lastShake+500<System.currentTimeMillis()) {
+                Random rand = new Random();
+                int random = rand.nextInt(6)+1;
+                Toast toast = Toast.makeText(getApplicationContext(), "Device has shaken."+random, Toast.LENGTH_SHORT);
+                toast.show();
+                lastShake = System.currentTimeMillis();
+                myGameCallBack.playerHasRoled(random);
+
+            }
+        }
+
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        }
+    };
+
+
+
+    /*@Override
     public void onSensorChanged(SensorEvent se) {
         float x = se.values[0];
         float y = se.values[1];
@@ -454,9 +486,10 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
             Toast toast = Toast.makeText(getApplicationContext(), "Device has shaken.", Toast.LENGTH_LONG);
             toast.show();
             int zufallszahl = (int) ((Math.random() * 6) + 1);
+            myGameCallBack.playerHasRoled(zufallszahl);
 
         }
-    }
+    }*/
 
     /*let it shake */
     /*private final SensorEventListener mSensorListener = new SensorEventListener() {

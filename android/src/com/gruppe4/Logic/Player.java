@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class Player implements Serializable{
     private String name;
     private String endPointId;
-    private int playerColor;
+    private String playerColor;
 
     public Player(String name){
         this.name = name;
@@ -35,11 +35,11 @@ public class Player implements Serializable{
         this.endPointId = endPointId;
     }
 
-    public int getPlayerColor() {
+    public String getPlayerColor() {
         return playerColor;
     }
 
-    public void setPlayerColor(int playerColor) {
+    public void setPlayerColor(String playerColor) {
         this.playerColor = playerColor;
     }
 }

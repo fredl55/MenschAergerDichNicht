@@ -1,21 +1,34 @@
 package com.gruppe4.menschaergerdichnicht;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Texture;
 import com.gruppe4.menschaergerdichnicht.Interface.IAndroidCallBack;
 import com.gruppe4.menschaergerdichnicht.Interface.ILibGDXCallBack;
 
-public class MenschAergerDIchNicht extends Game implements ILibGDXCallBack {
+public class MenschAergerDIchNicht extends Game implements ILibGDXCallBack{
 	private IAndroidCallBack myGameCallback;
 	public void setMyGameCallback(IAndroidCallBack callback) {
 		myGameCallback = callback;
 	}
-
+	private MainScreen myScreen;
 
 
 
 	@Override
 	public void create () {
-		setScreen(new MainScreen(this));
+		MyAsstes.loadAllAssets();
+		boolean loaded = false;
+		while (!loaded){
+
+			if(MyAsstes.assets.update()){
+				myScreen = new MainScreen(this);
+				setScreen(myScreen);
+				loaded = true;
+			}
+		}
+
+
 	}
 
 	@Override
@@ -37,7 +50,27 @@ public class MenschAergerDIchNicht extends Game implements ILibGDXCallBack {
 	}
 
 	@Override
-	public void blabla() {
-
+	public void playerAdded(String color) {
+		boolean notLoaded = true;
+		while (notLoaded){
+			if(MyAsstes.assets.update()){
+				myScreen.playerAdded(color);
+				notLoaded = false;
+			}
+		}
 	}
+
+	@Override
+	public void playerHasRoled(int number) {
+
+		myScreen.playerHasRoled(number);
+	}
+
+	@Override
+	public void dispose(){
+		MyAsstes.assets.dispose();
+		myScreen.dispose();
+	}
+
+
 }

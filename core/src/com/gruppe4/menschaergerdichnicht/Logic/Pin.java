@@ -2,8 +2,11 @@ package com.gruppe4.menschaergerdichnicht.Logic;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.gruppe4.menschaergerdichnicht.MyAsstes;
 
 import java.awt.Color;
+
+import javax.xml.soap.Text;
 
 /**
  * Created by manfrededer on 03.05.16.
@@ -17,15 +20,7 @@ public class Pin {
 
     public Pin(String c){
         this.pinColor = c;
-        if(pinColor == "blue"){
-            myPin = new Sprite(new Texture("redPin.png"));
-        } else if(pinColor == "red"){
-            myPin = new Sprite(new Texture("redPin.png"));
-        } else if(pinColor == "yellow"){
-            myPin = new Sprite(new Texture("redPin.png"));
-        } else if(pinColor == "green"){
-            myPin = new Sprite(new Texture("redPin.png"));
-        }
+        myPin = new Sprite(MyAsstes.assets.get(c+"Pin.jpeg", Texture.class));
     }
 
 

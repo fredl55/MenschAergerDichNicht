@@ -15,7 +15,7 @@ public class Game implements Serializable{
     private ArrayList<Player> allClientPlayers = new ArrayList<>();
     private int maxPlayerCount;
     private int cheatingVariation;
-    private ArrayList<Integer> notUsedColors;
+    private ArrayList<String> notUsedColors;
 
     public Game(){
         fillColor();
@@ -58,30 +58,24 @@ public class Game implements Serializable{
         allPlayer.add(p);
     }
 
-    private void fillColor(){
-        this.notUsedColors = new ArrayList<>();
-        notUsedColors.add(0,Color.BLUE);
-        notUsedColors.add(1, Color.RED);
-        notUsedColors.add(2,Color.GREEN);
-        notUsedColors.add(3,Color.YELLOW);
+    public void addPlayer(String name, String id){
+
     }
 
-    private int getUnusedColor(){
+    private void fillColor(){
+        this.notUsedColors = new ArrayList<>();
+        notUsedColors.add(0,"blue");
+        notUsedColors.add(1, "red");
+        notUsedColors.add(2,"green");
+        notUsedColors.add(3, "yellow");
+    }
+
+    private String getUnusedColor(){
         int zufallszahl = (int) ((Math.random()*notUsedColors.size()));
-        int color =  notUsedColors.get(zufallszahl);
+        String color =  notUsedColors.get(zufallszahl);
         notUsedColors.remove(zufallszahl);
         return color;
     }
 
-    private String getColorForPlayer(Player p){
-        if(p.getPlayerColor() == 0){
-            return "blue";
-        } else if(p.getPlayerColor() == 1){
-            return "red";
-        }else if(p.getPlayerColor() == 2){
-            return "green";
-        } else {
-            return "yellow";
-        }
-    }
+
 }

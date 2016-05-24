@@ -9,7 +9,7 @@ public class Message implements Serializable{
     private Object myMessage;
     private String type;
 
-    public Object getStringMessage() {
+    public Object getMessage() {
         return myMessage;
     }
 

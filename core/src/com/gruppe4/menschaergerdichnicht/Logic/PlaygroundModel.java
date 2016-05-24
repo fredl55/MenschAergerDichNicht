@@ -21,7 +21,7 @@ public class PlaygroundModel {
 
     public static void createPinsForColor(String c){
         ArrayList<HomeField> homeFieldsForColor = getHomeFieldsForColor(c);
-        for(int i=0;i<4;i++){
+        for(int i=0;i<homeFieldsForColor.size(); i++){
             HomeField help = homeFieldsForColor.get(i);
             Pin p = new Pin(c);
             p.setPinPosition(help.getX(),help.getY());
@@ -35,7 +35,8 @@ public class PlaygroundModel {
         ArrayList<HomeField> help = new ArrayList<HomeField>();
         int i =0;
         while(i < homeFields.size() && help.size() != 4){
-            if(homeFields.get(i).getColor() == c){
+            String co = homeFields.get(i).getColor();
+            if(co.compareTo(c) == 0){
                 help.add(homeFields.get(i));
             }
             i++;

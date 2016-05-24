@@ -8,4 +8,5 @@ import java.io.Serializable;
 public class MessageType implements Serializable{
     public static String SimpleStringToPrint = "SimpleStringToPrint";
     public static String NewPlayer = "NewPlayer";
+    public static String GameWorld = "GameWorld";
 }

@@ -2,6 +2,7 @@ package com.gruppe4.menschaergerdichnicht;
 
 import android.content.Intent;
 import android.hardware.Sensor;
+import android.hardware.SensorEvent;
 import android.os.Bundle;
 import com.gruppe4.Logic.Player;
 
@@ -22,16 +23,6 @@ public class ServerActivity extends NetworkConnectionActivity{
             super.connect(true);
         }
 
-
-    }
-
-    @Override
-    public void onStop(){
-        super.onStop();
-    }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
 }

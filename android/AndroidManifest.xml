@@ -15,16 +15,9 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
-    <!-- To auto-complete the email text field in the login form with the user's emails -->
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.READ_PROFILE" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
-
-    <android:uses-permission android:name="android.permission.READ_CALL_LOG" />
-
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/GdxTheme">
         <meta-data android:name="com.google.android.gms.nearby.connection.SERVICE_ID"
@@ -33,15 +26,15 @@
             android:name=".AndroidLauncher"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:label="@string/app_name"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="sensorLandscape" />
         <activity
             android:name=".MenuActivity"
             android:label="@string/title_activity_start"
-            android:screenOrientation="landscape"></activity>
+            android:screenOrientation="sensorLandscape"/>
         <activity
             android:name=".CreateGameActivity"
             android:label="@string/title_activity_create_game"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="sensorLandscape" />
         <activity
             android:name=".ServerActivity"
             android:label="@string/title_activity_server" />
@@ -50,7 +43,8 @@
             android:label="@string/title_activity_client" />
         <activity
             android:name=".LoginActivity"
-            android:label="@string/title_activity_login">
+            android:label="@string/app_name"
+            android:screenOrientation="sensorLandscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

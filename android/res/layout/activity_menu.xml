@@ -7,69 +7,71 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/background"
     tools:context=".MenuActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="140dp">
+        android:layout_alignParentStart="true">
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Create a Game"
+            android:text="Create Game"
             android:id="@+id/btnCreateGame"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:onClick="OnClickCreateGame" />
+            android:onClick="OnClickCreateGame"
+            android:layout_marginLeft="150dp"
+            android:layout_marginRight="150dp"
+            android:backgroundTint="#24acd0"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="5dp" />
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Join a Game"
+            android:text="Join Game"
             android:id="@+id/btnJoinGame"
+            android:onClick="OnClickJoinGame"
+            android:layout_marginLeft="150dp"
+            android:layout_marginRight="150dp"
+            android:backgroundTint="#24acd0"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
             android:layout_below="@+id/btnCreateGame"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:onClick="OnClickJoinGame" />
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="5dp" />
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="New Button"
-            android:id="@+id/button3"
+            android:text="Options"
+            android:id="@+id/btnOptions"
+            android:layout_marginLeft="150dp"
+            android:layout_marginRight="150dp"
+            android:backgroundTint="#24acd0"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
             android:layout_below="@+id/btnJoinGame"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_centerHorizontal="true" />
 
-        <Button
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New Button"
-            android:id="@+id/button4"
-            android:layout_below="@+id/button3"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/txtWelcome"
+            android:textColor="#ffffff"
+            android:layout_marginBottom="50dp"
+            android:layout_above="@+id/btnCreateGame"
+            android:layout_centerHorizontal="true"
+            android:textStyle="bold" />
+
     </RelativeLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/txtWelcome"
-        android:layout_marginTop="96dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
 </RelativeLayout>

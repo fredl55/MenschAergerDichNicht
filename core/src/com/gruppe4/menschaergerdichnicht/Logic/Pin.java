@@ -20,7 +20,7 @@ public class Pin {
 
     public Pin(String c){
         this.pinColor = c;
-        myPin = new Sprite(MyAsstes.assets.get(c+"Pin.jpeg", Texture.class));
+        myPin = new Sprite(MyAsstes.assets.get(c+"Pin.png", Texture.class));
     }
 
 

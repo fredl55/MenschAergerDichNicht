@@ -13,13 +13,20 @@ public class MenuActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         setContentView(R.layout.activity_menu);
 
         Intent i = getIntent();
         if(i.hasExtra("Player")){
             player = (Player)i.getSerializableExtra("Player");
-            ((TextView)findViewById(R.id.txtWelcome)).setText(String.format("Welcome %s",player.getName()));
+            ((TextView)findViewById(R.id.txtWelcome)).setText(String.format("Welcome, %s",player.getName()+ "!"));
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
     }
 
     public void OnClickJoinGame(View v){

@@ -7,7 +7,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.gruppe4.menschaergerdichnicht.CreateGameActivity">
+    tools:context="com.gruppe4.menschaergerdichnicht.CreateGameActivity"
+    android:background="@drawable/background">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -22,60 +23,59 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Players Count:"
+            android:text="Number of players:"
             android:id="@+id/lblPlayersCount"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="59dp"
-            android:textSize="25dp" />
+            android:layout_marginTop="70dp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="25dp"
+            android:phoneNumber="false"
+            android:layout_marginLeft="20dp" />
 
         <RadioGroup
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignTop="@+id/textView"
-            android:layout_toRightOf="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:id="@+id/radioGroup"
-            android:layout_alignBottom="@+id/btnStartGame">
+            android:layout_alignTop="@+id/textView"
+            android:layout_toEndOf="@+id/btnStartGame">
 
             <RadioButton
-                android:layout_width="wrap_content"
+                android:layout_width="195dp"
                 android:layout_height="wrap_content"
-                android:text="New RadioButton"
+                android:text="Skip a turn"
                 android:id="@+id/radioButton"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+                android:checked="false"
+                android:buttonTint="#24acd0" />
 
             <RadioButton
-                android:layout_width="wrap_content"
+                android:layout_width="195dp"
                 android:layout_height="wrap_content"
-                android:text="New RadioButton"
+                android:text="Three fields back"
                 android:id="@+id/radioButton2"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+                android:checked="false"
+                android:buttonTint="#24acd0" />
         </RadioGroup>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Cheating Punishment"
+            android:text="Cheating punishment:"
             android:id="@+id/textView"
             android:textIsSelectable="false"
             android:textSize="25dp"
             android:layout_marginTop="28dp"
             android:layout_below="@+id/lblPlayersCount"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="StartGame"
-            android:id="@+id/btnStartGame"
-            android:textSize="25dp"
-            android:onClick="StartGame"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:phoneNumber="false"
+            android:textStyle="bold"
+            android:layout_marginLeft="20dp" />
 
         <EditText
             android:layout_width="wrap_content"
@@ -83,11 +83,28 @@
             android:inputType="number"
             android:ems="4"
             android:id="@+id/txtPlayersCount"
-            android:layout_alignBottom="@+id/lblPlayersCount"
-            android:layout_alignLeft="@+id/radioGroup"
-            android:layout_alignStart="@+id/radioGroup"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:gravity="center"
+            android:textAlignment="gravity"
+            android:textColor="#2bafd1"
+            android:layout_above="@+id/textView"
+            android:layout_alignStart="@+id/radioGroup" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start Game"
+            android:id="@+id/btnStartGame"
+            android:textSize="25dp"
+            android:onClick="StartGame"
+            android:backgroundTint="#24acd0"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            android:clickable="true"
+            android:enabled="true"
+            android:focusable="true"
+            android:layout_below="@+id/radioGroup"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp" />
     </RelativeLayout>
 
 </RelativeLayout>

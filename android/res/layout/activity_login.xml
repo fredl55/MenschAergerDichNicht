@@ -7,41 +7,63 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/background"
     tools:context="com.gruppe4.menschaergerdichnicht.LoginActivity">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:src="@drawable/logo"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/lblPlayerName"
+        android:layout_alignStart="@+id/lblPlayerName"
+        android:layout_alignEnd="@+id/lblPlayerName" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Confirm"
+        android:id="@+id/btnStartgame"
+        android:onClick="OnLogin"
+        android:enabled="true"
+        android:focusable="true"
+        android:longClickable="false"
+        android:backgroundTint="#24acd0"
+        android:textColor="#ffffff"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:clickable="true"
+        android:elegantTextHeight="false"
+        android:layout_below="@+id/txtPlayerName"
+        android:layout_alignStart="@+id/txtPlayerName"
+        android:layout_alignEnd="@+id/lblPlayerName" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/txtPlayerName"
+        android:textColor="#3fb7bd"
+        android:textColorHint="#a03fb7bd"
+        android:hint="Player"
+        android:layout_below="@+id/lblPlayerName"
+        android:layout_alignStart="@+id/lblPlayerName"
+        android:layout_marginBottom="15dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Type in your Player Name:"
         android:id="@+id/lblPlayerName"
-        android:layout_above="@+id/txtPlayerName"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="160dp"
-        android:layout_marginStart="160dp" />
+        android:gravity="center_horizontal"
+        android:textColor="#ffffff"
+        android:paddingBottom="10dp"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dp" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="Player1"
-        android:ems="10"
-        android:id="@+id/txtPlayerName"
-        android:layout_marginBottom="102dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignLeft="@+id/lblPlayerName"
-        android:layout_alignStart="@+id/lblPlayerName" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Start Game"
-        android:id="@+id/btnStartgame"
-        android:layout_below="@+id/lblPlayerName"
-        android:layout_alignLeft="@+id/txtPlayerName"
-        android:layout_alignStart="@+id/txtPlayerName"
-        android:layout_marginTop="58dp"
-        android:layout_alignRight="@+id/txtPlayerName"
-        android:layout_alignEnd="@+id/txtPlayerName"
-        android:onClick="OnLogin" />
 </RelativeLayout>

@@ -16,9 +16,9 @@ public class MyAsstes {
         assets.load("4c.gif", Texture.class);
         assets.load("5c.gif", Texture.class);
         assets.load("6c.gif", Texture.class);
-        assets.load("greenPin.jpeg", Texture.class);
-        assets.load("redPin.jpeg", Texture.class);
-        assets.load("yellowPin.jpeg", Texture.class);
-        assets.load("bluePin.jpeg", Texture.class);
+        assets.load("greenPin.png", Texture.class);
+        assets.load("redPin.png", Texture.class);
+        assets.load("yellowPin.png", Texture.class);
+        assets.load("bluePin.png", Texture.class);
     }
 }

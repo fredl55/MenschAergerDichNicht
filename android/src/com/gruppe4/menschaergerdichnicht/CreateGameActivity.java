@@ -16,11 +16,18 @@ public class CreateGameActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         setContentView(R.layout.activity_create_game);
         Intent i = getIntent();
         if(i.hasExtra("Player")){
             hostPlayer = (Player)i.getSerializableExtra("Player");
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
     }
 
     public void StartGame(View v){

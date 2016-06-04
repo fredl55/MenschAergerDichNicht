@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_checked="true">
+        <bitmap xmlns:android="http://schemas.android.com/apk/res/android"
+            android:src="@drawable/germany_flag">
+        </bitmap>
+    </item>
+
+    <item android:state_checked="false">
+        <bitmap xmlns:android="http://schemas.android.com/apk/res/android"
+            android:src="@drawable/germany_flag"
+            android:alpha="125">
+        </bitmap>
+    </item>
+</selector>

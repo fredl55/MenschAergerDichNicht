@@ -19,7 +19,7 @@ public class MenuActivity extends Activity {
         Intent i = getIntent();
         if(i.hasExtra("Player")){
             player = (Player)i.getSerializableExtra("Player");
-            ((TextView)findViewById(R.id.txtWelcome)).setText(String.format("Welcome, %s",player.getName()+ "!"));
+            ((TextView)findViewById(R.id.txtWelcome)).setText(String.format("Welcome\n" + player.getName()));
         }
     }
 
@@ -38,6 +38,10 @@ public class MenuActivity extends Activity {
     public void OnClickCreateGame(View v){
         Intent i = new Intent(this,CreateGameActivity.class);
         i.putExtra("Player",player);
+        startActivity(i);
+    }
+    public void OnClickOptions(View v){
+        Intent i = new Intent(this,OptionsActivity.class);
         startActivity(i);
     }
 

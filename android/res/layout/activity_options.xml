@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/background"
+    tools:context=".MenuActivity"><![CDATA[
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:focusable="true"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentStart="true">
+    ]]>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:id="@+id/linearLayout"
+        android:layout_alignParentEnd="true"
+        android:weightSum="10">
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="4" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2">
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/optLanguage"
+                android:id="@+id/btnOptions"
+                android:textColor="#ffffff"
+                android:textStyle="bold"
+                android:background="@drawable/button"
+                android:textSize="20sp"
+                android:padding="20dp"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/lang"
+                android:clickable="false" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/optCheating"
+                android:id="@+id/fieldCheat"
+                android:textColor="#ffffff"
+                android:textStyle="bold"
+                android:background="@drawable/button"
+                android:textSize="20sp"
+                android:padding="20dp"
+                android:layout_marginBottom="30dp"
+                android:layout_above="@+id/btnOptions"
+                android:layout_alignParentStart="true"
+                android:layout_alignEnd="@+id/btnOptions"
+                android:clickable="false" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/optSFX"
+                android:id="@+id/fieldSFX"
+                android:textColor="#ffffff"
+                android:textStyle="bold"
+                android:background="@drawable/button"
+                android:textSize="20sp"
+                android:padding="20dp"
+                android:layout_below="@+id/btnOptions"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="30dp"
+                android:layout_toStartOf="@+id/lang"
+                android:clickable="false" />
+
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/lang"
+                android:weightSum="2"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
+                android:layout_above="@+id/fieldSFX"
+                android:layout_alignParentEnd="true">
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/lang1"
+                    android:checked="true"
+                    android:background="@drawable/radioselector_english"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp" />
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/lang2"
+                    android:layout_gravity="center"
+                    android:checked="false"
+                    android:background="@drawable/radioselector_deutsch"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp" />
+
+            </RadioGroup>
+
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/switchCheat"
+                android:layout_alignBottom="@+id/fieldCheat"
+                android:layout_alignTop="@+id/fieldCheat"
+                android:layout_alignParentEnd="true"
+                android:layout_toEndOf="@+id/fieldCheat"
+                android:checked="true"
+                android:clickable="true"
+                android:textOff="OFF"
+                android:textOn="ON"
+                android:enabled="false" />
+
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/switchSFX"
+                android:layout_alignTop="@+id/fieldSFX"
+                android:layout_alignParentEnd="true"
+                android:layout_alignBottom="@+id/fieldSFX"
+                android:layout_toEndOf="@+id/fieldSFX"
+                android:checked="true"
+                android:clickable="true"
+                android:textOff="OFF"
+                android:textOn="ON"
+                android:enabled="false" />
+
+        </RelativeLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:background="@drawable/radioselector" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

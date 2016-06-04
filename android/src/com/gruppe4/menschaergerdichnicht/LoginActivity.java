@@ -26,11 +26,20 @@ public class LoginActivity extends Activity {
 
 
     public void OnLogin(View v){
-        String playerName = ((EditText)(findViewById(R.id.txtPlayerName))).getText().toString();
-        Intent i = new Intent(this,MenuActivity.class);
-        Player p = new Player(playerName);
-        i.putExtra("Player",p);
-        startActivity(i);
+        EditText txtName = (EditText)findViewById(R.id.txtPlayerName);
+        if( txtName.getText().toString().length() == 0 ) {
+            txtName.setError(getString(R.string.error_empty));
+        }
+        else if(txtName.getText().toString().length() > 12 ) {
+            txtName.setError(getString(R.string.error_tooLong));
+        }
+        else {
+            String playerName = ((EditText) (findViewById(R.id.txtPlayerName))).getText().toString();
+            Intent i = new Intent(this, MenuActivity.class);
+            Player p = new Player(playerName);
+            i.putExtra("Player", p);
+            startActivity(i);
+        }
     }
 
 }

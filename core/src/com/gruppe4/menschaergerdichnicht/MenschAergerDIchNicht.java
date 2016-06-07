@@ -62,7 +62,6 @@ public class MenschAergerDIchNicht extends Game implements ILibGDXCallBack{
 
 	@Override
 	public void playerHasRoled(int number) {
-
 		myScreen.playerHasRoled(number);
 	}
 

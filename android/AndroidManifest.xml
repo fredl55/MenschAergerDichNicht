@@ -32,10 +32,6 @@
             android:label="@string/title_activity_start"
             android:screenOrientation="sensorLandscape"/>
         <activity
-            android:name=".OptionsActivity"
-            android:label="@string/title_activity_options"
-            android:screenOrientation="sensorLandscape"/>
-        <activity
             android:name=".CreateGameActivity"
             android:label="@string/title_activity_create_game"
             android:screenOrientation="sensorLandscape" />

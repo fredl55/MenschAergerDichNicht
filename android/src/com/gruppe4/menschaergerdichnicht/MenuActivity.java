@@ -40,9 +40,5 @@ public class MenuActivity extends Activity {
         i.putExtra("Player",player);
         startActivity(i);
     }
-    public void OnClickOptions(View v){
-        Intent i = new Intent(this,OptionsActivity.class);
-        startActivity(i);
-    }
 
 }

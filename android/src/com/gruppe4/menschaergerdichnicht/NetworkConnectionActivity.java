@@ -70,9 +70,6 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
     public void setMyGame(Game myGame) {
         this.myGame = myGame;
     }
-    public boolean ismIsHost(){
-        return mIsHost;
-    }
     public void setmIsHost(boolean isHost){
         this.mIsHost = isHost;
     }
@@ -214,8 +211,7 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
 
                                                 if (!mRemotePeerEndpoints.contains(remoteEndpointId)) {
                                                     mRemotePeerEndpoints.add(remoteEndpointId);
-                                                    Player p = new Player(endpointName, remoteEndpointId);
-                                                    myGame.addPlayer(p);
+                                                    Player p = myGame.addPlayer(endpointName, remoteEndpointId);
                                                     myGameCallBack.playerAdded(p.getPlayerColor());
                                                     sendMessageToOtherClients(Serializer.serialize(new Message(MessageType.SimpleStringToPrint, endpointName + " joined the game")), remoteEndpointId);
                                                     printSomeThing(endpointName + " joined the game");
@@ -294,6 +290,7 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
                     if (result.getStatus().isSuccess()) {
                         debugLog("startAdvertising:onResult: SUCCESS");
                         myGameCallBack.playerAdded(myGame.getHost().getPlayerColor());
+
                     } else {
                         debugLog("startAdvertising:onResult: FAILURE ");
                         int statusCode = result.getStatus().getStatusCode();
@@ -442,9 +439,8 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
     private float mAccel; // acceleration apart from gravity
     private float mAccelCurrent; // current acceleration including gravity
     private float mAccelLast; // last acceleration including gravity
-    private boolean alreadyShaken = false;
 
-    private long lastShake = 0;
+    //private long lastShake;
     private final SensorEventListener mSensorListener = new SensorEventListener() {
 
         public void onSensorChanged(SensorEvent se) {
@@ -456,15 +452,14 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
             float delta = mAccelCurrent - mAccelLast;
             mAccel = mAccel * 0.9f + delta; // perform low-cut filter
 
-            if (mAccel > 12 && wuerfelAllowed/*lastShake+500<System.currentTimeMillis()*/) {
+            if (mAccel > 12 && wuerfelAllowed /*lastShake+500<System.currentTimeMillis()*/) {
                 Random rand = new Random();
                 int random = rand.nextInt(6)+1;
                 Toast toast = Toast.makeText(getApplicationContext(), "Device has shaken."+random, Toast.LENGTH_SHORT);
                 toast.show();
-                lastShake = System.currentTimeMillis();
+                //lastShake = System.currentTimeMillis();
                 myGameCallBack.playerHasRoled(random);
                 wuerfelAllowed = false;
-                //sendMessageToHost(Serializer.serialize(new Message(MessageType.PlayerRoled)));
             }
         }
 

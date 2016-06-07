@@ -16,6 +16,7 @@ public class Game implements Serializable{
     private int maxPlayerCount;
     private int cheatingVariation;
     private ArrayList<String> notUsedColors;
+    private int freePlayerCount = maxPlayerCount-1;
 
     public Game(){
         fillColor();
@@ -52,15 +53,16 @@ public class Game implements Serializable{
         this.maxPlayerCount = maxPlayerCount;
     }
 
-    public void addPlayer(Player p){
+    public Player addPlayer(String endpointName,String endPointId){
+        Player p = new Player(endpointName,endPointId);
+        p.setId(maxPlayerCount-freePlayerCount);
+        freePlayerCount--;
         p.setPlayerColor(getUnusedColor());
         allClientPlayers.add(p);
         allPlayer.add(p);
+        return p;
     }
 
-    public void addPlayer(String name, String id){
-
-    }
 
     private void fillColor(){
         this.notUsedColors = new ArrayList<>();

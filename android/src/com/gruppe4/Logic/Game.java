@@ -17,6 +17,8 @@ public class Game implements Serializable{
     private int cheatingVariation;
     private ArrayList<String> notUsedColors;
     private int freePlayerCount = maxPlayerCount-1;
+    private int nextPlayer = -1;
+    private Player currentRollingPlayer;
 
     public Game(){
         fillColor();
@@ -79,5 +81,19 @@ public class Game implements Serializable{
         return color;
     }
 
+    public boolean isFull(){
+        return this.allPlayer.size() == this.maxPlayerCount;
+    }
 
+
+    public Player getNextPlayerToRoll() {
+        if(nextPlayer<maxPlayerCount-1){
+            nextPlayer++;
+        } else{
+            nextPlayer=0;
+        }
+        currentRollingPlayer = this.getAllPlayer().get(nextPlayer);
+        return currentRollingPlayer;
+
+    }
 }

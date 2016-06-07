@@ -170,9 +170,28 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
                 for(int i=0;i<myGame.getAllPlayer().size();i++){
                     myGameCallBack.playerAdded(myGame.getAllPlayer().get(i).getPlayerColor());
                 }
+            } else if(message.getInfo().compareTo(MessageType.YourTurn)==0){
+                yourTurn();
+            } else if(message.getInfo().compareTo(MessageType.PlayerRoled)==0){
+                infonextPlayer();
             }
         }
 
+    }
+
+    private void infonextPlayer(){
+        Player p = myGame.getNextPlayerToRoll();
+        if(p.isHost()){
+            yourTurn();
+        } else {
+            sendMessageToClient(Serializer.serialize(new Message(MessageType.YourTurn, "Its your Turn")), p.getEndPointId());
+
+        }
+    }
+
+    private void yourTurn(){
+        printSomeThing("Its your turn");
+        this.wuerfelAllowed = true;
     }
 
     private void printSomeThing(String x){
@@ -217,6 +236,15 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
                                                     sendMessageToOtherClients(Serializer.serialize(new Message(MessageType.SimpleStringToPrint, endpointName + " joined the game")), remoteEndpointId);
                                                     printSomeThing(endpointName + " joined the game");
                                                     sendMessageToAllClients(Serializer.serialize(new Message(MessageType.GameWorld,myGame)));
+
+                                                    if(myGame.isFull()){
+                                                        Player nextPlayerToRoll = myGame.getNextPlayerToRoll();
+                                                        if(nextPlayerToRoll.isHost()){
+                                                            yourTurn();
+                                                        } else{
+                                                            sendMessageToClient(Serializer.serialize(new Message(MessageType.YourTurn, "Its your Turn")),nextPlayerToRoll.getEndPointId());
+                                                        }
+                                                    }
                                                 }
                                             } else {
                                                 debugLog("acceptConnectionRequest: FAILURE");
@@ -330,7 +358,7 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
     }
 
     public void sendMessageToClient(byte[] message,String toClient){
-        if(!mIsHost){
+        if(mIsHost){
             Nearby.Connections.sendReliableMessage( mGoogleApiClient,toClient, message);
         }
     }
@@ -460,6 +488,11 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
                 toast.show();
                 //lastShake = System.currentTimeMillis();
                 myGameCallBack.playerHasRoled(random);
+                if(!mIsHost){
+                    sendMessageToHost(Serializer.serialize(new Message(MessageType.PlayerRoled,"")));
+                } else {
+                    infonextPlayer();
+                }
                 wuerfelAllowed = false;
             }
         }

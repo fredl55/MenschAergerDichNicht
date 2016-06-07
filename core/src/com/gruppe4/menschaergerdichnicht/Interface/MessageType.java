@@ -10,4 +10,5 @@ public class MessageType implements Serializable{
     public static String NewPlayer = "NewPlayer";
     public static String GameWorld = "GameWorld";
     public static String PlayerRoled = "PlayerRoled";
+    public static String YourTurn = "YourTurn";
 }

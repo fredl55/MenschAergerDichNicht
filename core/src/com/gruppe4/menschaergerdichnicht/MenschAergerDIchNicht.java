@@ -53,7 +53,7 @@ public class MenschAergerDIchNicht extends Game implements ILibGDXCallBack{
 	public void playerAdded(String color) {
 		boolean notLoaded = true;
 		while (notLoaded){
-			if(MyAsstes.assets.update()){
+			if(MyAsstes.assets.update() && myScreen!=null){
 				myScreen.playerAdded(color);
 				notLoaded = false;
 			}

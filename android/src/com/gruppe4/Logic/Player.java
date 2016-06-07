@@ -11,13 +11,14 @@ public class Player implements Serializable{
     private String name;
     private String endPointId;
     private String playerColor;
-    private boolean isHost = false;
+    private boolean host = false;
     private ArrayList<Pin> myPins = new ArrayList<>();
 
     public Player(String name){
         this.name = name;
-        this.isHost = true;
+        this.host = true;
         this.id = 1;
+        this.host=true;
 
     }
 
@@ -25,6 +26,7 @@ public class Player implements Serializable{
     public Player(String name,String endPointId){
         this.name = name;
         this.endPointId = endPointId;
+        this.host = false;
     }
 
     public String getName() {
@@ -62,5 +64,9 @@ public class Player implements Serializable{
 
     public void CreateStartingPins(){
         this.myPins.add(new Pin(this.playerColor,myPins.size()));
+    }
+
+    public boolean isHost() {
+        return host;
     }
 }

@@ -17,6 +17,7 @@ public class Pin {
     private float posY;
     private int number; // 1 - 4
     private Sprite myPin;
+    private int fieldOffsetY = 85;
 
     public Pin(String c){
         this.pinColor = c;
@@ -30,8 +31,8 @@ public class Pin {
 
     public void setPinPosition(float x, float y){
         this.posX = x;
-        this.posY = y;
-        myPin.setPosition(x,y);
+        this.posY = y+fieldOffsetY;
+        myPin.setPosition(posX,posY);
     }
 
     public String getPinColor() {

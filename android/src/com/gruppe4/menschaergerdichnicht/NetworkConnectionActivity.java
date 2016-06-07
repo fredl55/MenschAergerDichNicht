@@ -76,6 +76,7 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
     public void setmIsHost(boolean isHost){
         this.mIsHost = isHost;
     }
+    private boolean wuerfelAllowed = false;
 
     @Override
     public void onSendMessage(Message message) {
@@ -455,67 +456,19 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
             float delta = mAccelCurrent - mAccelLast;
             mAccel = mAccel * 0.9f + delta; // perform low-cut filter
 
-            if (mAccel > 12 && lastShake+500<System.currentTimeMillis()) {
+            if (mAccel > 12 && wuerfelAllowed/*lastShake+500<System.currentTimeMillis()*/) {
                 Random rand = new Random();
                 int random = rand.nextInt(6)+1;
                 Toast toast = Toast.makeText(getApplicationContext(), "Device has shaken."+random, Toast.LENGTH_SHORT);
                 toast.show();
                 lastShake = System.currentTimeMillis();
                 myGameCallBack.playerHasRoled(random);
-
+                wuerfelAllowed = false;
+                //sendMessageToHost(Serializer.serialize(new Message(MessageType.PlayerRoled)));
             }
         }
 
         public void onAccuracyChanged(Sensor sensor, int accuracy) {
         }
     };
-
-
-
-    /*@Override
-    public void onSensorChanged(SensorEvent se) {
-        float x = se.values[0];
-        float y = se.values[1];
-        float z = se.values[2];
-        mAccelLast = mAccelCurrent;
-        mAccelCurrent = (float) Math.sqrt((double) (x * x + y * y + z * z));
-        float delta = mAccelCurrent - mAccelLast;
-        mAccel = mAccel * 0.9f + delta; // perform low-cut filter
-        if (mAccel > 12 && !alreadyShaked) {
-            alreadyShaked = true;
-            Toast toast = Toast.makeText(getApplicationContext(), "Device has shaken.", Toast.LENGTH_LONG);
-            toast.show();
-            int zufallszahl = (int) ((Math.random() * 6) + 1);
-            myGameCallBack.playerHasRoled(zufallszahl);
-
-        }
-    }*/
-
-    /*let it shake */
-    /*private final SensorEventListener mSensorListener = new SensorEventListener() {
-
-        public void onSensorChanged(SensorEvent se) {
-            float x = se.values[0];
-            float y = se.values[1];
-            float z = se.values[2];
-            mAccelLast = mAccelCurrent;
-            mAccelCurrent = (float) Math.sqrt((double) (x*x + y*y + z*z));
-            float delta = mAccelCurrent - mAccelLast;
-            mAccel = mAccel * 0.9f + delta; // perform low-cut filter
-            if (mAccel > 12 && !alreadyShaked) {
-                alreadyShaked = true;
-                Toast toast = Toast.makeText(getApplicationContext(), "Device has shaken.", Toast.LENGTH_LONG);
-                toast.show();
-                int zufallszahl = (int) ((Math.random()*6)+1);
-
-            }
-        }
-
-        public void onAccuracyChanged(Sensor sensor, int accuracy) {
-        }
-    };*/
-
-
-
-
 }

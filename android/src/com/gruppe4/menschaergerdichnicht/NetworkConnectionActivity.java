@@ -86,6 +86,7 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_server);
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
         MenschAergerDIchNicht myGame = new MenschAergerDIchNicht();
         myGame.setMyGameCallback(this);

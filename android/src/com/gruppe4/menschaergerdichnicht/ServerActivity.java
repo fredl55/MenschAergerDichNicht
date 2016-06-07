@@ -16,6 +16,7 @@ public class ServerActivity extends NetworkConnectionActivity{
     protected void onCreate(Bundle savedInstanceState) {
         Intent i = getIntent();
         if(i.hasExtra("MyGame")){
+
             myGame = (Game)i.getSerializableExtra("MyGame");
             super.onCreate(savedInstanceState);
             super.setMyName(myGame.getHost().getName());

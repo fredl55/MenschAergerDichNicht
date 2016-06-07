@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Names and titles-->
+    <string name="app_name">Mensch Aerger Dich Nicht</string>
+    <string name="title_activity_start">StartActivity</string>
+    <string name="title_activity_create_game">CreateGameActivity</string>
+    <string name="title_activity_server">ServerActivity</string>
+    <string name="title_activity_client">ClientActivity</string>
+    <string name="title_activity_client2">ClientActivity2</string>
+    <string name="title_activity_login">LogInActivity</string>
+    <string name="title_activity_options">OptionsActivity</string>
+    <string name="client_id">The Client_id</string>
+
+    <!--User Interface items-->
+    <string name="menuItem1">Spiel erstellen</string>
+    <string name="menuItem2">Spiel beitreten</string>
+    <string name="menuItem3">Einstellungen</string>
+    <string name="confirmBtn">Bestätigen</string>
+    <string name="hintLogin">Spieler</string>
+    <string name="pName">Spielername eingeben:</string>
+    <string name="playerCount">Spieleranzahl:</string>
+    <string name="punishmentText">Cheating Strafe:</string>
+    <string name="punishment1">Einen\nZug\nüberspringen</string>
+    <string name="punishment2">Drei\nFelder\nzurück</string>
+    <string name="startBtn">Spiel starten</string>
+    <string name="optCheating">Cheating</string>
+    <string name="optLanguage">Sprache</string>
+    <string name="optSFX">Sound FX</string>
+    <!--Error warnings-->
+    <string name="error_empty">Spielername wird benötigt!</string>
+    <string name="error_tooLong">Spielername ist zu lang!</string>
+
+
+</resources>

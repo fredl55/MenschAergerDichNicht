@@ -1,9 +1,11 @@
 package com.gruppe4.Logic;
 
+import java.io.Serializable;
+
 /**
  * Created by manfrededer on 07.06.16.
  */
-public class Pin {
+public class Pin implements Serializable{
     private String color;
     private int position;
 

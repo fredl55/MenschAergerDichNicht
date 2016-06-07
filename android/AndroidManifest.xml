@@ -37,10 +37,12 @@
             android:screenOrientation="sensorLandscape" />
         <activity
             android:name=".ServerActivity"
-            android:label="@string/title_activity_server" />
+            android:label="@string/title_activity_server"
+            android:screenOrientation="sensorLandscape" />
         <activity
             android:name=".ClientActivity"
-            android:label="@string/title_activity_client" />
+            android:label="@string/title_activity_client"
+            android:screenOrientation="sensorLandscape" />
         <activity
             android:name=".LoginActivity"
             android:label="@string/app_name"

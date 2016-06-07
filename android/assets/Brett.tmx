@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="140" height="140" tilewidth="32" tileheight="32" nextobjectid="89">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="140" height="140" tilewidth="32" tileheight="32" nextobjectid="185">
  <tileset firstgid="1" name="esche_gross" tilewidth="32" tileheight="32" tilecount="117" columns="13">
   <image source="esche_gross.JPG" width="424" height="312"/>
  </tileset>
@@ -295,220 +295,220 @@
 </data>
  </layer>
  <objectgroup name="KegelLayer" offsetx="0" offsety="-19.6464">
-  <object id="9" name="BlauStartFeld22" x="2349.71" y="1300.59" width="70.7269" height="43.222">
+  <object id="111" name="Pos2" x="1964.4" y="2823.32" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="11" name="RotStartFeld11" x="1296.66" y="2000" width="78.5855" height="31.4342">
+  <object id="112" name="Pos3" x="1964.4" y="2643.7" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="15" name="GrünStartFeld31" x="3041.26" y="2333.99" width="51.0806" height="39.2927">
+  <object id="113" name="Pos4" x="1964.4" y="2473.87" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="16" name="GelbStartFeld1" x="2007.86" y="3025.54" width="51.0806" height="35.3635">
+  <object id="114" name="Pos5" x="1967.67" y="2310.58" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="17" name="GelbHome1" x="1304.52" y="2844.79" width="62.8684" height="39.2927">
+  <object id="115" name="Pos6" x="1765.19" y="2294.25" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="18" name="GelbHome2" x="1477.41" y="2848.72" width="74.6562" height="27.5049">
+  <object id="116" name="Pos7" x="1592.1" y="2290.99" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="19" name="GelbHome3" x="1316.31" y="3045.19" width="47.1513" height="31.4342">
+  <object id="117" name="Pos8" x="1428.8" y="2290.99" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="20" name="GelbHome4" x="1485.27" y="3041.26" width="58.9391" height="27.5049">
+  <object id="118" name="Pos9" x="1278.58" y="2297.52" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="21" name="RotHome1" x="1308.45" y="1300.59" width="51.0806" height="58.9391">
+  <object id="119" name="Pos10" x="1275.31" y="2130.96" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="22" name="RotHome2" x="1485.27" y="1300.59" width="55.0098" height="51.0806">
+  <object id="120" name="Pos12" x="1422.27" y="1948.07" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="23" name="RotHome3" x="1304.52" y="1465.62" width="62.8684" height="51.0806">
+  <object id="121" name="Pos13" x="1595.36" y="1948.07" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="24" name="RotHome4" x="1497.05" y="1461.69" width="55.0098" height="51.0806">
+  <object id="122" name="Pos14" x="1755.39" y="1944.81" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="26" name="BlauHome1" x="2852.65" y="1277.01" width="62.8684" height="70.7269">
+  <object id="123" name="Pos15" x="1961.14" y="1944.81" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="27" name="BlauHome2" x="3037.33" y="1288.8" width="70.7269" height="58.9391">
+  <object id="124" name="Pos16" x="1964.4" y="1768.45" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="28" name="BlauHome3" x="2856.58" y="1453.83" width="55.0098" height="58.9391">
+  <object id="125" name="Pos17" x="1964.4" y="1588.83" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="29" name="BlauHome4" x="3041.26" y="1461.69" width="58.9391" height="51.0806">
+  <object id="126" name="Pos18" x="1967.67" y="1419.01" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="30" name="GrünHome1" x="2852.65" y="2864.44" width="62.8684" height="55.0098">
+  <object id="127" name="Pos19" x="1967.67" y="1258.98" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="31" name="GrünHome2" x="3041.26" y="2860.51" width="62.8684" height="62.8684">
+  <object id="128" name="Pos20" x="2147.29" y="1245.92" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="32" name="GrünHome3" x="2856.58" y="3053.05" width="47.1513" height="43.222">
+  <object id="129" name="Pos22" x="2320.38" y="1409.21" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="33" name="GrünHome4" x="3045.19" y="3037.33" width="43.222" height="66.7976">
+  <object id="130" name="Pos23" x="2320.38" y="1575.77" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="34" name="Pos2" x="1988.21" y="2860.51" width="66.7976" height="55.0098">
+  <object id="131" name="Pos24" x="2323.64" y="1732.53" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="35" name="Pos3" x="2007.86" y="2687.62" width="47.1513" height="51.0806">
+  <object id="132" name="Pos25" x="2317.11" y="1931.74" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="36" name="Pos4" x="1996.07" y="2510.81" width="62.8684" height="47.1513">
+  <object id="133" name="Pos26" x="2477.14" y="1938.28" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="37" name="Pos5" x="2003.93" y="2349.71" width="43.222" height="47.1513">
+  <object id="134" name="Pos27" x="2660.03" y="1941.54" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="38" name="Pos6" x="1795.68" y="2330.06" width="47.1513" height="55.0098">
+  <object id="135" name="Pos28" x="2833.12" y="1944.81" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="39" name="Pos7" x="1634.58" y="2341.85" width="47.1513" height="51.0806">
+  <object id="136" name="Pos29" x="2999.67" y="1941.54" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="40" name="Pos8" x="1473.48" y="2333.99" width="51.0806" height="55.0098">
+  <object id="137" name="Pos30" x="3002.94" y="2127.69" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="41" name="Pos9" x="1312.38" y="2337.92" width="58.9391" height="55.0098">
+  <object id="138" name="Pos32" x="2829.85" y="2300.78" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="42" name="Pos10" x="1320.24" y="2180.75" width="39.2927" height="43.222">
+  <object id="140" name="Pos33" x="2660.03" y="2304.05" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="43" name="Pos12" x="1473.48" y="1984.28" width="51.0806" height="58.9391">
+  <object id="141" name="Pos34" x="2480.4" y="2304.05" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="44" name="Pos13" x="1618.86" y="1980.35" width="62.8684" height="51.0806">
+  <object id="142" name="Pos35" x="2323.64" y="2310.58" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="45" name="Pos14" x="1791.75" y="1984.28" width="39.2927" height="51.0806">
+  <object id="143" name="Pos36" x="2323.64" y="2473.87" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="46" name="Pos15" x="2000" y="1976.42" width="47.1513" height="55.0098">
+  <object id="144" name="Pos37" x="2323.64" y="2637.17" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="47" name="Pos16" x="2000" y="1803.54" width="51.0806" height="51.0806">
+  <object id="146" name="Pos38" x="2323.64" y="2806.99" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="48" name="Pos17" x="1996.07" y="1630.65" width="51.0806" height="51.0806">
+  <object id="147" name="Pos39" x="2320.38" y="2999.67" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="49" name="Pos18" x="2000" y="1445.97" width="55.0098" height="55.0098">
+  <object id="148" name="Pos40" x="2150.56" y="2993.14" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="50" name="Pos19" x="2000" y="1296.66" width="51.0806" height="47.1513">
+  <object id="149" name="BlauStartFeld21" x="2320.38" y="1255.72" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="51" name="Pos20" x="2188.61" y="1288.8" width="35.3635" height="39.2927">
+  <object id="150" name="GelbStartFeld1" x="1970.93" y="2989.88" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="52" name="Pos22" x="2357.56" y="1438.11" width="43.222" height="55.0098">
+  <object id="151" name="RotStartFeld11" x="1278.58" y="1954.61" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="53" name="Pos23" x="2357.56" y="1607.07" width="51.0806" height="55.0098">
+  <object id="152" name="GrünStartFeld31" x="2999.67" y="2304.05" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="54" name="Pos24" x="2357.56" y="1779.96" width="55.0098" height="58.9391">
+  <object id="153" name="RotHome1" x="1272.04" y="1258.98" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="55" name="Pos25" x="2369.35" y="1980.35" width="47.1513" height="55.0098">
+  <object id="154" name="RotHome2" x="1445.13" y="1249.18" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="56" name="Pos26" x="2514.73" y="1988.21" width="58.9391" height="55.0098">
+  <object id="155" name="RotHome3" x="1448.4" y="1412.48" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="57" name="Pos27" x="2683.69" y="1984.28" width="66.7976" height="47.1513">
+  <object id="156" name="RotHome4" x="1268.78" y="1415.74" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="58" name="Pos28" x="2872.3" y="1980.35" width="58.9391" height="55.0098">
+  <object id="157" name="BlauHome1" x="2820.05" y="1245.92" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="59" name="Pos29" x="3033.4" y="1992.14" width="58.9391" height="43.222">
+  <object id="158" name="BlauHome2" x="2996.41" y="1249.18" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="60" name="Pos30" x="3037.33" y="2157.17" width="43.222" height="58.9391">
+  <object id="159" name="BlauHome3" x="2810.25" y="1409.21" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="61" name="Pos32" x="2868.37" y="2349.71" width="47.1513" height="47.1513">
+  <object id="160" name="BlauHome4" x="2999.67" y="1405.94" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="62" name="Pos33" x="2699.41" y="2345.78" width="51.0806" height="51.0806">
+  <object id="161" name="GrünHome1" x="2816.79" y="2820.05" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="63" name="Pos34" x="2522.59" y="2341.85" width="47.1513" height="55.0098">
+  <object id="162" name="GrünHome2" x="2996.41" y="2823.32" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="64" name="Pos35" x="2349.71" y="2341.85" width="62.8684" height="62.8684">
+  <object id="163" name="GrünHome3" x="2823.32" y="2999.67" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="65" name="Pos36" x="2357.56" y="2518.66" width="55.0098" height="47.1513">
+  <object id="164" name="GrünHome4" x="2996.41" y="3002.94" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="66" name="Pos37" x="2349.71" y="2679.76" width="58.9391" height="55.0098">
+  <object id="165" name="GelbHome1" x="1268.78" y="2806.99" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="67" name="Pos38" x="2365.42" y="2852.65" width="47.1513" height="51.0806">
+  <object id="166" name="GelbHome2" x="1448.4" y="2816.79" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="68" name="Pos39" x="2373.28" y="3033.4" width="47.1513" height="55.0098">
+  <object id="167" name="GelbHome3" x="1268.78" y="2999.67" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="69" name="Pos40" x="2188.61" y="3041.26" width="58.9391" height="47.1513">
+  <object id="168" name="GelbHome4" x="1441.87" y="2999.67" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="70" name="BlauZiel1" x="2165.03" y="1465.62" width="78.5855" height="55.0098">
+  <object id="169" name="GelbZiel1" x="2140.76" y="2826.58" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="71" name="BlauZiel2" x="2180.75" y="1642.44" width="51.0806" height="58.9391">
+  <object id="170" name="GelbZiel2" x="2140.76" y="2653.49" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="72" name="BlauZiel3" x="2176.82" y="1823.18" width="58.9391" height="47.1513">
+  <object id="171" name="GelbZiel3" x="2137.49" y="2477.14" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="73" name="BlauZiel4" x="2176.82" y="1964.64" width="51.0806" height="74.6562">
+  <object id="172" name="GelbZiel4" x="2140.76" y="2310.58" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="75" name="GrünZiel2" x="2703.34" y="2168.96" width="74.6562" height="55.0098">
+  <object id="173" name="RotZiel1" x="1441.87" y="2127.69" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="76" name="GrünZiel3" x="2534.38" y="2172.89" width="55.0098" height="58.9391">
+  <object id="174" name="RotZiel2" x="1618.22" y="2124.43" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="77" name="GrünZiel4" x="2357.56" y="2168.96" width="51.0806" height="47.1513">
+  <object id="175" name="RotZiel3" x="1794.58" y="2127.69" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="78" name="GrünZiel1" x="2868.37" y="2157.17" width="62.8684" height="55.0098">
+  <object id="176" name="RotZiel4" x="1961.14" y="2124.43" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="79" name="GelbZiel1" x="2172.89" y="2852.65" width="62.8684" height="70.7269">
+  <object id="177" name="BlauZiel1" x="2140.76" y="1419.01" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="80" name="GelbZiel2" x="2180.75" y="2679.76" width="51.0806" height="66.7976">
+  <object id="178" name="BlauZiel2" x="2140.76" y="1592.1" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="81" name="GelbZiel3" x="2180.75" y="2506.88" width="51.0806" height="62.8684">
+  <object id="179" name="BlauZiel3" x="2144.02" y="1765.19" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="82" name="GelbZiel4" x="2176.82" y="2333.99" width="58.9391" height="62.8684">
+  <object id="180" name="BlauZiel4" x="2140.76" y="1938.28" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="83" name="RotZiel1" x="1469.55" y="2165.03" width="55.0098" height="51.0806">
+  <object id="181" name="GrünZiel1" x="2836.38" y="2121.16" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="84" name="RotZiel2" x="1646.37" y="2168.96" width="66.7976" height="51.0806">
+  <object id="182" name="GrünZiel2" x="2663.29" y="2114.63" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="85" name="RotZiel3" x="1831.04" y="2157.17" width="47.1513" height="55.0098">
+  <object id="183" name="GrünZiel3" x="2490.2" y="2121.16" width="127.368" height="133.899">
    <ellipse/>
   </object>
-  <object id="86" name="RotZiel4" x="2000" y="2168.96" width="51.0806" height="51.0806">
+  <object id="184" name="GrünZiel4" x="2313.85" y="2117.9" width="127.368" height="133.899">
    <ellipse/>
   </object>
  </objectgroup>

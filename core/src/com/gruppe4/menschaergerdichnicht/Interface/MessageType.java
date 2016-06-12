@@ -13,5 +13,6 @@ public class MessageType implements Serializable{
     public static String YourTurn = "YourTurn";
     public static String YourColor = "YourColor";
     public static String PlayerMoved = "PlayerMoved";
+    public static String NextPlayer = "NextPlayer";
 
 }

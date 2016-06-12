@@ -127,6 +127,7 @@ public class MainScreen implements Screen {
                         PlaygroundModel.homeFields.add(new HomeField(el.x,el.y, objectName));
                     } else if(objectName.contains("Start")){
                         PlaygroundModel.startFields.add(new StartField(el.x,el.y,objectName));
+                        PlaygroundModel.normalFields.add(new Field(el.x,el.y,FieldType.NormalField,objectName));
                     } else if(objectName.contains("Ziel")){
                         PlaygroundModel.goalFields.add(new GoalField(el.x,el.y,objectName));
                     } else if(objectName.contains("Pos")){
@@ -223,7 +224,7 @@ public class MainScreen implements Screen {
         Pin pin = PlaygroundModel.tryGetTappedPin(position.x, position.y,myColor,rollValue);
         if(pin!=null){
             rolled = false;
-            game.playerHasMoved(pin.getNumber(),myColor,pin.getCurrentType(),pin.getOldPositionNr(),pin.getPositionNr());
+            game.playerHasMoved(pin.getNumber(),myColor,pin.getCurrentType(),pin.getOldPositionNr(),pin.getPositionNr(),rollValue);
 
         }
     }

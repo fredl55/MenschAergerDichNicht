@@ -13,13 +13,16 @@ public class Draw implements Serializable{
     private int to;
     private int from;
     private String color;
+    private int rollValue;
 
-    public Draw(int pinId, String color, String type,int from, int to){
+    public Draw(int pinId, String color, String type,int from, int to, int rollValue){
         this.fieldtype = type;
         this.pinId = pinId;
         this.from = from;
         this.to = to;
         this.color = color;
+        this.rollValue = rollValue;
+
     }
     public int getFrom() {
         return from;
@@ -59,5 +62,13 @@ public class Draw implements Serializable{
 
     public String getColor() {
         return color;
+    }
+
+    public int getRollValue() {
+        return rollValue;
+    }
+
+    public void setRollValue(int rollValue) {
+        this.rollValue = rollValue;
     }
 }

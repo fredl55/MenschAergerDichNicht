@@ -78,23 +78,41 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
 
 
     @Override
-    public void playerMoved(int pinId, String color,String type,int from, int to){
-        Draw d = new Draw(pinId,color,type,from,to);
+    public void playerMoved(int pinId, String color,String type,int from, int to,int rollValue){
+        Draw d = new Draw(pinId,color,type,from,to,rollValue);
         if(!mIsHost){
-            sendMessageToHost(Serializer.serialize(new Message(MessageType.PlayerMoved,d)));
-            sendMessageToHost(Serializer.serialize(new Message(MessageType.PlayerRoled,"")));
+            sendMessageToHost(Serializer.serialize(new Message(MessageType.PlayerMoved, d)));
+            sendMessageToHost(Serializer.serialize(new Message(MessageType.PlayerRoled, myName + " rolled " + rollValue)));
+            if(rollValue!=6){
+                sendMessageToHost(Serializer.serialize(new Message(MessageType.NextPlayer,"")));
+            } else{
+                reRoll();
+            }
         } else {
             sendMessageToAllClients(Serializer.serialize(new Message(MessageType.PlayerMoved,d)));
-            infonextPlayer();
+            sendMessageToAllClients(Serializer.serialize(new Message(MessageType.SimpleStringToPrint, this.myName + " rolled " + rollValue)));
+            if(rollValue!=6){
+                infoNextPlayer();
+            } else {
+                reRoll();
+            }
         }
+    }
+
+    private void reRoll(){
+        //Print something wirft hier iwie Exception keine Ahnung wieso
+        //printSomeThing("SIX!!!!! You can roll again!!!");
+        wuerfelAllowed = true;
     }
 
     @Override
     public void cantRoll(){
         if(mIsHost){
-            infonextPlayer();
+            sendMessageToAllClients(Serializer.serialize(new Message(MessageType.SimpleStringToPrint,this.myName+" couldn't move")));
+            infoNextPlayer();
         } else {
-            sendMessageToHost(Serializer.serialize(new Message(MessageType.PlayerRoled, "")));
+            sendMessageToHost(Serializer.serialize(new Message(MessageType.PlayerRoled, myName+" couldn't move")));
+            sendMessageToHost(Serializer.serialize(new Message(MessageType.NextPlayer,"")));
         }
     }
 
@@ -189,7 +207,7 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
             } else if(message.getInfo().compareTo(MessageType.YourTurn)==0){
                 yourTurn();
             } else if(message.getInfo().compareTo(MessageType.PlayerRoled)==0){
-                infonextPlayer();
+                printRollInfo(message.getMessage().toString(), sender);
             } else if(message.getInfo().compareTo(MessageType.YourColor)==0){
                 myGameCallBack.setMyColor(message.getMessage().toString());
             } else if(message.getInfo().compareTo(MessageType.PlayerMoved)==0){
@@ -200,12 +218,19 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
                     sendMessageToOtherClients(Serializer.serialize(message),sender);
                     myGameCallBack.movePin(d);
                 }
+            } else if(message.getInfo().compareTo(MessageType.NextPlayer)==0){
+                infoNextPlayer();
             }
         }
 
     }
 
-    private void infonextPlayer(){
+    private void printRollInfo(String rollMessage,String sender){
+        printSomeThing(rollMessage);
+        sendMessageToOtherClients(Serializer.serialize(new Message(MessageType.SimpleStringToPrint,rollMessage)),sender);
+    }
+
+    private void infoNextPlayer(){
         Player p = myGame.getNextPlayerToRoll();
         if(p.isHost()){
             yourTurn();
@@ -515,7 +540,7 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
                 Toast toast = Toast.makeText(getApplicationContext(), "Device has shaken."+random, Toast.LENGTH_SHORT);
                 toast.show();
                 //lastShake = System.currentTimeMillis();
-                myGameCallBack.playerHasRoled(6);
+                myGameCallBack.playerHasRoled(random);
 
 
                 wuerfelAllowed = false;

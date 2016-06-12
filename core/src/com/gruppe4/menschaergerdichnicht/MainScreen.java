@@ -17,14 +17,20 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Ellipse;
+import com.badlogic.gdx.math.Vector3;
 import com.gruppe4.menschaergerdichnicht.Fields.Field;
 import com.gruppe4.menschaergerdichnicht.Fields.FieldType;
 import com.gruppe4.menschaergerdichnicht.Fields.GoalField;
 import com.gruppe4.menschaergerdichnicht.Fields.HomeField;
 import com.gruppe4.menschaergerdichnicht.Fields.StartField;
+import com.gruppe4.menschaergerdichnicht.Interface.IAndroidCallBack;
 import com.gruppe4.menschaergerdichnicht.Interface.ILibGDXCallBack;
+import com.gruppe4.menschaergerdichnicht.Logic.Draw;
+import com.gruppe4.menschaergerdichnicht.Logic.Pin;
 import com.gruppe4.menschaergerdichnicht.Logic.PlaygroundModel;
 import com.gruppe4.menschaergerdichnicht.Processors.MyInputProcessor;
+
+import java.util.ArrayList;
 
 import javax.xml.soap.Text;
 
@@ -32,7 +38,7 @@ import javax.xml.soap.Text;
 /**
  * Created by manfrededer on 20.04.16.
  */
-public class MainScreen implements Screen, ILibGDXCallBack {
+public class MainScreen implements Screen {
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
@@ -44,6 +50,9 @@ public class MainScreen implements Screen, ILibGDXCallBack {
     private int mapWidth;
     private MenschAergerDIchNicht game;
     private Sprite wuerfelSprite = new Sprite();
+    private String myColor;
+    private boolean rolled = false;
+    private int rollValue;
 
 
 
@@ -60,6 +69,12 @@ public class MainScreen implements Screen, ILibGDXCallBack {
     public int getMapWidth() {
         return mapWidth;
     }
+
+    public void setMyColor(String myColor) {
+        this.myColor = myColor;
+    }
+
+
 
     public MainScreen (MenschAergerDIchNicht game){
         this.game = game;
@@ -87,7 +102,7 @@ public class MainScreen implements Screen, ILibGDXCallBack {
             //player = new Player(new Sprite(new Texture("fbpr.png")));
 
             this.wuerfelSprite = new Sprite();
-            this.playerHasRoled(1);
+            this.changeWuerfel(1);
 
 
         } catch (Exception e){
@@ -202,21 +217,43 @@ public class MainScreen implements Screen, ILibGDXCallBack {
         renderer.dispose();
     }
 
-    public void sendTap(){
-        game.someMethod();
+    public void sendTap(float x, float y){
+        Vector3 clickCoordinates = new Vector3(x, y, 0);
+        Vector3 position = camera.unproject(clickCoordinates);
+        Pin pin = PlaygroundModel.tryGetTappedPin(position.x, position.y,myColor,rollValue);
+        if(pin!=null){
+            rolled = false;
+            game.playerHasMoved(pin.getNumber(),myColor,pin.getCurrentType(),pin.getOldPositionNr(),pin.getPositionNr());
+
+        }
     }
 
 
 
-    @Override
     public void playerAdded(String color) {
         PlaygroundModel.createPinsForColor(color);
     }
 
-    @Override
     public void playerHasRoled(int number) {
+        changeWuerfel(number);
+        this.rolled = true;
+        this.rollValue = number;
+        if(number != 6 && PlaygroundModel.AreAllPinsForColorInHome(myColor)) game.cantRoll();
+    }
+
+    public boolean isRolled() {
+        return rolled;
+    }
+
+    public void setRolled(boolean rolled) {
+        this.rolled = rolled;
+    }
+
+    private void changeWuerfel(int number){
         wuerfelSprite = new Sprite(MyAsstes.assets.get(number+"c.gif",Texture.class));
         this.wuerfelSprite.setPosition(mapWidth/2+950,mapHeight/2-100);
 
     }
+
+
 }

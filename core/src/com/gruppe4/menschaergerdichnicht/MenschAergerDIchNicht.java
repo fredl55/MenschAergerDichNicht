@@ -5,11 +5,15 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.gruppe4.menschaergerdichnicht.Interface.IAndroidCallBack;
 import com.gruppe4.menschaergerdichnicht.Interface.ILibGDXCallBack;
+import com.gruppe4.menschaergerdichnicht.Logic.Draw;
+import com.gruppe4.menschaergerdichnicht.Fields.FieldType;
+import com.gruppe4.menschaergerdichnicht.Logic.PlaygroundModel;
+
 
 public class MenschAergerDIchNicht extends Game implements ILibGDXCallBack{
-	private IAndroidCallBack myGameCallback;
-	public void setMyGameCallback(IAndroidCallBack callback) {
-		myGameCallback = callback;
+	private IAndroidCallBack myAndroidCallBack;
+	public void setMyAndroidCallBack(IAndroidCallBack callback) {
+		myAndroidCallBack = callback;
 	}
 	private MainScreen myScreen;
 
@@ -20,7 +24,6 @@ public class MenschAergerDIchNicht extends Game implements ILibGDXCallBack{
 		MyAsstes.loadAllAssets();
 		boolean loaded = false;
 		while (!loaded){
-
 			if(MyAsstes.assets.update()){
 				myScreen = new MainScreen(this);
 				setScreen(myScreen);
@@ -37,7 +40,7 @@ public class MenschAergerDIchNicht extends Game implements ILibGDXCallBack{
 	}
 
 	public void someMethod() {// check the calling class has actually implemented MyGameCallback
-		if (myGameCallback != null) {
+		if (myAndroidCallBack != null) {
 			// initiate which ever callback method you need.
 			if (true) {
 				//myGameCallback.onSendMessage("Hallo Spieler");
@@ -66,10 +69,27 @@ public class MenschAergerDIchNicht extends Game implements ILibGDXCallBack{
 	}
 
 	@Override
+	public void setMyColor(String color) {
+		myScreen.setMyColor(color);
+	}
+
+	@Override
 	public void dispose(){
 		MyAsstes.assets.dispose();
 		myScreen.dispose();
 	}
 
+	@Override
+	public void movePin(Draw draw) {
+		PlaygroundModel.movePin(draw);
+	}
 
+	public void playerHasMoved(int pinId, String color,String type,int from, int to){
+		myAndroidCallBack.playerMoved(pinId,color,type,from,to);
+	}
+
+
+	public void cantRoll() {
+		myAndroidCallBack.cantRoll();
+	}
 }

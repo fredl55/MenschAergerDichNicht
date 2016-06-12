@@ -2,11 +2,8 @@ package com.gruppe4.menschaergerdichnicht.Logic;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.gruppe4.menschaergerdichnicht.Fields.FieldType;
 import com.gruppe4.menschaergerdichnicht.MyAsstes;
-
-import java.awt.Color;
-
-import javax.xml.soap.Text;
 
 /**
  * Created by manfrededer on 03.05.16.
@@ -18,10 +15,15 @@ public class Pin {
     private int number; // 1 - 4
     private Sprite myPin;
     private int fieldOffsetY = 85;
+    private boolean selected;
+    private String currentType;
+    private int positionNr;
+    private int oldPositionNr;
 
     public Pin(String c){
         this.pinColor = c;
         myPin = new Sprite(MyAsstes.assets.get(c+"Pin.png", Texture.class));
+        currentType = FieldType.HomeField;
     }
 
 
@@ -57,5 +59,54 @@ public class Pin {
 
     public Sprite getMyPin() {
         return myPin;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void switchSelection(){
+        if(isSelected()){
+            selected = false;
+            myPin.scale(-1.1f);
+        } else {
+            selected = true;
+            myPin.scale(1.1f);
+        }
+    }
+
+    public void switchSelectionOff(){
+        if(selected){
+            myPin.scale(-1.1f);
+            selected = false;
+        }
+    }
+
+    public String getCurrentType() {
+        return currentType;
+    }
+
+    public void setCurrentType(String currentType) {
+        this.currentType = currentType;
+    }
+
+    public void setPositionNr(int positionNr) {
+        this.positionNr = positionNr;
+    }
+
+    public int getPositionNr() {
+        return positionNr;
+    }
+
+    public int getOldPositionNr() {
+        return oldPositionNr;
+    }
+
+    public void setOldPositionNr(int oldPositionNr) {
+        this.oldPositionNr = oldPositionNr;
     }
 }

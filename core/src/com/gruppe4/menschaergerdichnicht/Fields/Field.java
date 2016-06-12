@@ -9,10 +9,10 @@ import java.util.ArrayList;
 public class Field {
     private float x;
     private float y;
-    private FieldType type;
+    private String type;
     private int positionNr;
 
-    public Field(float x, float y,FieldType type,String name){
+    public Field(float x, float y,String type,String name){
         this.x = x;
         this.y = y;
         this.type = type;
@@ -40,7 +40,7 @@ public class Field {
         return y;
     }
 
-    public FieldType getType() {
+    public String getType() {
         return type;
     }
 

@@ -1,9 +1,12 @@
 package com.gruppe4.menschaergerdichnicht.Interface;
 
+import com.gruppe4.menschaergerdichnicht.Fields.FieldType;
+
 /**
  * Created by manfrededer on 01.05.16.
  */
 public interface IAndroidCallBack {
-    void onSendMessage(Message msg);
+    void playerMoved(int pinId, String color,String type,int from, int to);
+    void cantRoll();
 
 }

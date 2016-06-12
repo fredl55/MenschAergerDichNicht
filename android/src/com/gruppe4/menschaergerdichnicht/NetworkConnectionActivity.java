@@ -28,6 +28,7 @@ import com.google.android.gms.nearby.connection.Connections;
 import com.google.android.gms.nearby.connection.ConnectionsStatusCodes;
 import com.gruppe4.Logic.*;
 import com.gruppe4.Logic.Player;
+import com.gruppe4.menschaergerdichnicht.Logic.Draw;
 import com.gruppe4.menschaergerdichnicht.Interface.ILibGDXCallBack;
 import com.gruppe4.menschaergerdichnicht.Interface.Message;
 import com.gruppe4.menschaergerdichnicht.Interface.IAndroidCallBack;
@@ -75,12 +76,27 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
     }
     private boolean wuerfelAllowed = false;
 
+
     @Override
-    public void onSendMessage(Message message) {
-        sendMessageToHost(Serializer.serialize(message));
+    public void playerMoved(int pinId, String color,String type,int from, int to){
+        Draw d = new Draw(pinId,color,type,from,to);
+        if(!mIsHost){
+            sendMessageToHost(Serializer.serialize(new Message(MessageType.PlayerMoved,d)));
+            sendMessageToHost(Serializer.serialize(new Message(MessageType.PlayerRoled,"")));
+        } else {
+            sendMessageToAllClients(Serializer.serialize(new Message(MessageType.PlayerMoved,d)));
+            infonextPlayer();
+        }
     }
 
-
+    @Override
+    public void cantRoll(){
+        if(mIsHost){
+            infonextPlayer();
+        } else {
+            sendMessageToHost(Serializer.serialize(new Message(MessageType.PlayerRoled, "")));
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +105,7 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
         setContentView(R.layout.activity_server);
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
         MenschAergerDIchNicht myGame = new MenschAergerDIchNicht();
-        myGame.setMyGameCallback(this);
+        myGame.setMyAndroidCallBack(this);
         myGameCallBack = myGame;
         initialize(myGame, config);
 
@@ -150,14 +166,14 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
     }
 
     @Override
-    public void onMessageReceived(String s, byte[] bytes, boolean b) {
+    public void onMessageReceived(String sender, byte[] bytes, boolean b) {
         Message message = (Message)Serializer.deserialize(bytes);
         if(message != null){
-            handleMyMessage(message);
+            handleMyMessage(message,sender);
         }
     }
 
-    private void handleMyMessage(Message message) {
+    private void handleMyMessage(Message message,String sender) {
         if(message.getMessage()!=null){
             if(message.getInfo().compareTo(MessageType.SimpleStringToPrint)==0){
                 printSomeThing(message.getMessage().toString());
@@ -174,6 +190,16 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
                 yourTurn();
             } else if(message.getInfo().compareTo(MessageType.PlayerRoled)==0){
                 infonextPlayer();
+            } else if(message.getInfo().compareTo(MessageType.YourColor)==0){
+                myGameCallBack.setMyColor(message.getMessage().toString());
+            } else if(message.getInfo().compareTo(MessageType.PlayerMoved)==0){
+                Draw d = (Draw) message.getMessage();
+                if(!mIsHost){
+                    myGameCallBack.movePin(d);
+                } else {
+                    sendMessageToOtherClients(Serializer.serialize(message),sender);
+                    myGameCallBack.movePin(d);
+                }
             }
         }
 
@@ -233,6 +259,7 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
                                                     mRemotePeerEndpoints.add(remoteEndpointId);
                                                     Player p = myGame.addPlayer(endpointName, remoteEndpointId);
                                                     myGameCallBack.playerAdded(p.getPlayerColor());
+                                                    sendMessageToClient(Serializer.serialize(new Message(MessageType.YourColor, p.getPlayerColor())),remoteEndpointId);
                                                     sendMessageToOtherClients(Serializer.serialize(new Message(MessageType.SimpleStringToPrint, endpointName + " joined the game")), remoteEndpointId);
                                                     printSomeThing(endpointName + " joined the game");
                                                     sendMessageToAllClients(Serializer.serialize(new Message(MessageType.GameWorld,myGame)));
@@ -319,6 +346,7 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
                     if (result.getStatus().isSuccess()) {
                         debugLog("startAdvertising:onResult: SUCCESS");
                         myGameCallBack.playerAdded(myGame.getHost().getPlayerColor());
+                        myGameCallBack.setMyColor(myGame.getHost().getPlayerColor());
 
                     } else {
                         debugLog("startAdvertising:onResult: FAILURE ");
@@ -487,12 +515,9 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
                 Toast toast = Toast.makeText(getApplicationContext(), "Device has shaken."+random, Toast.LENGTH_SHORT);
                 toast.show();
                 //lastShake = System.currentTimeMillis();
-                myGameCallBack.playerHasRoled(random);
-                if(!mIsHost){
-                    sendMessageToHost(Serializer.serialize(new Message(MessageType.PlayerRoled,"")));
-                } else {
-                    infonextPlayer();
-                }
+                myGameCallBack.playerHasRoled(6);
+
+
                 wuerfelAllowed = false;
             }
         }

@@ -53,6 +53,7 @@ public class MainScreen implements Screen {
     private String myColor;
     private boolean rolled = false;
     private int rollValue;
+    private int rollTrys = 1;
 
 
 
@@ -225,6 +226,9 @@ public class MainScreen implements Screen {
         if(pin!=null){
             rolled = false;
             game.playerHasMoved(pin.getNumber(),myColor,pin.getCurrentType(),pin.getOldPositionNr(),pin.getPositionNr(),rollValue);
+            if(PlaygroundModel.checkForWin(myColor)){
+                game.playerWon();
+            }
 
         }
     }
@@ -235,11 +239,17 @@ public class MainScreen implements Screen {
         PlaygroundModel.createPinsForColor(color);
     }
 
-    public void playerHasRoled(int number) {
-        changeWuerfel(number);
+    public void playerHasRoled(int rollValue) {
+        changeWuerfel(rollValue);
         this.rolled = true;
-        this.rollValue = number;
-        if(number != 6 && PlaygroundModel.AreAllPinsForColorInHome(myColor)) game.cantRoll();
+        this.rollValue = rollValue;
+
+        if(PlaygroundModel.AreAllPinsForColorInHome(myColor)&&rollValue!=6 && rollTrys<3){
+            rollTrys++;
+        }else{
+            rollTrys=0;
+        }
+        if(!PlaygroundModel.IsThereAPinToMove(myColor,rollValue)) game.cantRoll(rollValue,rollTrys);
     }
 
     public boolean isRolled() {

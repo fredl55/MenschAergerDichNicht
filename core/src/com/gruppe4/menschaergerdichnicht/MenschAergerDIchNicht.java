@@ -85,11 +85,15 @@ public class MenschAergerDIchNicht extends Game implements ILibGDXCallBack{
 	}
 
 	public void playerHasMoved(int pinId, String color,String type,int from, int to, int rollValue){
-		myAndroidCallBack.playerMoved(pinId,color,type,from,to,rollValue);
+		myAndroidCallBack.playerMoved(pinId, color, type, from, to, rollValue);
 	}
 
 
-	public void cantRoll() {
-		myAndroidCallBack.cantRoll();
+	public void cantRoll(int rollvalue,int rollTrys) {
+		myAndroidCallBack.cantRoll(rollvalue, rollTrys);
+	}
+
+	public void playerWon() {
+		myAndroidCallBack.playerWon();
 	}
 }

@@ -11,6 +11,8 @@ import android.hardware.SensorManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -78,6 +80,15 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
 
 
     @Override
+    public void playerWon(){
+        if(mIsHost){
+            sendMessageToAllClients(Serializer.serialize(new Message(MessageType.Victory, myName + " won this game")));
+        } else {
+            sendMessageToHost(Serializer.serialize(new Message(MessageType.Victory, myName + " won this game")));
+        }
+    }
+
+    @Override
     public void playerMoved(int pinId, String color,String type,int from, int to,int rollValue){
         Draw d = new Draw(pinId,color,type,from,to,rollValue);
         if(!mIsHost){
@@ -101,18 +112,27 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
 
     private void reRoll(){
         //Print something wirft hier iwie Exception keine Ahnung wieso
-        //printSomeThing("SIX!!!!! You can roll again!!!");
+        printSomeThing("Roll again!!!");
         wuerfelAllowed = true;
     }
 
     @Override
-    public void cantRoll(){
+    public void cantRoll(int rollValue,int rollTrys){
+        String reRolltext = (rollValue == 6 ||  rollTrys!=0) ? " but can roll again" : "";
         if(mIsHost){
-            sendMessageToAllClients(Serializer.serialize(new Message(MessageType.SimpleStringToPrint,this.myName+" couldn't move")));
-            infoNextPlayer();
+            sendMessageToAllClients(Serializer.serialize(new Message(MessageType.SimpleStringToPrint, this.myName + " couldn't move" + reRolltext)));
+            if(rollValue == 6 ||  rollTrys!=0){
+                reRoll();
+            }else{
+                infoNextPlayer();
+            }
         } else {
-            sendMessageToHost(Serializer.serialize(new Message(MessageType.PlayerRoled, myName+" couldn't move")));
-            sendMessageToHost(Serializer.serialize(new Message(MessageType.NextPlayer,"")));
+            sendMessageToHost(Serializer.serialize(new Message(MessageType.PlayerRoled, myName+" couldn't move"+reRolltext)));
+            if(rollValue == 6 ||  rollTrys!=0){
+                reRoll();
+            } else {
+                sendMessageToHost(Serializer.serialize(new Message(MessageType.NextPlayer,"")));
+            }
         }
     }
 
@@ -220,6 +240,11 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
                 }
             } else if(message.getInfo().compareTo(MessageType.NextPlayer)==0){
                 infoNextPlayer();
+            } else if(message.getInfo().compareTo(MessageType.Victory)==0){
+                printSomeThing(message.getMessage().toString());
+                if(mIsHost){
+                    sendMessageToOtherClients(Serializer.serialize(message),sender);
+                }
             }
         }
 
@@ -244,9 +269,14 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
         printSomeThing("Its your turn");
         this.wuerfelAllowed = true;
     }
-
+    private static String printText;
     private void printSomeThing(String x){
-        Toast.makeText(NetworkConnectionActivity.this, x, Toast.LENGTH_SHORT).show();
+        printText = x;
+        NetworkConnectionActivity.this.runOnUiThread(new Runnable() {
+            public void run() {
+                Toast.makeText(NetworkConnectionActivity.this, printText, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
     @Override
     public void onDisconnected(String s) {
@@ -522,7 +552,7 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
     private float mAccelCurrent; // current acceleration including gravity
     private float mAccelLast; // last acceleration including gravity
 
-    //private long lastShake;
+    private long lastShake;
     private final SensorEventListener mSensorListener = new SensorEventListener() {
 
         public void onSensorChanged(SensorEvent se) {
@@ -534,16 +564,16 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
             float delta = mAccelCurrent - mAccelLast;
             mAccel = mAccel * 0.9f + delta; // perform low-cut filter
 
-            if (mAccel > 12 && wuerfelAllowed /*lastShake+500<System.currentTimeMillis()*/) {
+            if (mAccel > 12 && wuerfelAllowed && lastShake+1000<System.currentTimeMillis()) {
+                wuerfelAllowed = false;
                 Random rand = new Random();
                 int random = rand.nextInt(6)+1;
-                Toast toast = Toast.makeText(getApplicationContext(), "Device has shaken."+random, Toast.LENGTH_SHORT);
-                toast.show();
-                //lastShake = System.currentTimeMillis();
+                printSomeThing("Device has shaken "+random);
                 myGameCallBack.playerHasRoled(random);
+                lastShake = System.currentTimeMillis();
 
 
-                wuerfelAllowed = false;
+
             }
         }
 

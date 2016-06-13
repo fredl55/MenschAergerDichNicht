@@ -7,6 +7,7 @@ import com.gruppe4.menschaergerdichnicht.Fields.FieldType;
  */
 public interface IAndroidCallBack {
     void playerMoved(int pinId, String color,String type,int from, int to, int rollvalue);
-    void cantRoll();
+    void cantRoll(int rollValue,int rollTrys);
+    void playerWon();
 
 }

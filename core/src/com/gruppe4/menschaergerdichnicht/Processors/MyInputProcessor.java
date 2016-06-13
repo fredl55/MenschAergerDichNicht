@@ -26,6 +26,7 @@ public class MyInputProcessor implements GestureDetector.GestureListener {
 
     @Override
     public boolean tap(float x, float y, int count, int button) {
+
         if(myScreen.isRolled()){
             myScreen.sendTap(x,y);
         }

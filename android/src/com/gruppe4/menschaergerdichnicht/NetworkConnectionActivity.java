@@ -39,6 +39,7 @@ import com.gruppe4.menschaergerdichnicht.Interface.MessageType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Logger;
 
 
 /**
@@ -57,14 +58,13 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
     private GoogleApiClient mGoogleApiClient;
     private static final String TAG = "MÄDN";
     private AlertDialog mConnectionRequestDialog;
-    private TextView mytextView;
     private MyListDialog mMyListDialog;
     private String myName = null;
     private Game myGame;
     private ILibGDXCallBack myGameCallBack;
     private static int[] NETWORK_TYPES = {ConnectivityManager.TYPE_WIFI, ConnectivityManager.TYPE_ETHERNET};
     private String mRemoteHostEndpoint;
-    private ArrayList<String> mRemotePeerEndpoints = new ArrayList<String>();
+    private ArrayList<String> mRemotePeerEndpoints = new ArrayList<>();
 
 
     public void setMyName(String myName) {
@@ -142,10 +142,10 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_server);
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-        MenschAergerDIchNicht myGame = new MenschAergerDIchNicht();
-        myGame.setMyAndroidCallBack(this);
-        myGameCallBack = myGame;
-        initialize(myGame, config);
+        MenschAergerDIchNicht myLibgdx = new MenschAergerDIchNicht();
+        myLibgdx.setMyAndroidCallBack(this);
+        myGameCallBack = myLibgdx;
+        initialize(myLibgdx, config);
 
         //Init Shaker
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -175,11 +175,11 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
                 .addApi(Nearby.MESSAGES_API)
                 .build();
         setmIsHost(mIsHost);
-        if(mIsHost){
+        /*if(mIsHost){
             mytextView = (TextView)findViewById(R.id.lblClientMessage);
         } else {
             mytextView = (TextView)findViewById(R.id.lblServerMessage);
-        }
+        }*/
         mGoogleApiClient.connect();
     }
 
@@ -272,7 +272,8 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
     private static String printText;
     private void printSomeThing(String x){
         printText = x;
-        NetworkConnectionActivity.this.runOnUiThread(new Runnable() {
+        runOnUiThread(new Runnable() {
+            @Override
             public void run() {
                 Toast.makeText(NetworkConnectionActivity.this, printText, Toast.LENGTH_SHORT).show();
             }
@@ -480,7 +481,6 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
                     });
         } catch(Exception e){
             Log.e("ERROR",e.getMessage());
-
         }
 
     }

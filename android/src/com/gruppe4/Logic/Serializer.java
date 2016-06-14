@@ -12,6 +12,8 @@ import java.io.ObjectOutputStream;
  * Created by manfrededer on 20.04.16.
  */
 public class Serializer {
+    private Serializer(){}
+
     public static byte[] serialize(Object obj){
         try{
             ByteArrayOutputStream b = new ByteArrayOutputStream();
@@ -19,10 +21,11 @@ public class Serializer {
             o.writeObject(obj);
             return b.toByteArray();
         }catch (IOException e){
+            Log.e("ERROR",e.getMessage());
         }catch(Exception e){
-            Log.e("ERROR","While Serializing");
+            Log.e("ERROR",e.getMessage());
         }
-        return null;
+        return new byte[0];
     }
 
     public static Object deserialize(byte[] bytes){
@@ -31,9 +34,11 @@ public class Serializer {
             ObjectInputStream o = new ObjectInputStream(b);
             return o.readObject();
         }catch (IOException e){
-
-        }catch (ClassNotFoundException d){
+            Log.e("MenschAergerDichNicht",e.getMessage());
+        }catch (ClassNotFoundException e){
+            Log.e("MenschAergerDichNicht", e.getMessage());
         }catch (Exception e){
+            Log.e("MenschAergerDichNicht", e.getMessage());
 
         }
         return null;

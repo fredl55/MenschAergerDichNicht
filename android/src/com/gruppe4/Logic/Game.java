@@ -75,7 +75,7 @@ public class Game implements Serializable{
     }
 
     private String getUnusedColor(){
-        int zufallszahl = (int) ((Math.random()*notUsedColors.size()));
+        int zufallszahl = (int) Math.random()*notUsedColors.size();
         String color =  notUsedColors.get(zufallszahl);
         notUsedColors.remove(zufallszahl);
         return color;

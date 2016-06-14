@@ -37,8 +37,8 @@ public class MyListDialog {
     public MyListDialog(Context context, AlertDialog.Builder builder,
                         DialogInterface.OnClickListener listener) {
 
-        mItemMap = new HashMap<String, String>();
-        mAdapter = new ArrayAdapter<String>(context, android.R.layout.select_dialog_singlechoice);
+        mItemMap = new HashMap<>();
+        mAdapter = new ArrayAdapter<>(context, android.R.layout.select_dialog_singlechoice);
 
         // Create dialog from builder
         builder.setAdapter(mAdapter, listener);

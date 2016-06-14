@@ -19,7 +19,7 @@ public class MenuActivity extends Activity {
         Intent i = getIntent();
         if(i.hasExtra("Player")){
             player = (Player)i.getSerializableExtra("Player");
-            ((TextView)findViewById(R.id.txtWelcome)).setText(String.format("Welcome\n" + player.getName()));
+            ((TextView)findViewById(R.id.txtWelcome)).setText(String.format("Welcome\n  %s",player.getName()));
         }
     }
 

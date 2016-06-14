@@ -315,10 +315,10 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
                                                     mRemotePeerEndpoints.add(remoteEndpointId);
                                                     Player p = myGame.addPlayer(endpointName, remoteEndpointId);
                                                     myGameCallBack.playerAdded(p.getPlayerColor());
-                                                    sendMessageToClient(Serializer.serialize(new Message(MessageType.YourColor, p.getPlayerColor())),remoteEndpointId);
+                                                    sendMessageToClient(Serializer.serialize(new Message(MessageType.YourColor, p.getPlayerColor())), remoteEndpointId);
                                                     sendMessageToOtherClients(Serializer.serialize(new Message(MessageType.SimpleStringToPrint, endpointName + " joined the game")), remoteEndpointId);
-                                                    printSomeThing(endpointName + " joined the game");
-                                                    sendMessageToAllClients(Serializer.serialize(new Message(MessageType.GameWorld,myGame)));
+                                                    printSomeThing(endpointName + "@string/joinedTheGame");
+                                                    sendMessageToAllClients(Serializer.serialize(new Message(MessageType.GameWorld, myGame)));
 
                                                     if(myGame.isFull()){
                                                         Player nextPlayerToRoll = myGame.getNextPlayerToRoll();

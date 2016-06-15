@@ -14,20 +14,6 @@ public class HomeField extends Field {
 
     }
 
-    private String getColorFromName(String name) {
-        String c = null;
-        if(name.contains("Grün")){
-            c = "green";
-        } else if(name.contains("Blau")){
-            c = "blue";
-        } else if(name.contains("Gelb")){
-            c = "yellow";
-        } else if(name.contains("Rot")){
-            c = "red";
-        }
-        return c;
-    }
-
     public String getColor() {
         return color;
     }

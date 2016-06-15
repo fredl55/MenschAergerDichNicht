@@ -1,7 +1,5 @@
 package com.gruppe4.menschaergerdichnicht.Logic;
 
-import com.gruppe4.menschaergerdichnicht.Fields.FieldType;
-
 import java.io.Serializable;
 
 /**
@@ -15,7 +13,7 @@ public class Draw implements Serializable{
     private String color;
     private int rollValue;
 
-    public Draw(int pinId, String color, String type,int from, int to, int rollValue){
+    public Draw(int pinId, String color, String type, int from, int to, int rollValue){
         this.fieldtype = type;
         this.pinId = pinId;
         this.from = from;

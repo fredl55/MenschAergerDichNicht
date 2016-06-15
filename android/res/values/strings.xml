@@ -28,7 +28,26 @@
     <!--Errors warnings-->
     <string name="error_empty">Player name is required!</string>
     <string name="error_tooLong">Player name is too long!</string>
-    <string name="joinedTheGame">joined the game</string>
+    <string name="joinedTheGame">Joined the game</string>
+    <string name="endTheGame">Are you sure you want to close this activity?</string>
+    <string name="yes">yes</string>
+    <string name="no">noe</string>
+    <string name="closeActivity">Close the Activity?</string>
+    <string name="rolled"> rolled </string>
+    <string name="couldntMove"> couldnt move </string>
+    <string name="again">you are allowed to roll again</string>
+    <string name="again2"> but you are allowed to roll again</string>
+    <string name="hostDisconnect">the host player has an disconnect</string>
+    <string name="joinedGame"> joined the game</string>
+    <string name="yourTurn">Your turn</string>
+    <string name="connectedTo"> connected to</string>
+    <string name="rollValue">Your roll value:  </string>
+    <string name="wantConnection">Do you want to connect to </string>
+    <string name="victory">wins this game</string>
+    <string name="endPointFound">Endpoints found</string>
+    <string name="cancel">Cancel</string>
+    <string name="connectionrequest">Connection request</string>
+
 
 
 </resources>

@@ -11,12 +11,8 @@ import android.hardware.SensorManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.google.android.gms.common.ConnectionResult;
@@ -35,11 +31,9 @@ import com.gruppe4.menschaergerdichnicht.Interface.ILibGDXCallBack;
 import com.gruppe4.menschaergerdichnicht.Interface.Message;
 import com.gruppe4.menschaergerdichnicht.Interface.IAndroidCallBack;
 import com.gruppe4.menschaergerdichnicht.Interface.MessageType;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.logging.Logger;
 
 
 /**
@@ -56,15 +50,19 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
     private static final long TIMEOUT_DISCOVER = 1000L * 30L;
     private boolean mIsHost = false;
     private GoogleApiClient mGoogleApiClient;
-    private static final String TAG = "MÄDN";
+    private static final String TAG = "MenschAergerDichNicht";
     private AlertDialog mConnectionRequestDialog;
     private MyListDialog mMyListDialog;
     private String myName = null;
     private Game myGame;
     private ILibGDXCallBack myGameCallBack;
-    private static int[] NETWORK_TYPES = {ConnectivityManager.TYPE_WIFI, ConnectivityManager.TYPE_ETHERNET};
+    private static int[] networkTypes = {ConnectivityManager.TYPE_WIFI, ConnectivityManager.TYPE_ETHERNET};
     private String mRemoteHostEndpoint;
     private ArrayList<String> mRemotePeerEndpoints = new ArrayList<>();
+    private boolean wuerfelAllowed = false;
+    private MenschAergerDIchNicht myLibgdx;
+    private boolean connected = false;
+    private static String printText;
 
 
     public void setMyName(String myName) {
@@ -76,17 +74,13 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
     public void setmIsHost(boolean isHost){
         this.mIsHost = isHost;
     }
-    private boolean wuerfelAllowed = false;
-    private MenschAergerDIchNicht myLibgdx;
-    private boolean connected = false;
-
 
     @Override
     public void playerWon(){
         if(mIsHost){
-            sendMessageToAllClients(Serializer.serialize(new Message(MessageType.Victory, myName + " won this game")));
+            sendMessageToAllClients(Serializer.serialize(new Message(MessageType.Victory, myName + getResources().getString(R.string.victory))));
         } else {
-            sendMessageToHost(Serializer.serialize(new Message(MessageType.Victory, myName + " won this game")));
+            sendMessageToHost(Serializer.serialize(new Message(MessageType.Victory, myName + getResources().getString(R.string.victory))));
         }
     }
 
@@ -95,7 +89,7 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
         Draw d = new Draw(pinId,color,type,from,to,rollValue);
         if(!mIsHost){
             sendMessageToHost(Serializer.serialize(new Message(MessageType.PlayerMoved, d)));
-            sendMessageToHost(Serializer.serialize(new Message(MessageType.PlayerRoled, myName + " rolled " + rollValue)));
+            sendMessageToHost(Serializer.serialize(new Message(MessageType.PlayerRoled, myName + getResources().getString(R.string.rolled) + rollValue)));
             if(rollValue!=6){
                 sendMessageToHost(Serializer.serialize(new Message(MessageType.NextPlayer,"")));
             } else{
@@ -103,7 +97,7 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
             }
         } else {
             sendMessageToAllClients(Serializer.serialize(new Message(MessageType.PlayerMoved,d)));
-            sendMessageToAllClients(Serializer.serialize(new Message(MessageType.SimpleStringToPrint, this.myName + " rolled " + rollValue)));
+            sendMessageToAllClients(Serializer.serialize(new Message(MessageType.SimpleStringToPrint, this.myName + getResources().getString(R.string.rolled) + rollValue)));
             if(rollValue!=6){
                 infoNextPlayer();
             } else {
@@ -116,38 +110,37 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
     public void onBackPressed() {
         new AlertDialog.Builder(this)
                 .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle("Closing Activity")
-                .setMessage("Are you sure you want to close this activity?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener()
-                {
+                .setTitle(getResources().getString(R.string.closeActivity))
+                .setMessage(getResources().getString(R.string.endTheGame))
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         finish();
                     }
 
                 })
-                .setNegativeButton("No", null)
+                        .setNegativeButton(getResources().getString(R.string.no), null)
                 .show();
     }
 
     private void reRoll(){
         //Print something wirft hier iwie Exception keine Ahnung wieso
-        printSomeThing("Roll again!!!");
+        printSomeThing(getResources().getString(R.string.again));
         wuerfelAllowed = true;
     }
 
     @Override
     public void cantRoll(int rollValue,int rollTrys){
-        String reRolltext = (rollValue == 6 ||  rollTrys!=0) ? " but can roll again" : "";
+        String reRolltext = (rollValue == 6 ||  rollTrys!=0) ? getResources().getString(R.string.again2) : "";
         if(mIsHost){
-            sendMessageToAllClients(Serializer.serialize(new Message(MessageType.SimpleStringToPrint, this.myName + " couldn't move" + reRolltext)));
+            sendMessageToAllClients(Serializer.serialize(new Message(MessageType.SimpleStringToPrint, this.myName + getResources().getString(R.string.couldntMove) + reRolltext)));
             if(rollValue == 6 ||  rollTrys!=0){
                 reRoll();
             }else{
                 infoNextPlayer();
             }
         } else {
-            sendMessageToHost(Serializer.serialize(new Message(MessageType.PlayerRoled, myName+" couldn't move"+reRolltext)));
+            sendMessageToHost(Serializer.serialize(new Message(MessageType.PlayerRoled, myName+getResources().getString(R.string.couldntMove)+reRolltext)));
             if(rollValue == 6 ||  rollTrys!=0){
                 reRoll();
             } else {
@@ -217,7 +210,7 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
             return;
 
         if( mIsHost ) {
-            sendMessageToAllClients(Serializer.serialize(new Message(MessageType.SimpleStringToPrint, "Host has disconnected")));
+            sendMessageToAllClients(Serializer.serialize(new Message(MessageType.SimpleStringToPrint, getResources().getString(R.string.hostDisconnect))));
             Nearby.Connections.stopAdvertising(mGoogleApiClient);
             Nearby.Connections.stopAllEndpoints( mGoogleApiClient );
             mIsHost = false;
@@ -261,11 +254,8 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
         if(message.getMessage()!=null){
             if(message.getInfo().compareTo(MessageType.SimpleStringToPrint)==0){
                 printSomeThing(message.getMessage().toString());
-            } else if(message.getInfo().compareTo(MessageType.NewPlayer)==0){
-                /*
-                TO-Do
-                 */
-            } else if(message.getInfo().compareTo(MessageType.GameWorld)==0){
+            }
+            else if(message.getInfo().compareTo(MessageType.GameWorld)==0){
                 myGame = (Game)message.getMessage();
                 for(int i=0;i<myGame.getAllPlayer().size();i++){
                     myGameCallBack.playerAdded(myGame.getAllPlayer().get(i).getPlayerColor());
@@ -306,16 +296,15 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
         if(p.isHost()){
             yourTurn();
         } else {
-            sendMessageToClient(Serializer.serialize(new Message(MessageType.YourTurn, "Its your Turn")), p.getEndPointId());
+            sendMessageToClient(Serializer.serialize(new Message(MessageType.YourTurn, getResources().getString(R.string.yourTurn))), p.getEndPointId());
 
         }
     }
 
     private void yourTurn(){
-        printSomeThing("Its your turn");
+        printSomeThing(getResources().getString(R.string.yourTurn));
         this.wuerfelAllowed = true;
     }
-    private static String printText;
     private void printSomeThing(String x){
         printText = x;
         runOnUiThread(new Runnable() {
@@ -342,8 +331,8 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
             debugLog("onConnectionRequest:" + remoteEndpointId + ":" + endpointName);
 
             mConnectionRequestDialog = new AlertDialog.Builder(this)
-                    .setTitle("Connection Request")
-                    .setMessage("Do you want to connect to " + endpointName + "?")
+                    .setTitle(getResources().getString(R.string.connectionrequest))
+                    .setMessage(getResources().getString(R.string.wantConnection) + endpointName + "?")
                     .setCancelable(false)
                     .setPositiveButton("Connect", new DialogInterface.OnClickListener() {
                         @Override
@@ -362,16 +351,16 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
                                                     Player p = myGame.addPlayer(endpointName, remoteEndpointId);
                                                     myGameCallBack.playerAdded(p.getPlayerColor());
                                                     sendMessageToClient(Serializer.serialize(new Message(MessageType.YourColor, p.getPlayerColor())), remoteEndpointId);
-                                                    sendMessageToOtherClients(Serializer.serialize(new Message(MessageType.SimpleStringToPrint, endpointName + " joined the game")), remoteEndpointId);
-                                                    printSomeThing(endpointName + R.string.joinedTheGame);
+                                                    sendMessageToOtherClients(Serializer.serialize(new Message(MessageType.SimpleStringToPrint, endpointName + R.string.joinedTheGame)), remoteEndpointId);
+                                                    printSomeThing(endpointName + getResources().getString(R.string.joinedTheGame));
                                                     sendMessageToAllClients(Serializer.serialize(new Message(MessageType.GameWorld, myGame)));
 
-                                                    if(myGame.isFull()){
+                                                    if (myGame.isFull()) {
                                                         Player nextPlayerToRoll = myGame.getNextPlayerToRoll();
-                                                        if(nextPlayerToRoll.isHost()){
+                                                        if (nextPlayerToRoll.isHost()) {
                                                             yourTurn();
-                                                        } else{
-                                                            sendMessageToClient(Serializer.serialize(new Message(MessageType.YourTurn, "Its your Turn")),nextPlayerToRoll.getEndPointId());
+                                                        } else {
+                                                            sendMessageToClient(Serializer.serialize(new Message(MessageType.YourTurn, getResources().getString(R.string.yourTurn))), nextPlayerToRoll.getEndPointId());
                                                         }
                                                     }
                                                 }
@@ -382,7 +371,7 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
                                     });
                         }
                     })
-                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    .setNegativeButton(getResources().getString(R.string.no), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             Nearby.Connections.rejectConnectionRequest(mGoogleApiClient, remoteEndpointId);
@@ -412,7 +401,7 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
                         if (status.isSuccess()) {
                             debugLog("onConnectionResponse: " + endpointName + " SUCCESS");
                             connected = true;
-                            Toast.makeText(NetworkConnectionActivity.this, "Connected to " + endpointName,
+                            Toast.makeText(NetworkConnectionActivity.this, getResources().getString(R.string.connectedTo) + endpointName,
                                     Toast.LENGTH_SHORT).show();
                             mRemoteHostEndpoint = endpointId;
                         } else {
@@ -457,7 +446,6 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
                         int statusCode = result.getStatus().getStatusCode();
                         if (statusCode == ConnectionsStatusCodes.STATUS_ALREADY_ADVERTISING) {
                             debugLog("STATUS_ALREADY_ADVERTISING");
-                        } else {
                         }
                         // Advertising failed - see statusCode for more details
                     }
@@ -538,7 +526,7 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
     private boolean isConnectedToNetwork() {
         ConnectivityManager connManager =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        for (int networkType : NETWORK_TYPES) {
+        for (int networkType : networkTypes) {
             NetworkInfo info = connManager.getNetworkInfo(networkType);
             if (info != null && info.isConnectedOrConnecting()) {
                 return true;
@@ -557,9 +545,9 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
         if (mMyListDialog == null) {
             // Configure the AlertDialog that the MyListDialog wraps
             AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                    .setTitle("Endpoint(s) Found")
+                    .setTitle(getResources().getString(R.string.endPointFound))
                     .setCancelable(true)
-                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    .setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             mMyListDialog.dismiss();
@@ -616,7 +604,7 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
                 wuerfelAllowed = false;
                 Random rand = new Random();
                 int random = rand.nextInt(6)+1;
-                printSomeThing("Device has shaken "+random);
+                printSomeThing(getResources().getString(R.string.rollValue)+random);
                 myGameCallBack.playerHasRoled(random);
                 lastShake = System.currentTimeMillis();
 

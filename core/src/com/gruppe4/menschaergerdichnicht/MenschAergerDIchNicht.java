@@ -39,19 +39,6 @@ public class MenschAergerDIchNicht extends Game implements ILibGDXCallBack{
 		super.render();
 	}
 
-	public void someMethod() {// check the calling class has actually implemented MyGameCallback
-		if (myAndroidCallBack != null) {
-			// initiate which ever callback method you need.
-			if (true) {
-				//myGameCallback.onSendMessage("Hallo Spieler");
-
-			}
-
-		} else {
-			//Log.e("MyGame", "To use this class you must implement MyGameCallback!")
-		}
-	}
-
 	@Override
 	public void playerAdded(String color) {
 		boolean notLoaded = true;

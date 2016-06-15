@@ -23,10 +23,9 @@ public class PlaygroundModel {
     public static void createPinsForColor(String color){
         ArrayList<HomeField> homeFieldsForColor = getHomeFieldsForColor(color);
         for(int i=0;i<homeFieldsForColor.size(); i++){
-            HomeField help = homeFieldsForColor.get(i);
-            Pin p = new Pin(color);
-            p.setPinPosition(help.getX(),help.getY());
-            p.setNumber(help.getPositionNr());
+            HomeField homefield = homeFieldsForColor.get(i);
+            Pin p = new Pin(homefield.getPositionNr(),color);
+            p.setField(homefield);
             pins.add(p);
         }
     }
@@ -98,45 +97,37 @@ public class PlaygroundModel {
         selectedPin.switchSelectionOff();
         //from the homefield to the startfield
         if(selectedPin.getCurrentType() == FieldType.HomeField && number == 6){
-            selectedPin.setCurrentType(FieldType.StartField);
             StartField start = getStartFieldForColor(myColor);
-            selectedPin.setPositionNr(start.getPositionNr());
-            movePin(new Draw(selectedPin.getNumber(),selectedPin.getPinColor(),selectedPin.getCurrentType(),0,0,number));
+            selectedPin.setField(start);
+            checkIfThereAlreadyIsAPinOnThisPosition(selectedPin.getPositionNr(),selectedPin);
         }
         //from a normalFieldTo another NormalField or the GoalField
         else if(selectedPin.getCurrentType() == FieldType.StartField || selectedPin.getCurrentType() == FieldType.NormalField){
             int endFieldNr = getStartFieldForColor(selectedPin.getPinColor()).getPositionNr()-1;
-            String nextType ="";
+            int nextPositionNr = selectedPin.getPositionNr()+number;
             selectedPin.setOldPositionNr(selectedPin.getPositionNr());
-
             //Check for not moving to far
-            int nextPositionNr = selectedPin.getOldPositionNr()+number;
             if(nextPositionNr>40){
                 nextPositionNr = nextPositionNr - 40;
             }
             //Calculate the right GoalField
             if(nextPositionNr>endFieldNr && selectedPin.getOldPositionNr()<=endFieldNr){
                 int goalFieldSteps = nextPositionNr - endFieldNr;
-                if(goalFieldSteps<=4){
-                    if(goalFieldIsFree(goalFieldSteps,selectedPin.getPinColor())){
-                        selectedPin.setPositionNr(goalFieldSteps);
-                        nextType = FieldType.GoalField;
-                    }
+                if(goalFieldSteps<=4 && goalFieldIsFree(goalFieldSteps,selectedPin.getPinColor())){
+                    GoalField goalField = getGoalFieldFromColor(selectedPin.getPinColor(),goalFieldSteps);
+                    selectedPin.setField(goalField);
                 }
             }
             //We draw Normal
             else {
-                selectedPin.setPositionNr(nextPositionNr);
-                nextType = FieldType.NormalField;
+                Field normal = getNormalFieldFromPos(nextPositionNr);
+                selectedPin.setField(normal);
+                checkIfThereAlreadyIsAPinOnThisPosition(selectedPin.getPositionNr(),selectedPin);
             }
-            selectedPin.setCurrentType(nextType);
-            movePin(new Draw(selectedPin.getNumber(),selectedPin.getPinColor(),selectedPin.getCurrentType(),selectedPin.getOldPositionNr(),selectedPin.getPositionNr(),number));
-
         } else if(selectedPin.getCurrentType().compareTo(FieldType.GoalField)==0){
             if(selectedPin.getPositionNr()+number<=4 && goalFieldIsFree(selectedPin.getPositionNr()+number,selectedPin.getPinColor())){
-                selectedPin.setOldPositionNr(selectedPin.getPositionNr());
-                selectedPin.setPositionNr(selectedPin.getPositionNr() + number);
-                movePin(new Draw(selectedPin.getNumber(),selectedPin.getPinColor(),selectedPin.getCurrentType(),selectedPin.getOldPositionNr(),selectedPin.getPositionNr(),number));
+                GoalField goalField = getGoalFieldFromColor(selectedPin.getPinColor(),selectedPin.getPositionNr()+number);
+                selectedPin.setField(goalField);
             }
         }
     }
@@ -178,17 +169,15 @@ public class PlaygroundModel {
         Pin pinToMove = getPinFromColor(draw.getColor(), draw.getPinId());
         if(draw.getFieldType().compareTo(FieldType.StartField)==0){
             StartField start = getStartFieldForColor(draw.getColor());
-            pinToMove.setPinPosition(start.getX(),start.getY());
-            pinToMove.setPositionNr(start.getPositionNr());
-            checkIfThereAlreadyIsAPinOnThisPosition(start.getPositionNr(),pinToMove);
+            pinToMove.setField(start);
+            checkIfThereAlreadyIsAPinOnThisPosition(start.getPositionNr(), pinToMove);
         } else if(draw.getFieldType().compareTo(FieldType.NormalField)==0){
             Field normal = getNormalFieldFromPos(draw.getTo());
-            pinToMove.setPinPosition(normal.getX(),normal.getY());
-            pinToMove.setPositionNr(normal.getPositionNr());
+            pinToMove.setField(normal);
             checkIfThereAlreadyIsAPinOnThisPosition(normal.getPositionNr(),pinToMove);
         } else if(draw.getFieldType().compareTo(FieldType.GoalField)==0){
             GoalField goalField = getGoalFieldFromColor(draw.getColor(),draw.getTo());
-            pinToMove.setPinPosition(goalField.getX(),goalField.getY());
+            pinToMove.setField(goalField);
         }
     }
 
@@ -200,7 +189,7 @@ public class PlaygroundModel {
                 won = false;
             }
         }
-        return false;
+        return won;
     }
 
     private static void checkIfThereAlreadyIsAPinOnThisPosition(int positionNr,Pin notThisPin) {
@@ -216,8 +205,7 @@ public class PlaygroundModel {
 
     private static void moveBackToHome(Pin pin) {
         HomeField freeHomeField = getFreeHomeFieldForPin(pin.getPinColor(), pin.getNumber());
-        pin.setPositionNr(freeHomeField.getPositionNr());
-        pin.setPinPosition(freeHomeField.getX(),freeHomeField.getY());
+        pin.setField(freeHomeField);
     }
 
     private static HomeField getFreeHomeFieldForPin(String pinColor, int number) {

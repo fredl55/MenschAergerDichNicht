@@ -2,6 +2,7 @@ package com.gruppe4.menschaergerdichnicht.Logic;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.gruppe4.menschaergerdichnicht.Fields.Field;
 import com.gruppe4.menschaergerdichnicht.Fields.FieldType;
 import com.gruppe4.menschaergerdichnicht.MyAsstes;
 
@@ -19,8 +20,10 @@ public class Pin {
     private String currentType;
     private int positionNr;
     private int oldPositionNr;
+    private Field currentField;
 
-    public Pin(String c){
+    public Pin(int number,String c){
+        this.number = number;
         this.pinColor = c;
         myPin = new Sprite(MyAsstes.assets.get(c+"Pin.png", Texture.class));
         currentType = FieldType.HomeField;
@@ -109,4 +112,13 @@ public class Pin {
     public void setOldPositionNr(int oldPositionNr) {
         this.oldPositionNr = oldPositionNr;
     }
+
+    public void setField(Field f){
+        this.positionNr = f.getPositionNr();
+        this.setPinPosition(f.getX(),f.getY());
+        this.currentType = f.getType();
+        this.currentField = f;
+    }
+
+
 }

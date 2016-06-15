@@ -77,6 +77,8 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
         this.mIsHost = isHost;
     }
     private boolean wuerfelAllowed = false;
+    private MenschAergerDIchNicht myLibgdx;
+    private boolean connected = false;
 
 
     @Override
@@ -108,6 +110,24 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
                 reRoll();
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Closing Activity")
+                .setMessage("Are you sure you want to close this activity?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+
+                })
+                .setNegativeButton("No", null)
+                .show();
     }
 
     private void reRoll(){
@@ -142,7 +162,7 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_server);
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-        MenschAergerDIchNicht myLibgdx = new MenschAergerDIchNicht();
+        myLibgdx = new MenschAergerDIchNicht();
         myLibgdx.setMyAndroidCallBack(this);
         myGameCallBack = myLibgdx;
         initialize(myLibgdx, config);
@@ -156,14 +176,24 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
     }
 
     @Override
+    protected void onStop(){
+        super.onStop();
+        if( mGoogleApiClient != null && mGoogleApiClient.isConnected() ) {
+            mGoogleApiClient.disconnect();
+        }
+    }
+
+    @Override
     protected void onResume(){
         super.onResume();
+        myLibgdx.resume();
         mSensorManager.registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     @Override
     protected void onPause() {
         mSensorManager.unregisterListener(mSensorListener);
+        myLibgdx.pause();
         super.onPause();
     }
 
@@ -175,11 +205,6 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
                 .addApi(Nearby.MESSAGES_API)
                 .build();
         setmIsHost(mIsHost);
-        /*if(mIsHost){
-            mytextView = (TextView)findViewById(R.id.lblClientMessage);
-        } else {
-            mytextView = (TextView)findViewById(R.id.lblServerMessage);
-        }*/
         mGoogleApiClient.connect();
     }
 
@@ -187,11 +212,32 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
         if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
         }
+
+        if( !isConnectedToNetwork() )
+            return;
+
+        if( mIsHost ) {
+            sendMessageToAllClients(Serializer.serialize(new Message(MessageType.SimpleStringToPrint, "Host has disconnected")));
+            Nearby.Connections.stopAdvertising(mGoogleApiClient);
+            Nearby.Connections.stopAllEndpoints( mGoogleApiClient );
+            mIsHost = false;
+            mRemotePeerEndpoints.clear();
+        } else {
+            if( !connected) {
+                Nearby.Connections.stopDiscovery( mGoogleApiClient,null );
+                return;
+            }
+            Nearby.Connections.disconnectFromEndpoint( mGoogleApiClient, mRemoteHostEndpoint );
+            mRemoteHostEndpoint = null;
+        }
+
+        this.connected = false;
     }
 
     @Override
     public void onConnected(Bundle bundle) {
         if(mIsHost){
+            connected = true;
             startAdvertising();
         } else {
             startDiscovery();
@@ -317,7 +363,7 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
                                                     myGameCallBack.playerAdded(p.getPlayerColor());
                                                     sendMessageToClient(Serializer.serialize(new Message(MessageType.YourColor, p.getPlayerColor())), remoteEndpointId);
                                                     sendMessageToOtherClients(Serializer.serialize(new Message(MessageType.SimpleStringToPrint, endpointName + " joined the game")), remoteEndpointId);
-                                                    printSomeThing(endpointName + "@string/joinedTheGame");
+                                                    printSomeThing(endpointName + R.string.joinedTheGame);
                                                     sendMessageToAllClients(Serializer.serialize(new Message(MessageType.GameWorld, myGame)));
 
                                                     if(myGame.isFull()){
@@ -349,6 +395,7 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
         mConnectionRequestDialog.show();
     }
 
+
     private void connectTo(String endpointId, final String endpointName) {
         debugLog("connectTo:" + endpointId + ":" + endpointName);
 
@@ -364,6 +411,7 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
                         Log.d(TAG, "onConnectionResponse:" + endpointId + ":" + status);
                         if (status.isSuccess()) {
                             debugLog("onConnectionResponse: " + endpointName + " SUCCESS");
+                            connected = true;
                             Toast.makeText(NetworkConnectionActivity.this, "Connected to " + endpointName,
                                     Toast.LENGTH_SHORT).show();
                             mRemoteHostEndpoint = endpointId;

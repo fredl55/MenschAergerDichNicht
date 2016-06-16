@@ -239,50 +239,44 @@ public class PlaygroundModel {
         return ret;
     }
 
-    public static Pin tryGetTappedPin(float x, float y,String myColor,int rollValue) {
-        ArrayList<Pin> myPins = getPinsForColor(myColor);
+    public static Pin tryGetTappedPin(float x, float y,String myColor,int rollValue,ArrayList<Pin> allowedPins) {
         Pin ret = null;
-        for (int i=0; i < myPins.size() && ret ==null;i++){
-            if(myPins.get(i).getMyPin().getBoundingRectangle().contains(x,y)){
-                PlaygroundModel.selectPin(myPins.get(i));
+        for (int i=0; i < allowedPins.size() && ret ==null;i++){
+            if(allowedPins.get(i).getMyPin().getBoundingRectangle().contains(x,y)){
+                PlaygroundModel.selectPin(allowedPins.get(i));
                 PlaygroundModel.move(myColor, rollValue);
-                ret = myPins.get(i);
+                ret = allowedPins.get(i);
             }
         }
         return ret;
     }
 
-    public static boolean IsThereAPinToMove(String myColor, int number) {
-        boolean retVal = false;
+    public static ArrayList<Pin> IsThereAPinToMove(String myColor, int number) {
+        ArrayList<Pin> allowedPins = new ArrayList<Pin>();
         //if the number is 6 and there is a pin in home
-        if(number == 6 && isAPinInHome(myColor)){
-            retVal = true;
-        }
-        else {
-            ArrayList<Pin> myPins = getPinsForColor(myColor);
-            for(int i=0; i < myPins.size() && !retVal;i++){
-                Pin currentPin = myPins.get(i);
-                if(currentPin.getCurrentType().compareTo(FieldType.StartField)==0){
-                    retVal=true;
-                } else if(currentPin.getCurrentType().compareTo(FieldType.NormalField)==0){
-                    int endFieldNr = getStartFieldForColor(myColor).getPositionNr()-1;
-                    //if there is a pin on a normal field and we can move without going over the endfield
-                    if(currentPin.getPositionNr()+number<=endFieldNr || currentPin.getPositionNr()>endFieldNr){
-                        retVal = true;
-                    } else{
-                        int stepsToEndField = endFieldNr - currentPin.getPositionNr();
-                        if((number-stepsToEndField)<=4  && goalFieldIsFree(number-stepsToEndField,myColor)){
-                            retVal = true;
-                        }
+        ArrayList<Pin> myPins = getPinsForColor(myColor);
+        for(int i=0;i<myPins.size();i++){
+            if(myPins.get(i).getCurrentType().compareTo(FieldType.HomeField)==0 && number == 6){
+                allowedPins.add(myPins.get(i));
+            } else if(myPins.get(i).getCurrentType().compareTo(FieldType.StartField)==0){
+                allowedPins.add(myPins.get(i));
+            } else if(myPins.get(i).getCurrentType().compareTo(FieldType.NormalField)==0 ){
+                int endFieldNr = getStartFieldForColor(myColor).getPositionNr()-1;
+                if(myPins.get(i).getPositionNr()+number<=endFieldNr || myPins.get(i).getPositionNr()>endFieldNr){
+                    allowedPins.add(myPins.get(i));
+                }else{
+                    int stepsToEndField = endFieldNr - myPins.get(i).getPositionNr();
+                    if((number-stepsToEndField)<=4  && goalFieldIsFree(number-stepsToEndField,myColor)){
+                        allowedPins.add(myPins.get(i));
                     }
-                } else if(currentPin.getCurrentType().compareTo(FieldType.GoalField)==0){
-                    if(currentPin.getPositionNr()+number<=4 && goalFieldIsFree(currentPin.getPositionNr()+number,myColor)){
-                        retVal = true;
-                    }
+                }
+            } else if(myPins.get(i).getCurrentType().compareTo(FieldType.GoalField)==0){
+                if(myPins.get(i).getPositionNr()+number<=4 && goalFieldIsFree(myPins.get(i).getPositionNr()+number,myColor)){
+                    allowedPins.add(myPins.get(i));
                 }
             }
         }
-        return retVal;
+        return allowedPins;
     }
 
     private static boolean isAPinInHome(String myColor) {

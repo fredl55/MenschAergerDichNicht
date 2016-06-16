@@ -37,7 +37,7 @@
     <string name="rolled"> würfelte </string>
     <string name="couldntMove"> konnte nicht ziehen </string>
     <string name="again">Du kannst nocheinmal würfeln</string>
-    <string name="again2"> aber du kannst nocheinmal würfeln</string>
+    <string name="again2"> aber kann nocheinmal würfeln</string>
     <string name="hostDisconnect">Der Host Spieler hat einen Disconnect</string>
     <string name="yourTurn">Du bist dran</string>
     <string name="connectedTo"> verbunden zu </string>

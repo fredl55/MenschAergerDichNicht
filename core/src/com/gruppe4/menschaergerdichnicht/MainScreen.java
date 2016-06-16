@@ -54,6 +54,7 @@ public class MainScreen implements Screen {
     private boolean rolled = false;
     private int rollValue;
     private int rollTrys = 1;
+    private ArrayList<Pin> allowedPins;
 
 
 
@@ -95,7 +96,7 @@ public class MainScreen implements Screen {
             setMapProperties();
 
 
-            initCamera(w,h);
+            initCamera(w, h);
             InputMultiplexer  m = new InputMultiplexer();
             m.addProcessor(new GestureDetector(new MyInputProcessor(this)));
             Gdx.input.setInputProcessor(m);
@@ -222,15 +223,17 @@ public class MainScreen implements Screen {
     public void sendTap(float x, float y){
         Vector3 clickCoordinates = new Vector3(x, y, 0);
         Vector3 position = camera.unproject(clickCoordinates);
-        Pin pin = PlaygroundModel.tryGetTappedPin(position.x, position.y,myColor,rollValue);
-        if(pin!=null){
-            rolled = false;
-            game.playerHasMoved(pin.getNumber(),myColor,pin.getCurrentType(),pin.getOldPositionNr(),pin.getPositionNr(),rollValue);
-            if(PlaygroundModel.checkForWin(myColor)){
-                game.playerWon();
+        if(allowedPins!=null && allowedPins.size()!=0){
+            Pin pin = PlaygroundModel.tryGetTappedPin(position.x, position.y, myColor, rollValue,allowedPins);
+            if(pin!=null){
+                rolled = false;
+                game.playerHasMoved(pin.getNumber(),myColor,pin.getCurrentType(),pin.getOldPositionNr(),pin.getPositionNr(),rollValue);
+                if(PlaygroundModel.checkForWin(myColor)){
+                    game.playerWon();
+                }
             }
-
         }
+
     }
 
 
@@ -249,7 +252,8 @@ public class MainScreen implements Screen {
         }else{
             rollTrys=0;
         }
-        if(!PlaygroundModel.IsThereAPinToMove(myColor,rollValue)) game.cantRoll(rollValue,rollTrys);
+        allowedPins = PlaygroundModel.IsThereAPinToMove(myColor,rollValue);
+        if(allowedPins.size()==0) game.cantRoll(rollValue,rollTrys);
     }
 
     public boolean isRolled() {

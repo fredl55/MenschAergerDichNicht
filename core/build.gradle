@@ -49,3 +49,6 @@ jacocoTestReport {
     }
 }
 //end Jacoco config
+dependencies {
+    compile 'com.badlogicgames.gdx:gdx-freetype:1.9.2'
+}

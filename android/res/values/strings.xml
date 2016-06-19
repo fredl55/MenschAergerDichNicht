@@ -28,7 +28,7 @@
     <!--Errors warnings-->
     <string name="error_empty">Player name is required!</string>
     <string name="error_tooLong">Player name is too long!</string>
-    <string name="joinedTheGame">Joined the game</string>
+    <string translatable="false" name="joinedTheGame">Joined the game</string>
     <string name="endTheGame">Are you sure you want to close this activity?</string>
     <string name="yes">yes</string>
     <string name="no">noe</string>

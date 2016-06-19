@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.gruppe4.menschaergerdichnicht"
     android:versionCode="1"
     android:versionName="1.0">
@@ -21,7 +22,8 @@
         android:label="@string/app_name"
         android:theme="@style/GdxTheme">
         <meta-data android:name="com.google.android.gms.nearby.connection.SERVICE_ID"
-            android:value="@string/client_id" />
+            android:value="@string/client_id"
+            tools:ignore="ManifestResource"/>
         <activity
             android:name=".AndroidLauncher"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"

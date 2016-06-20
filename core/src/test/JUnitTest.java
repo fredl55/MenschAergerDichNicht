@@ -1,3 +1,5 @@
+package test;
+
 import com.gruppe4.menschaergerdichnicht.Interface.Message;
 import com.gruppe4.menschaergerdichnicht.Logic.Pin;
 import com.gruppe4.menschaergerdichnicht.Fields.Field;
@@ -25,7 +27,7 @@ public class JUnitTest {
         Pin pin = new Pin(1, "Pin");
         pin.setPinPosition(10,50);
 
-        assertEquals(135, pin.getPosY());
+        assertEquals(135.0, pin.getPosY(), 0);
     }
 
     //testen, ob man die Farbe durch angabe des Namens bekommt

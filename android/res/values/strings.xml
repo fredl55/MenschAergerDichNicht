@@ -25,7 +25,9 @@
     <string name="optCheating">Cheating</string>
     <string name="optLanguage">Language</string>
     <string name="optSFX">Sound FX</string>
-    <!--Errors warnings-->
+    <string name="instr">Instructions</string>
+
+    <!--Rest-->
     <string name="error_empty">Player name is required!</string>
     <string name="error_tooLong">Player name is too long!</string>
     <string name="joinedTheGame">Joined the game</string>

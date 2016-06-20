@@ -61,12 +61,13 @@ project(":android") {
 
 project(":core") {
     apply plugin: "java"
-
+    sourceSets.main.java.srcDirs = [ "src/com/gruppe4/menschaergerdichnicht" ]
+    sourceSets.main.java.srcDirs = [ "src/test" ]
 
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
-
+        testCompile 'junit:junit:4.12'
     }
 }
 

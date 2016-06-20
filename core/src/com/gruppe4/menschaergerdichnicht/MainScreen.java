@@ -23,16 +23,11 @@ import com.gruppe4.menschaergerdichnicht.Fields.FieldType;
 import com.gruppe4.menschaergerdichnicht.Fields.GoalField;
 import com.gruppe4.menschaergerdichnicht.Fields.HomeField;
 import com.gruppe4.menschaergerdichnicht.Fields.StartField;
-import com.gruppe4.menschaergerdichnicht.Interface.IAndroidCallBack;
-import com.gruppe4.menschaergerdichnicht.Interface.ILibGDXCallBack;
-import com.gruppe4.menschaergerdichnicht.Logic.Draw;
 import com.gruppe4.menschaergerdichnicht.Logic.Pin;
 import com.gruppe4.menschaergerdichnicht.Logic.PlaygroundModel;
 import com.gruppe4.menschaergerdichnicht.Processors.MyInputProcessor;
 
 import java.util.ArrayList;
-
-import javax.xml.soap.Text;
 
 
 /**
@@ -56,9 +51,9 @@ public class MainScreen implements Screen {
     private int rollTrys = 1;
     private ArrayList<Pin> allowedPins;
 
+    public MainScreen() {
 
-
-
+    }
 
     public OrthographicCamera getCamera() {
         return camera;

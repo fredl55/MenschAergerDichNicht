@@ -31,7 +31,7 @@ jacocoTestReport {
     description = "Generate Jacoco coverage reports"
 
     classDirectories = fileTree(
-            dir: '../core/build/intermediates/classes',
+            dir: '../core/build/classes',
             excludes: ['**/R.class',
                        '**/R$*.class',
                        '**/*$ViewInjector*.*',
@@ -41,7 +41,7 @@ jacocoTestReport {
 
     additionalSourceDirs = files(coverageSourceDirs)
     sourceDirectories = files(coverageSourceDirs)
-    executionData = files('../app/build/jacoco/jacoco.exec')
+    executionData = files('../core/build/jacoco/jacoco.exec')
 
     reports {
         xml.enabled = true

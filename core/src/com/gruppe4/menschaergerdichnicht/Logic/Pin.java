@@ -97,5 +97,12 @@ public class Pin {
         this.currentType = f.getType();
     }
 
+    public float getPosX(){
+        return this.posX;
+    }
+
+    public float getPosY(){
+        return this.posY;
+    }
 
 }

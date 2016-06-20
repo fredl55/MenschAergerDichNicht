@@ -46,7 +46,7 @@ public class Field {
         return positionNr;
     }
 
-    protected String getColorFromName(String name) {
+    public String getColorFromName(String name) {
         String c = null;
         if(name.contains("Grün")){
             c = "green";

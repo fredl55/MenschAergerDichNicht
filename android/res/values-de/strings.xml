@@ -14,7 +14,7 @@
     <!--User Interface items-->
     <string name="menuItem1">Spiel erstellen</string>
     <string name="menuItem2">Spiel beitreten</string>
-    <string name="menuItem3">Einstellungen</string>
+    <string name="menuItem3">Einleitung</string>
     <string name="confirmBtn">Bestätigen</string>
     <string name="hintLogin">Spieler</string>
     <string name="pName">Spielername eingeben:</string>

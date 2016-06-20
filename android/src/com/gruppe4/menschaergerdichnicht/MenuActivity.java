@@ -41,4 +41,9 @@ public class MenuActivity extends Activity {
         startActivity(i);
     }
 
+    public void ActtivityInstructions(View v){
+        Intent i = new Intent(this,InstructionsActivity.class);
+        startActivity(i);
+    }
+
 }

@@ -92,45 +92,7 @@ public class PlaygroundModel {
         return ret;
     }
 
-    public static void move(String myColor, int number){
-        Pin selectedPin = getSelectedPin(myColor);
-        selectedPin.switchSelectionOff();
-        //from the homefield to the startfield
-        if(selectedPin.getCurrentType() == FieldType.HomeField && number == 6){
-            StartField start = getStartFieldForColor(myColor);
-            selectedPin.setField(start);
-            checkIfThereAlreadyIsAPinOnThisPosition(selectedPin.getPositionNr(),selectedPin);
-        }
-        //from a normalFieldTo another NormalField or the GoalField
-        else if(selectedPin.getCurrentType() == FieldType.StartField || selectedPin.getCurrentType() == FieldType.NormalField){
-            int endFieldNr = getStartFieldForColor(selectedPin.getPinColor()).getPositionNr()-1;
-            int nextPositionNr = selectedPin.getPositionNr()+number;
-            selectedPin.setOldPositionNr(selectedPin.getPositionNr());
-            //Check for not moving to far
-            if(nextPositionNr>40){
-                nextPositionNr = nextPositionNr - 40;
-            }
-            //Calculate the right GoalField
-            if(nextPositionNr>endFieldNr && selectedPin.getOldPositionNr()<=endFieldNr){
-                int goalFieldSteps = nextPositionNr - endFieldNr;
-                if(goalFieldSteps<=4 && goalFieldIsFree(goalFieldSteps,selectedPin.getPinColor())){
-                    GoalField goalField = getGoalFieldFromColor(selectedPin.getPinColor(),goalFieldSteps);
-                    selectedPin.setField(goalField);
-                }
-            }
-            //We draw Normal
-            else {
-                Field normal = getNormalFieldFromPos(nextPositionNr);
-                selectedPin.setField(normal);
-                checkIfThereAlreadyIsAPinOnThisPosition(selectedPin.getPositionNr(),selectedPin);
-            }
-        } else if(selectedPin.getCurrentType().compareTo(FieldType.GoalField)==0){
-            if(selectedPin.getPositionNr()+number<=4 && goalFieldIsFree(selectedPin.getPositionNr()+number,selectedPin.getPinColor())){
-                GoalField goalField = getGoalFieldFromColor(selectedPin.getPinColor(),selectedPin.getPositionNr()+number);
-                selectedPin.setField(goalField);
-            }
-        }
-    }
+
 
     private static boolean goalFieldIsFree(int goalFieldSteps,String color) {
         ArrayList<Pin> myPins = getPinsForColor(color);
@@ -253,7 +215,6 @@ public class PlaygroundModel {
 
     public static ArrayList<Pin> IsThereAPinToMove(String myColor, int number) {
         ArrayList<Pin> allowedPins = new ArrayList<Pin>();
-        //if the number is 6 and there is a pin in home
         ArrayList<Pin> myPins = getPinsForColor(myColor);
         for(int i=0;i<myPins.size();i++){
             if(myPins.get(i).getCurrentType().compareTo(FieldType.HomeField)==0 && number == 6){
@@ -288,5 +249,80 @@ public class PlaygroundModel {
             }
         }
         return retVal;
+    }
+
+    private static Field getNextField(Pin myPin, int rollVal){
+        Field f = null;
+        if(myPin.getCurrentType().compareTo(FieldType.HomeField)==0 && rollVal==6){
+            f = getStartFieldForColor(myPin.getPinColor());
+        } else if(myPin.getCurrentType().compareTo(FieldType.StartField)==0){
+            f = getNormalFieldFromPos(myPin.getPositionNr()+rollVal);
+        } else if(myPin.getCurrentType().compareTo(FieldType.NormalField)==0){
+            int endFieldNr = getStartFieldForColor(myPin.getPinColor()).getPositionNr()-1;
+            int nextPositionNr = myPin.getPositionNr()+rollVal;
+
+            if(nextPositionNr>40){
+                nextPositionNr = nextPositionNr - 40;
+            }
+            if(nextPositionNr>endFieldNr && myPin.getOldPositionNr()<=endFieldNr){
+                int goalFieldSteps = nextPositionNr - endFieldNr;
+                if(goalFieldSteps<=4 && goalFieldIsFree(goalFieldSteps,myPin.getPinColor())){
+                    f = getGoalFieldFromColor(myPin.getPinColor(),goalFieldSteps);
+                }
+            }
+            //We draw Normal
+            else {
+                f = getNormalFieldFromPos(nextPositionNr);
+            }
+        } else if(myPin.getCurrentType().compareTo(FieldType.GoalField)==0){
+            f = getGoalFieldFromColor(myPin.getPinColor(),myPin.getPositionNr()+rollVal);
+        }
+        return f;
+    }
+
+    public static void move(String myColor, int number){
+        Pin selectedPin = getSelectedPin(myColor);
+        selectedPin.switchSelectionOff();
+        //from the homefield to the startfield
+        if(selectedPin.getCurrentType() == FieldType.HomeField && number == 6){
+            StartField start = getStartFieldForColor(myColor);
+            selectedPin.setField(start);
+            checkIfThereAlreadyIsAPinOnThisPosition(selectedPin.getPositionNr(),selectedPin);
+        }
+        //from a normalFieldTo another NormalField or the GoalField
+        else if(selectedPin.getCurrentType() == FieldType.StartField || selectedPin.getCurrentType() == FieldType.NormalField){
+            int endFieldNr = getStartFieldForColor(selectedPin.getPinColor()).getPositionNr()-1;
+            int nextPositionNr = selectedPin.getPositionNr()+number;
+            selectedPin.setOldPositionNr(selectedPin.getPositionNr());
+            //Check for not moving to far
+            if(nextPositionNr>40){
+                nextPositionNr = nextPositionNr - 40;
+            }
+            //Calculate the right GoalField
+            if(nextPositionNr>endFieldNr && selectedPin.getOldPositionNr()<=endFieldNr){
+                int goalFieldSteps = nextPositionNr - endFieldNr;
+                if(goalFieldSteps<=4 && goalFieldIsFree(goalFieldSteps,selectedPin.getPinColor())){
+                    GoalField goalField = getGoalFieldFromColor(selectedPin.getPinColor(),goalFieldSteps);
+                    selectedPin.setField(goalField);
+                }
+            }
+            //We draw Normal
+            else {
+                Field normal = getNormalFieldFromPos(nextPositionNr);
+                selectedPin.setField(normal);
+                checkIfThereAlreadyIsAPinOnThisPosition(selectedPin.getPositionNr(),selectedPin);
+            }
+        } else if(selectedPin.getCurrentType().compareTo(FieldType.GoalField)==0){
+            if(selectedPin.getPositionNr()+number<=4 && goalFieldIsFree(selectedPin.getPositionNr()+number,selectedPin.getPinColor())){
+                GoalField goalField = getGoalFieldFromColor(selectedPin.getPinColor(),selectedPin.getPositionNr()+number);
+                selectedPin.setField(goalField);
+            }
+        }
+        /*Field f = getNextField(selectedPin,number);
+        selectedPin.setField(f);
+        if(f.getType().compareTo(FieldType.NormalField)==0 || f.getType().compareTo(FieldType.StartField)==0){
+            checkIfThereAlreadyIsAPinOnThisPosition(selectedPin.getPositionNr(),selectedPin);
+        }*/
+
     }
 }

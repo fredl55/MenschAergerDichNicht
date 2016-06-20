@@ -10,65 +10,43 @@
     <string name="title_activity_options">OptionsActivity</string>
     <string name="client_id">The Client_id</string>
     <!--User Interface items-->
-    <string name="menuItem1">Create Game</string>
-    <string name="menuItem2">Join Game</string>
-    <string name="menuItem3">Instructions</string>
-    <string name="confirmBtn">Confirm</string>
-    <string name="hintLogin">Player</string>
-    <string name="pName">Type in your Player Name:</string>
-    <string name="title_activity_client2">ClientActivity2</string>
-    <string name="playerCount">Number of players:</string>
-    <string name="punishmentText">Cheating Punishment:</string>
-    <string name="punishment1">Skip\none\nturn</string>
-    <string name="punishment2">Three\nfields\nback</string>
-    <string name="startBtn">Start Game</string>
-    <string name="optCheating">Cheating</string>
-    <string name="optLanguage">Language</string>
-    <string name="optSFX">Sound FX</string>
-    <string name="instr">Spielbeschreibung
-In dem beliebten Brettspiel „Mensch Ärger Dich nicht“ geht es darum, mit seinen eigenen Spielfiguren so schnell wie möglich vom Startfeld aus über das Spielbrett ins Ziel zu kommen. Gleichzeitig versucht man seine Mitspieler zur ärgern und deren Spielfiguren, so oft wie möglich, zu schlagen, damit sie wieder zum Start zurück müssen.
-Die weißen Felder des Spielbretts stellen die Laufbahn dar, die alle Spieler mit ihren vier Spielfiguren zurücklegen müssen. Auf den farbigen Spielfeldern beginnen die Spieler mit den Spielsteinen in Ihrer Farbe ihren Weg und ziehen in Richtung Zielbereich.
-Wer als erstes seine vier Spielfiguren „nach Hause“ ins Ziel gebracht hat, gewinnt das Spiel.
-
-Spielvorbereitung
-Nach dem Start des Spieles am jeweiligen Gerät kann sich jeder Spieler einen Nicknamen geben entweder als Spiel-Hoster fungieren und ein neues Spiel erstellen oder nach Spielern in seiner Umgebung suchen und in ein Spiel einsteigen.
-
-Erster Spielzug:
-Der erste Spieler(Spielhoster) ist am Zug und kann durch schütteln des Gerätes würfeln. Um mit der Spielfigur vom Startfeld zu kommen muss eine 6 gewürfelt werden. Solange kein Kegel des jeweiligen Spielers am Spielfeld ist, darf der Spieler bis zu drei Mal würfeln.
-
-Spielfigur ziehen:
-Der Spieler hat die Möglichkeit mit seiner Spielfigur die gewürfelte Augenzahl an Feldern zu ziehen.
-Wenn der Spieler mehrere Spielfiguren am Spielfeld hat, kann er sich aussuchen mit welcher Spielfigur er weiterzieht.
-
-Spieler schlagen:
-Wenn ein Spieler mit seiner Spielfigur auf ein Feld kommt wo bereits ein Kegel eines anderen Spielers steht kann er auf dieses Feld ziehen und den Spieler schlagen. Die Spielfigur des anderen Spielers muss an den Start zurück. Es herrscht aber kein Schlagzwang.
-Eigene Spielfiguren können nicht geschlagen werden, der Spieler muss dann mit einer anderen Spielfigur ziehen, da auf jedem Feld immer nur eine Spielfigur stehen darf.
-
-Besondere Würfelzahl (6er):
-Wenn der Spieler eine Sechs würfelt, darf der Spieler mit seiner Spielfigur ziehen und noch einmal würfeln.</string>
-
+    <string name="menuItem1"> Create Game </string>
+    <string name="menuItem2"> Join Game </string>
+    <string name="menuItem3"> Instructions </string>
+    <string name="confirmBtn"> Confirm </string>
+    <string name="hintLogin"> Player </string>
+    <string name="pName"> Type in your Player Name: </string>
+    <string name="title_activity_client2"> ClientActivity2 </string>
+    <string name="playerCount"> Number of players: </string>
+    <string name="punishmentText"> Cheating Punishment: </string>
+    <string name="punishment1"> Skip\none\nturn </string>
+    <string name="punishment2"> Three\nfields\nback </string>
+    <string name="startBtn"> Start Game </string>
+    <string name="optCheating"> Cheating </string>
+    <string name="optLanguage"> Language </string>
+    <string name="optSFX"> Sound FX </string>
     <!--Rest-->
-    <string name="error_empty">Player name is required!</string>
-    <string name="error_tooLong">Player name is too long!</string>
-    <string name="joinedTheGame">Joined the game</string>
-    <string name="endTheGame">Are you sure you want to close this activity?</string>
-    <string name="yes">yes</string>
-    <string name="no">noe</string>
-    <string name="closeActivity">Close the Activity?</string>
+    <string name="error_empty"> Player name is required! </string>
+    <string name="error_tooLong"> Player name is too long! </string>
+    <string name="joinedTheGame"> Joined the game </string>
+    <string name="endTheGame"> Are you sure you want to close this activity? </string>
+    <string name="yes"> yes </string>
+    <string name="no"> no </string>
+    <string name="closeActivity"> Close the Activity? </string>
     <string name="rolled"> rolled </string>
     <string name="couldntMove"> couldnt move </string>
-    <string name="again">you are allowed to roll again</string>
+    <string name="again"> you are allowed to roll again</string>
     <string name="again2"> but is allowed to roll again</string>
-    <string name="hostDisconnect">the host player has an disconnect</string>
+    <string name="hostDisconnect">t he host player has an disconnect</string>
     <string name="joinedGame"> joined the game</string>
-    <string name="yourTurn">Your turn</string>
+    <string name="yourTurn"> Your turn</string>
     <string name="connectedTo"> connected to</string>
-    <string name="rollValue">Your roll value:  </string>
-    <string name="wantConnection">Do you want to connect to </string>
-    <string name="victory">wins this game</string>
-    <string name="endPointFound">Endpoints found</string>
-    <string name="cancel">Cancel</string>
-    <string name="connectionrequest">Connection request</string>
+    <string name="rollValue"> Your roll value:  </string>
+    <string name="wantConnection"> Do you want to connect to </string>
+    <string name="victory"> wins this game</string>
+    <string name="endPointFound"> Endpoints found</string>
+    <string name="cancel"> Cancel</string>
+    <string name="connectionrequest"> Connection request</string>
 
 
 

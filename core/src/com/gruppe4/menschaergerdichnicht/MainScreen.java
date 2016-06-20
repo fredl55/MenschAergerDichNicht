@@ -37,10 +37,9 @@ public class MainScreen implements Screen {
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
-    //private Player player;
     private MapProperties mapProperties;
-    public static float MAXZOOM = 3.5f;
-    public static float MINZOOM = 1f;
+    public static final float MAXZOOM = 3.5f;
+    public static final float MINZOOM = 1f;
     private int mapHeight;
     private int mapWidth;
     private MenschAergerDIchNicht game;
@@ -51,8 +50,14 @@ public class MainScreen implements Screen {
     private int rollTrys = 1;
     private ArrayList<Pin> allowedPins;
 
-    public MainScreen() {
+    public MainScreen(){
 
+    }
+
+    public MainScreen (MenschAergerDIchNicht game){
+        this.game = game;
+        map = new TmxMapLoader().load("Brett.tmx");
+        loadObjectsInModel(map);
     }
 
     public OrthographicCamera getCamera() {
@@ -73,13 +78,7 @@ public class MainScreen implements Screen {
 
 
 
-    public MainScreen (MenschAergerDIchNicht game){
-        this.game = game;
-        map = new TmxMapLoader().load("Brett.tmx");
-        loadObjectsInModel(map);
 
-        //this.playerAdded("red");
-    }
     @Override
     public void show() {
         try{
@@ -95,8 +94,6 @@ public class MainScreen implements Screen {
             InputMultiplexer  m = new InputMultiplexer();
             m.addProcessor(new GestureDetector(new MyInputProcessor(this)));
             Gdx.input.setInputProcessor(m);
-            //Create the Player
-            //player = new Player(new Sprite(new Texture("fbpr.png")));
 
             this.wuerfelSprite = new Sprite();
             this.changeWuerfel(1);
@@ -195,13 +192,14 @@ public class MainScreen implements Screen {
 
     @Override
     public void pause() {
-
+        game.pause();
     }
 
     @Override
     public void resume() {
-
+        game.resume();
     }
+
 
     @Override
     public void hide() {
@@ -218,7 +216,7 @@ public class MainScreen implements Screen {
     public void sendTap(float x, float y){
         Vector3 clickCoordinates = new Vector3(x, y, 0);
         Vector3 position = camera.unproject(clickCoordinates);
-        if(allowedPins!=null && allowedPins.size()!=0){
+        if(allowedPins!=null && !allowedPins.isEmpty()){
             Pin pin = PlaygroundModel.tryGetTappedPin(position.x, position.y, myColor, rollValue,allowedPins);
             if(pin!=null){
                 rolled = false;
@@ -247,7 +245,7 @@ public class MainScreen implements Screen {
         }else{
             rollTrys=0;
         }
-        allowedPins = PlaygroundModel.IsThereAPinToMove(myColor,rollValue);
+        allowedPins = (ArrayList<Pin>) PlaygroundModel.isThereAPinToMove(myColor, rollValue);
         if(allowedPins.size()==0) game.cantRoll(rollValue,rollTrys);
     }
 

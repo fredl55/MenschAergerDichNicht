@@ -4,15 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.View;
-import android.widget.EditText;
-import android.app.Activity;
-import android.os.Bundle;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RadioGroup.OnCheckedChangeListener;
-import android.widget.Toast;
-import android.widget.TextView;
-
 import com.gruppe4.Logic.Game;
 import com.gruppe4.Logic.Player;
 

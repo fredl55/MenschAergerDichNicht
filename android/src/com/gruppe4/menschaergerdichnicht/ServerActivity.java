@@ -1,10 +1,7 @@
 package com.gruppe4.menschaergerdichnicht;
 
 import android.content.Intent;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
 import android.os.Bundle;
-import com.gruppe4.Logic.Player;
 
 import com.gruppe4.Logic.Game;
 

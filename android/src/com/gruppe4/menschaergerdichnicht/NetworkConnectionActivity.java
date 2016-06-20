@@ -75,12 +75,19 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
         this.mIsHost = isHost;
     }
 
+    private SensorManager mSensorManager;
+    private float mAccel; // acceleration apart from gravity
+    private float mAccelCurrent; // current acceleration including gravity
+    private float mAccelLast; // last acceleration including gravity
+
+    private long lastShake;
+
     @Override
     public void playerWon(){
         if(mIsHost){
-            sendMessageToAllClients(Serializer.serialize(new Message(MessageType.Victory, myName + getResources().getString(R.string.victory))));
+            sendMessageToAllClients(Serializer.serialize(new Message(MessageType.Victory, myName+ " " + getResources().getString(R.string.victory))));
         } else {
-            sendMessageToHost(Serializer.serialize(new Message(MessageType.Victory, myName + getResources().getString(R.string.victory))));
+            sendMessageToHost(Serializer.serialize(new Message(MessageType.Victory, myName + " "+ getResources().getString(R.string.victory))));
         }
     }
 
@@ -89,7 +96,7 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
         Draw d = new Draw(pinId,color,type,from,to,rollValue);
         if(!mIsHost){
             sendMessageToHost(Serializer.serialize(new Message(MessageType.PlayerMoved, d)));
-            sendMessageToHost(Serializer.serialize(new Message(MessageType.PlayerRoled, myName + getResources().getString(R.string.rolled) + rollValue)));
+            sendMessageToHost(Serializer.serialize(new Message(MessageType.PlayerRoled, myName+ " " + getResources().getString(R.string.rolled) + rollValue)));
             if(rollValue!=6){
                 sendMessageToHost(Serializer.serialize(new Message(MessageType.NextPlayer,"")));
             } else{
@@ -97,7 +104,7 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
             }
         } else {
             sendMessageToAllClients(Serializer.serialize(new Message(MessageType.PlayerMoved,d)));
-            sendMessageToAllClients(Serializer.serialize(new Message(MessageType.SimpleStringToPrint, this.myName + getResources().getString(R.string.rolled) + rollValue)));
+            sendMessageToAllClients(Serializer.serialize(new Message(MessageType.SimpleStringToPrint, this.myName + " "+ getResources().getString(R.string.rolled) + rollValue)));
             if(rollValue!=6){
                 infoNextPlayer();
             } else {
@@ -133,14 +140,14 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
     public void cantRoll(int rollValue,int rollTrys){
         String reRolltext = (rollValue == 6 ||  rollTrys!=0) ? getResources().getString(R.string.again2) : "";
         if(mIsHost){
-            sendMessageToAllClients(Serializer.serialize(new Message(MessageType.SimpleStringToPrint, this.myName + getResources().getString(R.string.couldntMove) + reRolltext)));
+            sendMessageToAllClients(Serializer.serialize(new Message(MessageType.SimpleStringToPrint, this.myName + " "+ getResources().getString(R.string.couldntMove) +" " + reRolltext)));
             if(rollValue == 6 ||  rollTrys!=0){
                 reRoll();
             }else{
                 infoNextPlayer();
             }
         } else {
-            sendMessageToHost(Serializer.serialize(new Message(MessageType.PlayerRoled, myName+getResources().getString(R.string.couldntMove)+reRolltext)));
+            sendMessageToHost(Serializer.serialize(new Message(MessageType.PlayerRoled, myName+ " "+getResources().getString(R.string.couldntMove)+" "+reRolltext)));
             if(rollValue == 6 ||  rollTrys!=0){
                 reRoll();
             } else {
@@ -352,7 +359,7 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
                                                     myGameCallBack.playerAdded(p.getPlayerColor());
                                                     sendMessageToClient(Serializer.serialize(new Message(MessageType.YourColor, p.getPlayerColor())), remoteEndpointId);
                                                     sendMessageToOtherClients(Serializer.serialize(new Message(MessageType.SimpleStringToPrint, endpointName + R.string.joinedTheGame)), remoteEndpointId);
-                                                    printSomeThing(endpointName + getResources().getString(R.string.joinedTheGame));
+                                                    printSomeThing(endpointName+ " " + getResources().getString(R.string.joinedTheGame));
                                                     sendMessageToAllClients(Serializer.serialize(new Message(MessageType.GameWorld, myGame)));
 
                                                     if (myGame.isFull()) {
@@ -401,7 +408,7 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
                         if (status.isSuccess()) {
                             debugLog("onConnectionResponse: " + endpointName + " SUCCESS");
                             connected = true;
-                            Toast.makeText(NetworkConnectionActivity.this, getResources().getString(R.string.connectedTo) + endpointName,
+                            Toast.makeText(NetworkConnectionActivity.this, getResources().getString(R.string.connectedTo) + " "+ endpointName,
                                     Toast.LENGTH_SHORT).show();
                             mRemoteHostEndpoint = endpointId;
                         } else {
@@ -472,7 +479,7 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
     public void sendMessageToOtherClients(byte[] message, String sendingNotTo){
         ArrayList help = new ArrayList(mRemotePeerEndpoints);
         help.remove(sendingNotTo);
-        if(mIsHost && help.size()!=0){
+        if(mIsHost && !help.isEmpty()){
             Nearby.Connections.sendReliableMessage( mGoogleApiClient,help, message);
         }
     }
@@ -583,12 +590,6 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
         }
     }
 
-    private SensorManager mSensorManager;
-    private float mAccel; // acceleration apart from gravity
-    private float mAccelCurrent; // current acceleration including gravity
-    private float mAccelLast; // last acceleration including gravity
-
-    private long lastShake;
     private final SensorEventListener mSensorListener = new SensorEventListener() {
 
         public void onSensorChanged(SensorEvent se) {
@@ -604,7 +605,7 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
                 wuerfelAllowed = false;
                 Random rand = new Random();
                 int random = rand.nextInt(6)+1;
-                printSomeThing(getResources().getString(R.string.rollValue)+random);
+                printSomeThing(getResources().getString(R.string.rollValue)+ " "+random);
                 myGameCallBack.playerHasRoled(random);
                 lastShake = System.currentTimeMillis();
 
@@ -613,7 +614,10 @@ public abstract class NetworkConnectionActivity extends AndroidApplication imple
             }
         }
 
+        @Override
         public void onAccuracyChanged(Sensor sensor, int accuracy) {
         }
+
+
     };
 }

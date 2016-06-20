@@ -6,20 +6,24 @@ import com.gruppe4.menschaergerdichnicht.Fields.GoalField;
 import com.gruppe4.menschaergerdichnicht.Fields.HomeField;
 import com.gruppe4.menschaergerdichnicht.Fields.StartField;
 
-import java.lang.reflect.Array;
+
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by manfrededer on 03.05.16.
  */
 public class PlaygroundModel {
-    public static ArrayList<HomeField> homeFields = new ArrayList<HomeField>();
-    public static ArrayList<StartField> startFields = new ArrayList<StartField>();
-    public static ArrayList<GoalField> goalFields = new ArrayList<GoalField>();
-    public static ArrayList<Field> normalFields = new ArrayList<Field>();
-    public static ArrayList<Pin> pins = new ArrayList<Pin>();
+    public static final ArrayList<HomeField> homeFields = new ArrayList<HomeField>();
+    public static final ArrayList<StartField> startFields = new ArrayList<StartField>();
+    public static final ArrayList<GoalField> goalFields = new ArrayList<GoalField>();
+    public static final ArrayList<Field> normalFields = new ArrayList<Field>();
+    public static final ArrayList<Pin> pins = new ArrayList<Pin>();
 
 
+    public PlaygroundModel(){
+
+    }
     public static void createPinsForColor(String color){
         ArrayList<HomeField> homeFieldsForColor = getHomeFieldsForColor(color);
         for(int i=0;i<homeFieldsForColor.size(); i++){
@@ -31,7 +35,7 @@ public class PlaygroundModel {
     }
 
     private static ArrayList<HomeField> getHomeFieldsForColor(String c) {
-        ArrayList<HomeField> help = new ArrayList<HomeField>();
+        ArrayList<HomeField> help = new ArrayList<>();
         int i =0;
         while(i < homeFields.size() && help.size() != 4){
             String co = homeFields.get(i).getColor();
@@ -44,7 +48,7 @@ public class PlaygroundModel {
     }
 
     public static void selectPin(Pin current){
-        ArrayList<Pin> myPins = getPinsForColor(current.getPinColor());
+        List<Pin> myPins = getPinsForColor(current.getPinColor());
         for(int i=0;i< myPins.size();i++){
             if(current.equals(myPins.get(i))){
                 myPins.get(i).switchSelection();
@@ -57,7 +61,7 @@ public class PlaygroundModel {
 
 
     public static boolean AreAllPinsForColorInHome(String myColor) {
-        ArrayList<Pin> myPins = getPinsForColor(myColor);
+        List<Pin> myPins = getPinsForColor(myColor);
         boolean retVal = true;
         int i=0;
         while(retVal ==true && i<myPins.size()){
@@ -69,8 +73,8 @@ public class PlaygroundModel {
         return retVal;
     }
 
-    private static ArrayList<Pin> getPinsForColor(String myColor){
-        ArrayList<Pin> myPins = new ArrayList<Pin>();
+    private static List<Pin> getPinsForColor(String myColor){
+        ArrayList<Pin> myPins = new ArrayList<>();
         for(int i =0; i < pins.size();i++){
             if(pins.get(i).getPinColor().compareTo(myColor)==0){
                 myPins.add(pins.get(i));
@@ -80,7 +84,7 @@ public class PlaygroundModel {
     }
 
     public static Pin getSelectedPin(String myColor){
-        ArrayList<Pin> myPins = getPinsForColor(myColor);
+        List<Pin> myPins = getPinsForColor(myColor);
         Pin ret = null;
         int i =0;
         while(ret == null && i<myPins.size()){
@@ -95,7 +99,7 @@ public class PlaygroundModel {
 
 
     private static boolean goalFieldIsFree(int goalFieldSteps,String color) {
-        ArrayList<Pin> myPins = getPinsForColor(color);
+        List<Pin> myPins = getPinsForColor(color);
         boolean retVal = true;
         for(int i=0;i<myPins.size() && retVal;i++){
             if(myPins.get(i).getPositionNr()==goalFieldSteps && myPins.get(i).getCurrentType().compareTo(FieldType.GoalField)==0){
@@ -116,7 +120,7 @@ public class PlaygroundModel {
     }
 
     private static Pin getPinFromColor(String myColor,int id){
-        ArrayList<Pin> myPins = getPinsForColor(myColor);
+        List<Pin> myPins = getPinsForColor(myColor);
         Pin help = null;
         for(int i =0; i < myPins.size() && help == null; i++){
             if(myPins.get(i).getNumber()==id){
@@ -145,7 +149,7 @@ public class PlaygroundModel {
 
     public static boolean checkForWin(String color) {
         boolean won = true;
-        ArrayList<Pin> myPins = getPinsForColor(color);
+        List<Pin> myPins = getPinsForColor(color);
         for(int i=0; i < myPins.size() && won; i++){
             if(myPins.get(i).getCurrentType().compareTo(FieldType.GoalField)!= 0){
                 won = false;
@@ -213,9 +217,9 @@ public class PlaygroundModel {
         return ret;
     }
 
-    public static ArrayList<Pin> IsThereAPinToMove(String myColor, int number) {
-        ArrayList<Pin> allowedPins = new ArrayList<Pin>();
-        ArrayList<Pin> myPins = getPinsForColor(myColor);
+    public static List<Pin> isThereAPinToMove(String myColor, int number) {
+        List<Pin> allowedPins = new ArrayList<>();
+        List<Pin> myPins = getPinsForColor(myColor);
         for(int i=0;i<myPins.size();i++){
             if(myPins.get(i).getCurrentType().compareTo(FieldType.HomeField)==0 && number == 6){
                 allowedPins.add(myPins.get(i));
@@ -231,17 +235,15 @@ public class PlaygroundModel {
                         allowedPins.add(myPins.get(i));
                     }
                 }
-            } else if(myPins.get(i).getCurrentType().compareTo(FieldType.GoalField)==0){
-                if(myPins.get(i).getPositionNr()+number<=4 && goalFieldIsFree(myPins.get(i).getPositionNr()+number,myColor)){
+            } else if(myPins.get(i).getCurrentType().compareTo(FieldType.GoalField)==0 && myPins.get(i).getPositionNr()+number<=4 && goalFieldIsFree(myPins.get(i).getPositionNr()+number,myColor)){
                     allowedPins.add(myPins.get(i));
-                }
             }
         }
         return allowedPins;
     }
 
     private static boolean isAPinInHome(String myColor) {
-        ArrayList<Pin> myPins = getPinsForColor(myColor);
+        List<Pin> myPins = getPinsForColor(myColor);
         boolean retVal = false;
         for(int i=0; i < myPins.size() && !retVal;i++){
             if(myPins.get(i).getCurrentType().compareTo(FieldType.HomeField)==0){

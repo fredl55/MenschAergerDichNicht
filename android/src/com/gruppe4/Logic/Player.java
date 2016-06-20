@@ -1,5 +1,4 @@
 package com.gruppe4.Logic;
-import android.graphics.Color;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -39,10 +38,6 @@ public class Player implements Serializable{
 
     public String getEndPointId() {
         return endPointId;
-    }
-
-    public void setEndPointId(String endPointId) {
-        this.endPointId = endPointId;
     }
 
     public String getPlayerColor() {

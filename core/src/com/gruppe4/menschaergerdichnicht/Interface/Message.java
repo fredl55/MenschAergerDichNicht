@@ -21,5 +21,4 @@ public class Message implements Serializable{
         this.type=type;
         this.myMessage = msg;
     }
-
 }

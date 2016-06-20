@@ -1,8 +1,6 @@
 package com.gruppe4.menschaergerdichnicht.Fields;
 
 
-import java.util.ArrayList;
-
 /**
  * Created by manfrededer on 03.05.16.
  */
@@ -19,7 +17,7 @@ public class Field {
         positionNr = getPositionNrFromName(name);
     }
 
-    private int getPositionNrFromName(String name) {
+    private static int getPositionNrFromName(String name) {
         if(!name.isEmpty()){
             String help = "";
             for(int i=0; i <name.length();i++){

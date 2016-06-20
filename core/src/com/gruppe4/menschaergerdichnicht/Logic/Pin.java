@@ -20,7 +20,6 @@ public class Pin {
     private String currentType;
     private int positionNr;
     private int oldPositionNr;
-    private Field currentField;
 
     public Pin(int number,String c){
         this.number = number;
@@ -44,29 +43,15 @@ public class Pin {
         return pinColor;
     }
 
-    public float getPosX() {
-        return posX;
-    }
-
-    public float getPosY() {
-        return posY;
-    }
 
     public int getNumber() {
         return number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
     }
 
     public Sprite getMyPin() {
         return myPin;
     }
 
-    public void setSelected(boolean selected) {
-        this.selected = selected;
-    }
 
     public boolean isSelected() {
         return selected;
@@ -93,13 +78,6 @@ public class Pin {
         return currentType;
     }
 
-    public void setCurrentType(String currentType) {
-        this.currentType = currentType;
-    }
-
-    public void setPositionNr(int positionNr) {
-        this.positionNr = positionNr;
-    }
 
     public int getPositionNr() {
         return positionNr;
@@ -117,7 +95,6 @@ public class Pin {
         this.positionNr = f.getPositionNr();
         this.setPinPosition(f.getX(),f.getY());
         this.currentType = f.getType();
-        this.currentField = f;
     }
 
 

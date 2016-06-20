@@ -1,6 +1,5 @@
 package com.gruppe4.Logic;
 
-import android.graphics.Color;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,7 +13,6 @@ public class Game implements Serializable{
     private ArrayList<Player> allPlayer = new ArrayList<>();
     private ArrayList<Player> allClientPlayers = new ArrayList<>();
     private int maxPlayerCount;
-    private int cheatingVariation;
     private ArrayList<String> notUsedColors;
     private int freePlayerCount = maxPlayerCount-1;
     private int nextPlayer = -1;
@@ -24,9 +22,6 @@ public class Game implements Serializable{
         fillColor();
     }
 
-    public int getCheatingVariation() {
-        return cheatingVariation;
-    }
 
     public int getMaxPlayerCount() {
         return maxPlayerCount;
@@ -38,10 +33,6 @@ public class Game implements Serializable{
 
     public List<Player> getAllPlayer() {
         return allPlayer;
-    }
-
-    public void setCheatingVariation(int cheatingVariation) {
-        this.cheatingVariation = cheatingVariation;
     }
 
     public void setHost(Player hostPlayer) {

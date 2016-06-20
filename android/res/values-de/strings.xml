@@ -29,27 +29,27 @@
     <string name="instr">Spieleinleitung</string>
 
     <!--Error warnings-->
-    <string name="error_empty">Spielername wird benötigt!</string>
-    <string name="error_tooLong">Spielername ist zu lang!</string>
-    <string name="joinedTheGame">ist dem Spiel beigetreten</string>
-    <string name="endTheGame">Sind Sie sicher das Sie das Spiel beenden wollen?</string>
-    <string name="closeActivity">Activity beenden?</string>
-    <string name="yes">Ja</string>
-    <string name="no">Nein</string>
+    <string name="error_empty"> Spielername wird benötigt!</string>
+    <string name="error_tooLong"> Spielername ist zu lang!</string>
+    <string name="joinedTheGame"> ist dem Spiel beigetreten</string>
+    <string name="endTheGame"> Sind Sie sicher das Sie das Spiel beenden wollen?</string>
+    <string name="closeActivity"> Activity beenden?</string>
+    <string name="yes"> Ja</string>
+    <string name="no"> Nein</string>
     <string name="rolled"> würfelte </string>
     <string name="couldntMove"> konnte nicht ziehen </string>
-    <string name="again">Du kannst nocheinmal würfeln</string>
+    <string name="again"> Du kannst nocheinmal würfeln</string>
     <string name="again2"> aber kann nocheinmal würfeln</string>
-    <string name="hostDisconnect">Der Host Spieler hat einen Disconnect</string>
+    <string name="hostDisconnect"> Der Host Spieler hat einen Disconnect</string>
     <string name="joinedGame"> Spiel beigetreten</string>
-    <string name="yourTurn">Du bist dran</string>
+    <string name="yourTurn"> Du bist dran</string>
     <string name="connectedTo"> verbunden zu </string>
-    <string name="rollValue">Dein Würfel Wert:  </string>
-    <string name="wantConnection">Verbinden mit: </string>
+    <string name="rollValue"> Dein Würfel Wert:  </string>
+    <string name="wantConnection"> Verbinden mit: </string>
     <string name="victory"> hat dieses Spiel gewonnen</string>
-    <string name="endPointFound">Endpunkte gefunden</string>
-    <string name="cancel">Abbruch</string>
-    <string name="connectionrequest">Verbindungs Anfrage</string>
+    <string name="endPointFound"> Endpunkte gefunden</string>
+    <string name="cancel"> Abbruch</string>
+    <string name="connectionrequest"> Verbindungs Anfrage</string>
 
 
 

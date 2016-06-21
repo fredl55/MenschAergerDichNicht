@@ -258,7 +258,7 @@ public class MainScreen implements Screen {
     }
 
     private void changeWuerfel(int number){
-        wuerfelSprite = new Sprite(MyAsstes.assets.get(number+"c.gif",Texture.class));
+        wuerfelSprite = new Sprite(MyAssets.assets.get(number+"c.gif",Texture.class));
         this.wuerfelSprite.setPosition(mapWidth/2+950,mapHeight/2-100);
 
     }

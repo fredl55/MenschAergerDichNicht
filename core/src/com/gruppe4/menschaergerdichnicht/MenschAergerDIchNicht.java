@@ -1,12 +1,9 @@
 package com.gruppe4.menschaergerdichnicht;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Texture;
 import com.gruppe4.menschaergerdichnicht.Interface.IAndroidCallBack;
 import com.gruppe4.menschaergerdichnicht.Interface.ILibGDXCallBack;
 import com.gruppe4.menschaergerdichnicht.Logic.Draw;
-import com.gruppe4.menschaergerdichnicht.Fields.FieldType;
 import com.gruppe4.menschaergerdichnicht.Logic.PlaygroundModel;
 
 
@@ -21,10 +18,10 @@ public class MenschAergerDIchNicht extends Game implements ILibGDXCallBack{
 
 	@Override
 	public void create () {
-		MyAsstes.loadAllAssets();
+		MyAssets.loadAllAssets();
 		boolean loaded = false;
 		while (!loaded){
-			if(MyAsstes.assets.update()){
+			if(MyAssets.assets.update()){
 				myScreen = new MainScreen(this);
 				setScreen(myScreen);
 				loaded = true;
@@ -43,7 +40,7 @@ public class MenschAergerDIchNicht extends Game implements ILibGDXCallBack{
 	public void playerAdded(String color) {
 		boolean notLoaded = true;
 		while (notLoaded){
-			if(MyAsstes.assets.update() && myScreen!=null){
+			if(MyAssets.assets.update() && myScreen!=null){
 				myScreen.playerAdded(color);
 				notLoaded = false;
 			}
@@ -62,7 +59,7 @@ public class MenschAergerDIchNicht extends Game implements ILibGDXCallBack{
 
 	@Override
 	public void dispose(){
-		MyAsstes.assets.dispose();
+		MyAssets.assets.dispose();
 		myScreen.dispose();
 	}
 

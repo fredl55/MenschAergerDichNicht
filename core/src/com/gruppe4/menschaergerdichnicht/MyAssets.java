@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 /**
  * Created by manfrededer on 24.05.16.
  */
-public class MyAsstes {
+public class MyAssets {
     public static AssetManager assets = new AssetManager();
 
     public static void loadAllAssets(){

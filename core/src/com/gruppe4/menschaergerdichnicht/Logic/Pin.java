@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.gruppe4.menschaergerdichnicht.Fields.Field;
 import com.gruppe4.menschaergerdichnicht.Fields.FieldType;
-import com.gruppe4.menschaergerdichnicht.MyAsstes;
+import com.gruppe4.menschaergerdichnicht.MyAssets;
 
 /**
  * Created by manfrededer on 03.05.16.
@@ -24,7 +24,7 @@ public class Pin {
     public Pin(int number,String c){
         this.number = number;
         this.pinColor = c;
-        myPin = new Sprite(MyAsstes.assets.get(c+"Pin.png", Texture.class));
+        myPin = new Sprite(MyAssets.assets.get(c+"Pin.png", Texture.class));
         currentType = FieldType.HomeField;
     }
 

@@ -20,7 +20,6 @@ public class PlaygroundModel {
     public static final ArrayList<Field> normalFields = new ArrayList<Field>();
     public static final ArrayList<Pin> pins = new ArrayList<Pin>();
 
-
     public PlaygroundModel(){
 
     }

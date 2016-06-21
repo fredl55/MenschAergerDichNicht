@@ -1,9 +1,21 @@
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Texture;
 import com.gruppe4.menschaergerdichnicht.Fields.Field;
+import com.gruppe4.menschaergerdichnicht.Fields.FieldType;
 import com.gruppe4.menschaergerdichnicht.Interface.Message;
+import com.gruppe4.menschaergerdichnicht.Interface.MessageType;
+import com.gruppe4.menschaergerdichnicht.Logic.Draw;
 import com.gruppe4.menschaergerdichnicht.Logic.Pin;
+import com.gruppe4.menschaergerdichnicht.Logic.PlaygroundModel;
+import com.gruppe4.menschaergerdichnicht.MainScreen;
+import com.gruppe4.menschaergerdichnicht.MenschAergerDIchNicht;
 import com.gruppe4.menschaergerdichnicht.MyAssets;
 
+
+
 import org.junit.Test;
+
+import sun.applet.Main;
 
 import static org.junit.Assert.assertEquals;
 
@@ -12,7 +24,6 @@ import static org.junit.Assert.assertEquals;
  */
 public class JUnitTest{
 
-    MyAssets assets1 = new MyAssets();
 
     //testen, ob die übergebene Message des Spieler 1:1 gespeichert wird
     @Test
@@ -75,10 +86,23 @@ public class JUnitTest{
     @Test
     public void checkPosNumber() {
         Field f = new Field(0, 0, "Spielfeld", "Feld Nr.6");
-
         assertEquals(f.getPositionNr(), 6);
     }
 
+    @Test
+    public void messageTypeTest(){
+        Message m = new Message(MessageType.PlayerRoled, "blabla");
+        assertEquals(m.getInfo(),MessageType.PlayerRoled);
+    }
 
-
+    @Test
+    public void testDraw(){
+        Draw d = new Draw(2,"blue",FieldType.NormalField,22,28,6);
+        assertEquals(d.getPinId(),2);
+        assertEquals(d.getColor(),"blue");
+        assertEquals(d.getFieldType(),FieldType.NormalField);
+        assertEquals(d.getFrom(),22);
+        assertEquals(d.getTo(),28);
+        assertEquals(d.getRollValue(),6);
+    }
 }
